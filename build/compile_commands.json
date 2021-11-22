@@ -1,0 +1,362 @@
+[
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_and.c.o' -MF '42sh@exe/src_ast_ast_and.c.o.d' -o '42sh@exe/src_ast_ast_and.c.o' -c ../src/ast/ast_and.c",
+    "file": "../src/ast/ast_and.c",
+    "output": "42sh@exe/src_ast_ast_and.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_bang.c.o' -MF '42sh@exe/src_ast_ast_bang.c.o.d' -o '42sh@exe/src_ast_ast_bang.c.o' -c ../src/ast/ast_bang.c",
+    "file": "../src/ast/ast_bang.c",
+    "output": "42sh@exe/src_ast_ast_bang.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_case.c.o' -MF '42sh@exe/src_ast_ast_case.c.o.d' -o '42sh@exe/src_ast_ast_case.c.o' -c ../src/ast/ast_case.c",
+    "file": "../src/ast/ast_case.c",
+    "output": "42sh@exe/src_ast_ast_case.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_cmd.c.o' -MF '42sh@exe/src_ast_ast_cmd.c.o.d' -o '42sh@exe/src_ast_ast_cmd.c.o' -c ../src/ast/ast_cmd.c",
+    "file": "../src/ast/ast_cmd.c",
+    "output": "42sh@exe/src_ast_ast_cmd.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_destruct.c.o' -MF '42sh@exe/src_ast_ast_destruct.c.o.d' -o '42sh@exe/src_ast_ast_destruct.c.o' -c ../src/ast/ast_destruct.c",
+    "file": "../src/ast/ast_destruct.c",
+    "output": "42sh@exe/src_ast_ast_destruct.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_for.c.o' -MF '42sh@exe/src_ast_ast_for.c.o.d' -o '42sh@exe/src_ast_ast_for.c.o' -c ../src/ast/ast_for.c",
+    "file": "../src/ast/ast_for.c",
+    "output": "42sh@exe/src_ast_ast_for.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_funcdec.c.o' -MF '42sh@exe/src_ast_ast_funcdec.c.o.d' -o '42sh@exe/src_ast_ast_funcdec.c.o' -c ../src/ast/ast_funcdec.c",
+    "file": "../src/ast/ast_funcdec.c",
+    "output": "42sh@exe/src_ast_ast_funcdec.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_if.c.o' -MF '42sh@exe/src_ast_ast_if.c.o.d' -o '42sh@exe/src_ast_ast_if.c.o' -c ../src/ast/ast_if.c",
+    "file": "../src/ast/ast_if.c",
+    "output": "42sh@exe/src_ast_ast_if.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_or.c.o' -MF '42sh@exe/src_ast_ast_or.c.o.d' -o '42sh@exe/src_ast_ast_or.c.o' -c ../src/ast/ast_or.c",
+    "file": "../src/ast/ast_or.c",
+    "output": "42sh@exe/src_ast_ast_or.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_pipe.c.o' -MF '42sh@exe/src_ast_ast_pipe.c.o.d' -o '42sh@exe/src_ast_ast_pipe.c.o' -c ../src/ast/ast_pipe.c",
+    "file": "../src/ast/ast_pipe.c",
+    "output": "42sh@exe/src_ast_ast_pipe.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_print.c.o' -MF '42sh@exe/src_ast_ast_print.c.o.d' -o '42sh@exe/src_ast_ast_print.c.o' -c ../src/ast/ast_print.c",
+    "file": "../src/ast/ast_print.c",
+    "output": "42sh@exe/src_ast_ast_print.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_red.c.o' -MF '42sh@exe/src_ast_ast_red.c.o.d' -o '42sh@exe/src_ast_ast_red.c.o' -c ../src/ast/ast_red.c",
+    "file": "../src/ast/ast_red.c",
+    "output": "42sh@exe/src_ast_ast_red.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_sep.c.o' -MF '42sh@exe/src_ast_ast_sep.c.o.d' -o '42sh@exe/src_ast_ast_sep.c.o' -c ../src/ast/ast_sep.c",
+    "file": "../src/ast/ast_sep.c",
+    "output": "42sh@exe/src_ast_ast_sep.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_sepand.c.o' -MF '42sh@exe/src_ast_ast_sepand.c.o.d' -o '42sh@exe/src_ast_ast_sepand.c.o' -c ../src/ast/ast_sepand.c",
+    "file": "../src/ast/ast_sepand.c",
+    "output": "42sh@exe/src_ast_ast_sepand.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_subshell.c.o' -MF '42sh@exe/src_ast_ast_subshell.c.o.d' -o '42sh@exe/src_ast_ast_subshell.c.o' -c ../src/ast/ast_subshell.c",
+    "file": "../src/ast/ast_subshell.c",
+    "output": "42sh@exe/src_ast_ast_subshell.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_ast_ast_while.c.o' -MF '42sh@exe/src_ast_ast_while.c.o.d' -o '42sh@exe/src_ast_ast_while.c.o' -c ../src/ast/ast_while.c",
+    "file": "../src/ast/ast_while.c",
+    "output": "42sh@exe/src_ast_ast_while.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin.c.o' -MF '42sh@exe/src_builtin_builtin.c.o.d' -o '42sh@exe/src_builtin_builtin.c.o' -c ../src/builtin/builtin.c",
+    "file": "../src/builtin/builtin.c",
+    "output": "42sh@exe/src_builtin_builtin.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_alias.c.o' -MF '42sh@exe/src_builtin_builtin_alias.c.o.d' -o '42sh@exe/src_builtin_builtin_alias.c.o' -c ../src/builtin/builtin_alias.c",
+    "file": "../src/builtin/builtin_alias.c",
+    "output": "42sh@exe/src_builtin_builtin_alias.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_cd.c.o' -MF '42sh@exe/src_builtin_builtin_cd.c.o.d' -o '42sh@exe/src_builtin_builtin_cd.c.o' -c ../src/builtin/builtin_cd.c",
+    "file": "../src/builtin/builtin_cd.c",
+    "output": "42sh@exe/src_builtin_builtin_cd.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_echo.c.o' -MF '42sh@exe/src_builtin_builtin_echo.c.o.d' -o '42sh@exe/src_builtin_builtin_echo.c.o' -c ../src/builtin/builtin_echo.c",
+    "file": "../src/builtin/builtin_echo.c",
+    "output": "42sh@exe/src_builtin_builtin_echo.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_exec.c.o' -MF '42sh@exe/src_builtin_builtin_exec.c.o.d' -o '42sh@exe/src_builtin_builtin_exec.c.o' -c ../src/builtin/builtin_exec.c",
+    "file": "../src/builtin/builtin_exec.c",
+    "output": "42sh@exe/src_builtin_builtin_exec.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_exit.c.o' -MF '42sh@exe/src_builtin_builtin_exit.c.o.d' -o '42sh@exe/src_builtin_builtin_exit.c.o' -c ../src/builtin/builtin_exit.c",
+    "file": "../src/builtin/builtin_exit.c",
+    "output": "42sh@exe/src_builtin_builtin_exit.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_export.c.o' -MF '42sh@exe/src_builtin_builtin_export.c.o.d' -o '42sh@exe/src_builtin_builtin_export.c.o' -c ../src/builtin/builtin_export.c",
+    "file": "../src/builtin/builtin_export.c",
+    "output": "42sh@exe/src_builtin_builtin_export.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_unalias.c.o' -MF '42sh@exe/src_builtin_builtin_unalias.c.o.d' -o '42sh@exe/src_builtin_builtin_unalias.c.o' -c ../src/builtin/builtin_unalias.c",
+    "file": "../src/builtin/builtin_unalias.c",
+    "output": "42sh@exe/src_builtin_builtin_unalias.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_unset.c.o' -MF '42sh@exe/src_builtin_builtin_unset.c.o.d' -o '42sh@exe/src_builtin_builtin_unset.c.o' -c ../src/builtin/builtin_unset.c",
+    "file": "../src/builtin/builtin_unset.c",
+    "output": "42sh@exe/src_builtin_builtin_unset.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_set.c.o' -MF '42sh@exe/src_builtin_builtin_set.c.o.d' -o '42sh@exe/src_builtin_builtin_set.c.o' -c ../src/builtin/builtin_set.c",
+    "file": "../src/builtin/builtin_set.c",
+    "output": "42sh@exe/src_builtin_builtin_set.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_builtin_builtin_shopt.c.o' -MF '42sh@exe/src_builtin_builtin_shopt.c.o.d' -o '42sh@exe/src_builtin_builtin_shopt.c.o' -c ../src/builtin/builtin_shopt.c",
+    "file": "../src/builtin/builtin_shopt.c",
+    "output": "42sh@exe/src_builtin_builtin_shopt.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_basename.c.o' -MF '42sh@exe/src_common_basename.c.o.d' -o '42sh@exe/src_common_basename.c.o' -c ../src/common/basename.c",
+    "file": "../src/common/basename.c",
+    "output": "42sh@exe/src_common_basename.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_env.c.o' -MF '42sh@exe/src_common_env.c.o.d' -o '42sh@exe/src_common_env.c.o' -c ../src/common/env.c",
+    "file": "../src/common/env.c",
+    "output": "42sh@exe/src_common_env.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_getcwd2.c.o' -MF '42sh@exe/src_common_getcwd2.c.o.d' -o '42sh@exe/src_common_getcwd2.c.o' -c ../src/common/getcwd2.c",
+    "file": "../src/common/getcwd2.c",
+    "output": "42sh@exe/src_common_getcwd2.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_isdigitstr.c.o' -MF '42sh@exe/src_common_isdigitstr.c.o.d' -o '42sh@exe/src_common_isdigitstr.c.o' -c ../src/common/isdigitstr.c",
+    "file": "../src/common/isdigitstr.c",
+    "output": "42sh@exe/src_common_isdigitstr.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_strmerge.c.o' -MF '42sh@exe/src_common_strmerge.c.o.d' -o '42sh@exe/src_common_strmerge.c.o' -c ../src/common/strmerge.c",
+    "file": "../src/common/strmerge.c",
+    "output": "42sh@exe/src_common_strmerge.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_strvectoradd.c.o' -MF '42sh@exe/src_common_strvectoradd.c.o.d' -o '42sh@exe/src_common_strvectoradd.c.o' -c ../src/common/strvectoradd.c",
+    "file": "../src/common/strvectoradd.c",
+    "output": "42sh@exe/src_common_strvectoradd.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_strvmerge.c.o' -MF '42sh@exe/src_common_strvmerge.c.o.d' -o '42sh@exe/src_common_strvmerge.c.o' -c ../src/common/strvmerge.c",
+    "file": "../src/common/strvmerge.c",
+    "output": "42sh@exe/src_common_strvmerge.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_common_strndup.c.o' -MF '42sh@exe/src_common_strndup.c.o.d' -o '42sh@exe/src_common_strndup.c.o' -c ../src/common/strndup.c",
+    "file": "../src/common/strndup.c",
+    "output": "42sh@exe/src_common_strndup.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_and.c.o' -MF '42sh@exe/src_exec_exec_and.c.o.d' -o '42sh@exe/src_exec_exec_and.c.o' -c ../src/exec/exec_and.c",
+    "file": "../src/exec/exec_and.c",
+    "output": "42sh@exe/src_exec_exec_and.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_bang.c.o' -MF '42sh@exe/src_exec_exec_bang.c.o.d' -o '42sh@exe/src_exec_exec_bang.c.o' -c ../src/exec/exec_bang.c",
+    "file": "../src/exec/exec_bang.c",
+    "output": "42sh@exe/src_exec_exec_bang.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_case.c.o' -MF '42sh@exe/src_exec_exec_case.c.o.d' -o '42sh@exe/src_exec_exec_case.c.o' -c ../src/exec/exec_case.c",
+    "file": "../src/exec/exec_case.c",
+    "output": "42sh@exe/src_exec_exec_case.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_cmd.c.o' -MF '42sh@exe/src_exec_exec_cmd.c.o.d' -o '42sh@exe/src_exec_exec_cmd.c.o' -c ../src/exec/exec_cmd.c",
+    "file": "../src/exec/exec_cmd.c",
+    "output": "42sh@exe/src_exec_exec_cmd.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_for.c.o' -MF '42sh@exe/src_exec_exec_for.c.o.d' -o '42sh@exe/src_exec_exec_for.c.o' -c ../src/exec/exec_for.c",
+    "file": "../src/exec/exec_for.c",
+    "output": "42sh@exe/src_exec_exec_for.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_funcdec.c.o' -MF '42sh@exe/src_exec_exec_funcdec.c.o.d' -o '42sh@exe/src_exec_exec_funcdec.c.o' -c ../src/exec/exec_funcdec.c",
+    "file": "../src/exec/exec_funcdec.c",
+    "output": "42sh@exe/src_exec_exec_funcdec.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_node.c.o' -MF '42sh@exe/src_exec_exec_node.c.o.d' -o '42sh@exe/src_exec_exec_node.c.o' -c ../src/exec/exec_node.c",
+    "file": "../src/exec/exec_node.c",
+    "output": "42sh@exe/src_exec_exec_node.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_or.c.o' -MF '42sh@exe/src_exec_exec_or.c.o.d' -o '42sh@exe/src_exec_exec_or.c.o' -c ../src/exec/exec_or.c",
+    "file": "../src/exec/exec_or.c",
+    "output": "42sh@exe/src_exec_exec_or.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_if.c.o' -MF '42sh@exe/src_exec_exec_if.c.o.d' -o '42sh@exe/src_exec_exec_if.c.o' -c ../src/exec/exec_if.c",
+    "file": "../src/exec/exec_if.c",
+    "output": "42sh@exe/src_exec_exec_if.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_pipe.c.o' -MF '42sh@exe/src_exec_exec_pipe.c.o.d' -o '42sh@exe/src_exec_exec_pipe.c.o' -c ../src/exec/exec_pipe.c",
+    "file": "../src/exec/exec_pipe.c",
+    "output": "42sh@exe/src_exec_exec_pipe.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_red.c.o' -MF '42sh@exe/src_exec_exec_red.c.o.d' -o '42sh@exe/src_exec_exec_red.c.o' -c ../src/exec/exec_red.c",
+    "file": "../src/exec/exec_red.c",
+    "output": "42sh@exe/src_exec_exec_red.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_sep.c.o' -MF '42sh@exe/src_exec_exec_sep.c.o.d' -o '42sh@exe/src_exec_exec_sep.c.o' -c ../src/exec/exec_sep.c",
+    "file": "../src/exec/exec_sep.c",
+    "output": "42sh@exe/src_exec_exec_sep.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_sepand.c.o' -MF '42sh@exe/src_exec_exec_sepand.c.o.d' -o '42sh@exe/src_exec_exec_sepand.c.o' -c ../src/exec/exec_sepand.c",
+    "file": "../src/exec/exec_sepand.c",
+    "output": "42sh@exe/src_exec_exec_sepand.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_subshell.c.o' -MF '42sh@exe/src_exec_exec_subshell.c.o.d' -o '42sh@exe/src_exec_exec_subshell.c.o' -c ../src/exec/exec_subshell.c",
+    "file": "../src/exec/exec_subshell.c",
+    "output": "42sh@exe/src_exec_exec_subshell.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_exec_exec_while.c.o' -MF '42sh@exe/src_exec_exec_while.c.o.d' -o '42sh@exe/src_exec_exec_while.c.o' -c ../src/exec/exec_while.c",
+    "file": "../src/exec/exec_while.c",
+    "output": "42sh@exe/src_exec_exec_while.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_parser_getline.c.o' -MF '42sh@exe/src_parser_getline.c.o.d' -o '42sh@exe/src_parser_getline.c.o' -c ../src/parser/getline.c",
+    "file": "../src/parser/getline.c",
+    "output": "42sh@exe/src_parser_getline.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_parser_parser.c.o' -MF '42sh@exe/src_parser_parser.c.o.d' -o '42sh@exe/src_parser_parser.c.o' -c ../src/parser/parser.c",
+    "file": "../src/parser/parser.c",
+    "output": "42sh@exe/src_parser_parser.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_parser_lexer.c.o' -MF '42sh@exe/src_parser_lexer.c.o.d' -o '42sh@exe/src_parser_lexer.c.o' -c ../src/parser/lexer.c",
+    "file": "../src/parser/lexer.c",
+    "output": "42sh@exe/src_parser_lexer.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_alias.c.o' -MF '42sh@exe/src_shell_alias.c.o.d' -o '42sh@exe/src_shell_alias.c.o' -c ../src/shell/alias.c",
+    "file": "../src/shell/alias.c",
+    "output": "42sh@exe/src_shell_alias.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_func.c.o' -MF '42sh@exe/src_shell_func.c.o.d' -o '42sh@exe/src_shell_func.c.o' -c ../src/shell/func.c",
+    "file": "../src/shell/func.c",
+    "output": "42sh@exe/src_shell_func.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_getoptions.c.o' -MF '42sh@exe/src_shell_getoptions.c.o.d' -o '42sh@exe/src_shell_getoptions.c.o' -c ../src/shell/getoptions.c",
+    "file": "../src/shell/getoptions.c",
+    "output": "42sh@exe/src_shell_getoptions.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_option.c.o' -MF '42sh@exe/src_shell_option.c.o.d' -o '42sh@exe/src_shell_option.c.o' -c ../src/shell/option.c",
+    "file": "../src/shell/option.c",
+    "output": "42sh@exe/src_shell_option.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_shell.c.o' -MF '42sh@exe/src_shell_shell.c.o.d' -o '42sh@exe/src_shell_shell.c.o' -c ../src/shell/shell.c",
+    "file": "../src/shell/shell.c",
+    "output": "42sh@exe/src_shell_shell.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_prompt.c.o' -MF '42sh@exe/src_shell_prompt.c.o.d' -o '42sh@exe/src_shell_prompt.c.o' -c ../src/shell/prompt.c",
+    "file": "../src/shell/prompt.c",
+    "output": "42sh@exe/src_shell_prompt.c.o"
+  },
+  {
+    "directory": "/home/eavi/42sh-master/build",
+    "command": "cc -I42sh@exe -I. -I.. -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c99 -g -D_XOPEN_SOURCE=600 -Wall -Wextra -pedantic -MD -MQ '42sh@exe/src_shell_var.c.o' -MF '42sh@exe/src_shell_var.c.o.d' -o '42sh@exe/src_shell_var.c.o' -c ../src/shell/var.c",
+    "file": "../src/shell/var.c",
+    "output": "42sh@exe/src_shell_var.c.o"
+  }
+]

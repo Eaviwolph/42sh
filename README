@@ -1,0 +1,10 @@
+42sh
+
+To build binary:
+$ meson build
+$ ninja -C build
+
+To build doxygen
+$ ninja -C build html
+
+This program was written by Sebastien Luttringer aka Seblu

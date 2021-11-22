@@ -1,0 +1,26 @@
+- Lexer
+-- Voir probleme de syntax que j'accepte lorsque un EOF apparait avant une quote
+fermante. Le token est valide alors que sous bash non. faire un test avant.
+Maintenant il renvoie EOF a la place du token.
+-- verifier toto \2>sex fonctionne avec la substituion.
+
+- Parser
+-- aliases
+-- history
+
+- Option
+-- voir probleme de non initialisation envoye par valgrind a chaque tour de boucle
+
+- Exec
+-- case
+-- gestion des variables $0..$n
+
+- Builtin
+-- break
+-- continue
+-- export
+
+- Glob
+-- arithmetique
+-- quoting
+-- command substitution
