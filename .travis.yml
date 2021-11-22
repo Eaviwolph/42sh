@@ -1,0 +1,7 @@
+language: c
+before_install:
+- sudo apt-get update
+- sudo apt-get install php5
+- sudo apt-get install bash
+- sudo apt-get install valgrind
+script: make && make test && php test detail valgrind

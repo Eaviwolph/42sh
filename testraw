@@ -1,0 +1,364 @@
+# THIS IS A COMMENTS.
+
+gcc -o segv testcomp/testsegv.c
+###########################################################################
+################################# BUILTIN #################################
+###########################################################################
+touch tmp tmp2
+
+#################################
+############### CD ##############
+#################################
+# cd [-L|-P] [directory]
+cd ; pwd
+cd ~ ; pwd
+cd / ; pwd
+cd - ; pwd
+cd . ; pwd
+cd .. ; pwd
+cd ~/. ; pwd
+# cd nasrt
+# cd auteur
+
+#################################
+############## ECHO #############
+#################################
+# echo [string...]
+
+### Spaces tests
+echo "6789      "         "    2345"
+echo "6789      "    arsnatuir     "    2345"
+echo "    67   89      "         "    23  45   "
+
+## cotes parsing
+echo 'test'
+echo "test"
+echo 'simple' "double"
+echo "6789" "2345"
+echo "6789"         "2345"
+echo "6789"  test   "2345"
+echo nasruitersaui "6789" ransuite  "2345"   anruistenrasuit
+# echo \`ls\`
+
+## option
+echo --
+echo ---
+echo -- -a lol
+echo -zzzn
+echo -a
+echo -noob lol
+# echo -n lol
+
+# test all ASCII char: check they are used to split str like ';', '>', '<' or '|'
+echo "nrsatu;nrtsa"
+echo "rasnt>inausrt" > tmp; cat tmp
+echo "nrastiu<rasntiu" > tmp; cat tmp
+echo \"nrau\|sntiu\"
+echo "\"nrau|sntiu\""
+echo "\">>\\ || && |<<|sntiu\""
+
+## Variable
+echo $PATH
+echo $PATH$PATH
+echo here$PWDtest
+
+#################################
+############## EXIT #############
+#################################
+# exit [n]
+# exit -99999
+# exit -1
+exit 0
+exit 1
+exit 2
+exit 3
+exit 4
+exit 127
+exit 500
+exit 7139
+# exit lol
+# exit -a lol
+
+#################################
+############## ENV ##############
+#################################
+# env [-i] [name=value]... [utility [argument...]]
+
+# env
+# export TOTO=toto
+# unsetenv PATH; echo $PATH
+# unsetenv TOTO
+env -i env toto=tata env
+env -i ls
+env -i foo
+# env -lol ls
+env -i ls  -rlaH
+# env -i ./segv
+env -i whoami
+env -i pwd
+# env -i PATH=/usr/sbin:/usr/bin ownership
+
+#################################
+############# SETENV ############
+#################################
+# setenv
+
+
+
+#################################
+############ UNSETENV ###########
+#################################
+# unsetenv
+
+
+
+#################################
+############# SET #############
+#################################
+# set name...
+
+# set lol ff && set
+
+#################################
+############# UNSET #############
+#################################
+# unset [-fv] name...
+
+
+#################################
+############# EXPORT ############
+#################################
+# export [-p] name[=word]...
+
+# export
+# export =
+# export =sss
+# export =a
+# export a=
+# export a=a
+# export lol=a && lol2=aa env
+export lol && lol2=aa env -i
+
+#################################
+############ HISTORY ############
+#################################
+# history
+
+
+
+###########################################################################
+################################ EXECUTION ################################
+###########################################################################
+
+#################################
+########### EXECUTION ###########
+#################################
+# Exécution de commandes avec leurs paramètres et gestion du PATH.
+# Gestion des erreurs et de la valeur de retour des commandes.
+
+ls
+ls ~
+ls -l
+ls -lah
+ls -ZDjtnNLIF lKMotSazCt && ls
+cat auteur
+unsetenv PATH; ls;/bin/ls
+/bin/ls
+naritse
+./21sh -c ls
+./anrsiute
+env -i ./42sh -c 'ls'
+pwd
+echo ----------
+echo 42sh
+commandnotfound
+exit ; ls
+
+## permissions
+/sbin/yubikey_shell
+yubikey_shell
+# touch /tmp/toto ; chmod 000 /tmp/toto ; ./tmp/toto
+/tmp/toto
+rm -f /tmp/toto
+error
+./nope
+chmod 000 segv
+./segv
+chmod 755 segv
+./segv
+echo "test" > tmp
+wc < tmp
+
+## Asshole
+  	 	  ls   -llll  -rrr  -- ~~
+
+## Mixed
+ls ; echo "nasruit><rnasuti" > tmp ; cat < tmp
+
+## Assignments
+
+var=val export 1>/dev/null ; echo $var
+var=val env 1>/dev/null ; echo $var
+
+#################################
+########## REDIRECTION ##########
+#################################
+# Les redirection suivantes : ">", ">>", "<".
+
+## Mixed
+ls > tmp && cat tmp
+ls > tmp && ls >> tmp && cat tmp
+ls > tmp && cat < tmp >tmp2 && cat tmp2
+ls > tmp &&cat<tmp>tmp2&&cat tmp2
+ls>tmp &&cat<tmp>tmp2&&cat -e tmp2
+
+## Redirections droite
+ls > tmp ; cat tmp ; rm tmp
+ls >> tmp ; cat tmp ; rm tmp
+mkdir 2> tmp; cat tmp ; rm tmp
+mkdir 2>> tmp; cat tmp ; rm tmp
+ls 2> tmp; cat tmp ; rm tmp
+ls 2>> tmp; cat tmp ; rm tmp
+ls>tmp ; cat tmp ; rm tmp
+ls 1> tmp ; cat tmp
+
+### Redirections gauche
+cat < tmp
+
+## Double redirection
+cat < tmp > /tmp/txt; cat /tmp/txt; rm /tmp/txt
+cat < tmp >> /tmp/txt; cat /tmp/txt; rm /tmp/txt
+
+### Same file name
+cat < tmp > tmp
+cat < tmp >> tmp
+rm -f tmp tmp2
+
+#################################
+############## PIPE #############
+#################################
+# Les pipes “|”.
+
+ls | cat
+ls | cat -e
+ls | cat | cat
+ls | cat | cat | cat
+ls -A -l | cat -e | cat -e
+ls | cat | wc -l
+ls | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat
+# ls || cat
+# ls ||||||||| cat
+# ls | | ls
+#|
+
+### Redirections with pipes
+ls | cat -e > tmp; cat tmp
+
+## Mix
+# ls -a | cat -e | wc > tmp ; cat tmp ; rm tmp
+# mkdir test1 ; cd test1 ; ls -a ; ls | cat | wc -c > fifi ; cat fifi ; rm fifi ; cd .. ; rm -rf test1
+# rm tmp ; ls ; pwd; ls -a | cat -e | wc > tmp ; cat tmp ; rm tmp
+
+#################################
+######## LOGICAL OPERATOR #######
+#################################
+# Les opérateurs logiques "&&" et "||".
+
+ls && ls
+mkdir srcs || ls
+echo PASS && echo PASS
+./segv && echo FAILURE
+echo PASS && ./segv && echo FAILURE
+echo PASS && ./segv || echo FAILURE
+./seg && ./segv || echo FAILURE
+./seg || ./segv || echo FAILURE
+./segv || ./segv || ./segv || ./segv || ./segv
+./notfound || ./segv || ./segv || ./segv || ls -rlaH
+./notfound || ./segv
+echo PASS && ./segv || ./segv
+./notfound || echo PASS
+./notfound || echo PASS || ./segv
+./notfound || ./segv || ./segv || ./segv || ./segv || echo PASS
+./notfound || ./segv || ./segv || ./segv || ./segv && echo PASS
+./segv || echo FAILURE
+./segv || ls
+mkdir srcs && echo PASS
+`qsdqsdqsd` && echo SUCCESS || echo FAILURE
+./not_found || ./segv
+
+#################################
+########## BACKQUOTE ##########
+#################################
+# Les back quotes "‘".
+``
+echo ``
+`ls`
+echo `ls`
+`error`
+echo `error`
+`./error`
+echo `./error`
+echo `echo 'un'` `error` `echo trois`
+echo `echo 'un'``error``echo trois`
+echo `echo 'un'`et`error`et`echo trois`
+echo "`ls`"
+#echo "`ls\``"
+echo '`ls`'
+
+#################################
+########### SEMICOLON ###########
+#################################
+# Le séparateur ";".
+
+ls ; ls
+ls;ls
+cat auteur ; cat auteur
+cat auteur ; cat auteur ; cat auteur
+
+;
+;;;;;
+; ; ; ;  ;		;
+
+#########################################
+################CORRECTION###############
+#########################################
+
+#builtin avec "|"
+echo `ls` | cat
+
+#backquotes
+echo `unsetenv $PATH` ; echo $PATH
+
+
+###########################################################################
+################################## TRASH ##################################
+#####################################|#####################################
+
+## Redirections avec fd de sortie spécifié
+### Redirection closed
+#ls 1>&-
+#ls 2>&-
+#mkdir -p 2>&-
+#mkdir -p 1>&-
+
+### Redirection opened
+#echo test 1>&2
+#echo test >&2
+#echo test 2>&1
+#"echo test 2>>&1" # create file named "1"
+#"echo test 2<&1" # marked as failed
+
+#mkdir -p 2>&1 | cat -e
+# echo No dollar character 1>&2 | cat -e
+
+# all ASCII char without ` and "
+# echo "!#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz{|}~
+
+###########################################################################
+################################## LILO MOULTIPASS ########################
+#####################################|#####################################
+
+echo ` echo \`echo \\\`pwd \\\` | cat -e \` `
+var=val; echo $var
+var=val ls; echo $var
+echo "'\"\g"\g'\"no""'re""''\\

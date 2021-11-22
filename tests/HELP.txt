@@ -1,0 +1,18 @@
+RTFM -> http://cunit.sourceforge.net/doc/index.html
+
+Sinon
+	|
+	v
+
+- Ecrivez vos tests dans nimporte quel fichier .c dans srcs.
+- Ajoutez (ou #include) la declaration de vos tests dans tests.h.
+- Ajoutez ou choisissez une suite.
+- Ajoutez {"nom du test", fonction_de_test}, a la structure de tests de la suite avant le CU_TEST_INFO_NULL
+
+- Pour ajouter une suite, ajoutez un
+	{"nom de la suite", NULL, NULL, NULL, NULL, nom_de_la_suite_tests},
+	a la variable suites avant le CU_SUITE_INFO_NULL dans le main.
+- Pour créer une structure de test:	CU_TestInfo	nom_de_la_suite_tests[] = {
+										{ "test_pTest_autobuild", test_maxi },
+										CU_TEST_INFO_NULL,
+									};
