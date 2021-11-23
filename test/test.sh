@@ -8,6 +8,7 @@ r=./42shtest
 
 for i in $exet/*.sh
 do
+    echo "----------$i"
     testfile="testfile"
     testfileref="testfileref"
     cat "$i" | $s > "$testfile"
@@ -17,6 +18,7 @@ done
 
 for i in $exepg/*.sh
 do
+    echo "----------$i"
     testfile="testfile"
     testfileref="testfileref"
     cat "$i" | $s > "$testfile"
