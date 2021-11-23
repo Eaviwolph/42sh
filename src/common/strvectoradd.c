@@ -9,20 +9,21 @@
 */
 
 #include <stdlib.h>
+
 #include "macro.h"
 
-char		**strvectoradd(char **vector, char *str)
+char **strvectoradd(char **vector, char *str)
 {
-  size_t	vector_size = 0;
+    size_t vector_size = 0;
 
-  if (str == NULL)
+    if (str == NULL)
+        return vector;
+    if (vector)
+        for (vector_size = 0; vector[vector_size]; ++vector_size)
+            ;
+    ++vector_size;
+    secrealloc(vector, vector, (vector_size + 1) * sizeof(char *));
+    vector[vector_size - 1] = str;
+    vector[vector_size] = NULL;
     return vector;
-  if (vector)
-    for (vector_size = 0; vector[vector_size]; ++vector_size)
-      ;
-  ++vector_size;
-  secrealloc(vector, vector, (vector_size + 1) * sizeof (char *));
-  vector[vector_size - 1] = str;
-  vector[vector_size] = NULL;
-  return vector;
 }

@@ -10,10 +10,10 @@
 
 #include "exec.h"
 
-void		exec_sepand(s_bin_node *node)
+void exec_sepand(s_bin_node *node)
 {
-  assert(node);
-  exec_node(node->lhs);
-  if (node->rhs)
-    exec_node(node->rhs);
+    assert(node);
+    exec_node(node->lhs);
+    if (node->rhs)
+        exec_node(node->rhs);
 }

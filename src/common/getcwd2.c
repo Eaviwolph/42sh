@@ -8,15 +8,16 @@
 ** Last update Tue Nov 14 14:23:39 2006 seblu
 */
 
-#include <unistd.h>
 #include <limits.h>
+#include <unistd.h>
+
 #include "macro.h"
 
-char			*getcwd2(void)
+char *getcwd2(void)
 {
-  char			*get;
-  const size_t		BUF_SIZE = PATH_MAX * sizeof (char);
+    char *get;
+    const size_t BUF_SIZE = PATH_MAX * sizeof(char);
 
-  secmalloc(get, BUF_SIZE);
-  return getcwd(get, BUF_SIZE);
+    secmalloc(get, BUF_SIZE);
+    return getcwd(get, BUF_SIZE);
 }

@@ -9,20 +9,22 @@
 */
 
 #include <assert.h>
-#include <stdio.h>
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+
 #include "../shell/shell.h"
 
-int	builtin_exec(char *argv[])
+int builtin_exec(char *argv[])
 {
-  assert(argv);
-  if (!argv[1])
+    assert(argv);
+    if (!argv[1])
+        return 0;
+    if (execvp(argv[1], argv + 1) == -1)
+    {
+        fprintf(stderr, "%s: exec: %s.\n", shell->name, strerror(errno));
+        return 127;
+    }
     return 0;
-  if (execvp(argv[1], argv + 1) == -1) {
-    fprintf(stderr, "%s: exec: %s.\n", shell->name, strerror(errno));
-    return 127;
-  }
-  return 0;
 }

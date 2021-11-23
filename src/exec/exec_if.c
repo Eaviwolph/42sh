@@ -10,12 +10,12 @@
 
 #include "exec.h"
 
-void		exec_if(s_if_node *node)
+void exec_if(s_if_node *node)
 {
-  assert(node);
-  exec_node(node->cond);
-  if (!shell->status)
-    exec_node(node->cond_true);
-  else
-    exec_node(node->cond_false);
+    assert(node);
+    exec_node(node->cond);
+    if (!shell->status)
+        exec_node(node->cond_true);
+    else
+        exec_node(node->cond_false);
 }

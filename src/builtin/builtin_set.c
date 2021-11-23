@@ -8,16 +8,17 @@
 ** Last update Thu Nov 23 11:02:52 2006 seblu
 */
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
+
 #include "../shell/shell.h"
 
-int		builtin_set(char *argv[])
+int builtin_set(char *argv[])
 {
-  assert(argv && argv[0]);
-  if (argv[1] == NULL)
-    for (size_t i = 0; i < shell->var->count; ++i)
-      printf("%s='%s'\n", shell->var->table[i].name,
-	     shell->var->table[i].value);
-  return 0;
+    assert(argv && argv[0]);
+    if (argv[1] == NULL)
+        for (size_t i = 0; i < shell->var->count; ++i)
+            printf("%s='%s'\n", shell->var->table[i].name,
+                   shell->var->table[i].value);
+    return 0;
 }

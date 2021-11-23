@@ -10,9 +10,9 @@
 
 #include "exec.h"
 
-void		exec_bang(s_bin_node *node)
+void exec_bang(s_bin_node *node)
 {
-  assert(node && node->lhs);
-  exec_node(node->lhs);
-  shell->status = !shell->status;
+    assert(node && node->lhs);
+    exec_node(node->lhs);
+    shell->status = !shell->status;
 }

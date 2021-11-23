@@ -10,9 +10,10 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#include "../common/function.h"
 #include "option.h"
 #include "shell.h"
-#include "../common/function.h"
 
 /*!
 ** Parse the command line
@@ -21,30 +22,33 @@
 ** @param argv program argv
 ** @param opt shell opt structure to set with options
 */
-void	getoptions(s_option *opt, int argc, char **argv)
+void getoptions(s_option *opt, int argc, char **argv)
 {
 #if DEBUG_OPTION == 1
-  printf("* Option Parser\n");
+    printf("* Option Parser\n");
 #endif
-  if (argc == 1)
-    return;
-  for (int i = 1; i < argc; ++i) {
+    if (argc == 1)
+        return;
+    for (int i = 1; i < argc; ++i)
+    {
 #if DEBUG_OPTION == 1
-    printf("argv[%d]=%s\n", i, argv[i]);
+        printf("argv[%d]=%s\n", i, argv[i]);
 #endif
-    const char *copt = argv[i];
-    if (!strcmp(copt, "-c") || !strcmp(copt, "--command")) {
-      opt->command = strvmerge((const char**)argv + i + 1);
+        const char *copt = argv[i];
+        if (!strcmp(copt, "-c") || !strcmp(copt, "--command"))
+        {
+            opt->command = strvmerge((const char **)argv + i + 1);
 #if DEBUG_OPTION == 1
-      printf("option c: %s\n", opt->command);
+            printf("option c: %s\n", opt->command);
 #endif
-      break;
+            break;
+        }
+        else if (!strcmp(copt, "--ast-print"))
+            option_set(shell->option, "ast_print");
+        else
+        {
+            printf("Error: Invalid option %s\n", copt);
+            exit(1);
+        }
     }
-    else if (!strcmp(copt, "--ast-print"))
-      option_set(shell->option, "ast_print");
-    else {
-      printf("Error: Invalid option %s\n", copt);
-      exit(1);
-    }
-  }
 }

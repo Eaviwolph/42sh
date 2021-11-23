@@ -9,22 +9,23 @@
 */
 
 #include <string.h>
+
 #include "macro.h"
 
-char			*strvmerge(const char *const *vtable)
+char *strvmerge(const char *const *vtable)
 {
-  size_t		string_sz = 0;
-  const char *const	*elem;
-  char			*new;
+    size_t string_sz = 0;
+    const char *const *elem;
+    char *new;
 
-  for (elem = vtable; *elem; ++elem)
-    string_sz += strlen(*elem);
-  secmalloc(new, ++string_sz * sizeof (char));
-  string_sz = 0;
-  for (elem = vtable; *elem; ++elem)
+    for (elem = vtable; *elem; ++elem)
+        string_sz += strlen(*elem);
+    secmalloc(new, ++string_sz * sizeof(char));
+    string_sz = 0;
+    for (elem = vtable; *elem; ++elem)
     {
-      strcpy(new + string_sz, *elem);
-      string_sz += strlen(*elem);
+        strcpy(new + string_sz, *elem);
+        string_sz += strlen(*elem);
     }
-  return new;
+    return new;
 }

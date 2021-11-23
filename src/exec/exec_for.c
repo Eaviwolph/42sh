@@ -10,11 +10,12 @@
 
 #include "exec.h"
 
-void		exec_for(s_for_node *node)
+void exec_for(s_for_node *node)
 {
-  assert(node && node->varname);
-  for (int i = 0; node->values[i]; ++i) {
-    var_add(shell->var, node->varname, node->values[i]);
-    exec_node(node->exec);
-  }
+    assert(node && node->varname);
+    for (int i = 0; node->values[i]; ++i)
+    {
+        var_add(shell->var, node->varname, node->values[i]);
+        exec_node(node->exec);
+    }
 }

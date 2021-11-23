@@ -8,12 +8,12 @@
 ** Last update Thu Nov 16 17:04:48 2006 seblu
 */
 
-#include "exec.h"
 #include "../shell/func.h"
+#include "exec.h"
 
-void		exec_funcdec(s_funcdec_node *node)
+void exec_funcdec(s_funcdec_node *node)
 {
-  func_add(shell->func, node->name, node->body);
-  node->body = NULL;
-  node->name = NULL;
+    func_add(shell->func, node->name, node->body);
+    node->body = NULL;
+    node->name = NULL;
 }

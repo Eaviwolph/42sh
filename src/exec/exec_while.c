@@ -10,9 +10,9 @@
 
 #include "exec.h"
 
-void		exec_while(s_while_node *node)
+void exec_while(s_while_node *node)
 {
-  assert(node);
-  for (exec_node(node->cond); !shell->status; exec_node(node->cond))
-    exec_node(node->exec);
+    assert(node);
+    for (exec_node(node->cond); !shell->status; exec_node(node->cond))
+        exec_node(node->exec);
 }

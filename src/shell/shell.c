@@ -8,14 +8,16 @@
 ** Last update Wed Nov 15 14:14:05 2006 seblu
 */
 
-#include <stdio.h>
 #include "shell.h"
-#include "option.h"
+
+#include <stdio.h>
+
 #include "../ast/ast.h"
-#include "../parser/parser.h"
-#include "../exec/exec.h"
-#include "../common/macro.h"
 #include "../common/function.h"
+#include "../common/macro.h"
+#include "../exec/exec.h"
+#include "../parser/parser.h"
+#include "option.h"
 
 /*
 ** ============
@@ -26,7 +28,7 @@
 /*
 ** Global shell structure
 */
-s_shell		*shell = NULL;
+s_shell *shell = NULL;
 
 /*!
 ** Program entry point
@@ -36,7 +38,7 @@ s_shell		*shell = NULL;
 **
 ** @return return program value
 */
-int		main(int argc, char *argv[]);
+int main(int argc, char *argv[]);
 
 /*!
 ** Initialize a shell structure
@@ -45,7 +47,7 @@ int		main(int argc, char *argv[]);
 **
 ** @return an initialized shell structure
 */
-s_shell		*shell_init(void);
+s_shell *shell_init(void);
 
 /*
 ** ===========
@@ -53,51 +55,51 @@ s_shell		*shell_init(void);
 ** ===========
 */
 
-int		main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-  s_ast_node	*ast;
-  s_parser	*parser;
+    s_ast_node *ast;
+    s_parser *parser;
 
-  // shell initialization
-  shell = shell_init();
-  // Set shell name
-  shell->name = basename(argv[0]);
-  // Set default option
-  option_set_default(shell->option);
-  // parse argv for user options
-  getoptions(shell->option, argc, argv);
-  //FIXME: set shell env variables (eg. PWD, OLDPWD)
-  // shell parser init
-  parser = parser_init(STDIN_FILENO);
-  // parse and execute stdin stream
-  do {
-    ast = parse(parser);
-    if (parser->error && isinteractive())
-      continue;
-    else if (parser->error)
-      return ERROR_PARSE;
-    if (option_is_set(shell->option, "ast_print"))
-      ast_print(ast, NULL);
-    if (ast)
-      exec_node(ast);
-    ast_destruct(ast);
-  }
-  while (!parser->lexer->eof);
-  if (isinteractive())
-    fprintf(stderr, "exit\n");
-  return shell->status;
+    // shell initialization
+    shell = shell_init();
+    // Set shell name
+    shell->name = basename(argv[0]);
+    // Set default option
+    option_set_default(shell->option);
+    // parse argv for user options
+    getoptions(shell->option, argc, argv);
+    // FIXME: set shell env variables (eg. PWD, OLDPWD)
+    // shell parser init
+    parser = parser_init(STDIN_FILENO);
+    // parse and execute stdin stream
+    do
+    {
+        ast = parse(parser);
+        if (parser->error && isinteractive())
+            continue;
+        else if (parser->error)
+            return ERROR_PARSE;
+        if (option_is_set(shell->option, "ast_print"))
+            ast_print(ast, NULL);
+        if (ast)
+            exec_node(ast);
+        ast_destruct(ast);
+    } while (!parser->lexer->eof);
+    if (isinteractive())
+        fprintf(stderr, "exit\n");
+    return shell->status;
 }
 
-s_shell		*shell_init(void)
+s_shell *shell_init(void)
 {
-  s_shell	*new;
+    s_shell *new;
 
-  secmalloc(new, sizeof (s_shell));
-  new->var = var_init();
-  new->func = func_init();
-  new->alias = alias_init();
-  new->option = option_init();
-  new->name = "42sh";
-  new->status = 0;
-  return new;
+    secmalloc(new, sizeof(s_shell));
+    new->var = var_init();
+    new->func = func_init();
+    new->alias = alias_init();
+    new->option = option_init();
+    new->name = "42sh";
+    new->status = 0;
+    return new;
 }

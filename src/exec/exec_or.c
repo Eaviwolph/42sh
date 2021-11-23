@@ -10,16 +10,17 @@
 
 #include "exec.h"
 
-void		exec_or(s_bin_node *node)
+void exec_or(s_bin_node *node)
 {
-  assert(node);
-  exec_node(node->lhs);
-  if (shell->status)
-    exec_node(node->rhs);
-  else {
-    for (; node->rhs->type == T_OR; node = &node->rhs->body.child_or)
-      ; //do nothing
-    if (node->rhs->type == T_AND)
-      exec_node(node->rhs->body.child_and.rhs);
-  }
+    assert(node);
+    exec_node(node->lhs);
+    if (shell->status)
+        exec_node(node->rhs);
+    else
+    {
+        for (; node->rhs->type == T_OR; node = &node->rhs->body.child_or)
+            ; // do nothing
+        if (node->rhs->type == T_AND)
+            exec_node(node->rhs->body.child_and.rhs);
+    }
 }

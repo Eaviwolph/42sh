@@ -14,21 +14,16 @@
 ** ============
 */
 
-#include <string.h>
 #include "option.h"
-#include "../shell/shell.h"
+
+#include <string.h>
+
 #include "../common/macro.h"
+#include "../shell/shell.h"
 
 static const char *opts_table[OPTION_COUNT] = {
-  "xpg_echo",
-  "dotglob",
-  "extglob",
-  "nocaseglob",
-  "nullglob",
-  "expand_aliases",
-  "ast_print",
-  "readline",
-  "noclobber",
+    "xpg_echo",       "dotglob",   "extglob",  "nocaseglob", "nullglob",
+    "expand_aliases", "ast_print", "readline", "noclobber",
 };
 
 /*
@@ -37,60 +32,61 @@ static const char *opts_table[OPTION_COUNT] = {
 ** ===========
 */
 
-s_option	*option_init(void)
+s_option *option_init(void)
 {
-  s_option	*new;
+    s_option *new;
 
-  secmalloc(new, sizeof (s_option));
-  new->command = NULL;
-  return new;
+    secmalloc(new, sizeof(s_option));
+    new->command = NULL;
+    return new;
 }
 
-void		option_set_default(s_option *shopt)
+void option_set_default(s_option *shopt)
 {
-  //unset all
-  for (int i = 0; i < OPTION_COUNT; ++i)
-    shopt->item[i] = 0;
-  //set those which are on by default
-  option_set(shopt, "readline");
+    // unset all
+    for (int i = 0; i < OPTION_COUNT; ++i)
+        shopt->item[i] = 0;
+    // set those which are on by default
+    option_set(shopt, "readline");
 }
 
-int		option_set(s_option *shopt, const char *name)
+int option_set(s_option *shopt, const char *name)
 {
-  register int	i;
+    register int i;
 
-  for (i = 0; opts_table[i]; ++i)
-    if (!strcmp(name, opts_table[i])) {
-      shopt->item[i] = 1;
-      return 1;
-    }
-  return 0;
+    for (i = 0; opts_table[i]; ++i)
+        if (!strcmp(name, opts_table[i]))
+        {
+            shopt->item[i] = 1;
+            return 1;
+        }
+    return 0;
 }
 
-int		option_unset(s_option *shopt, const char *name)
+int option_unset(s_option *shopt, const char *name)
 {
-  register int	i;
+    register int i;
 
-  for (i = 0; opts_table[i]; ++i)
-    if (!strcmp(name, opts_table[i]))
-    {
-      shopt->item[i] = 0;
-      return 1;
-    }
-  return 0;
+    for (i = 0; opts_table[i]; ++i)
+        if (!strcmp(name, opts_table[i]))
+        {
+            shopt->item[i] = 0;
+            return 1;
+        }
+    return 0;
 }
 
-int		option_is_set(const s_option *shopt, const char *name)
+int option_is_set(const s_option *shopt, const char *name)
 {
-  register int	i;
+    register int i;
 
-  for (i = 0; opts_table[i]; ++i)
-    if (!strcmp(name, opts_table[i]))
-      return shopt->item[i];
-  return -1;
+    for (i = 0; opts_table[i]; ++i)
+        if (!strcmp(name, opts_table[i]))
+            return shopt->item[i];
+    return -1;
 }
 
-const char	**opt_get()
+const char **opt_get()
 {
-  return opts_table;
+    return opts_table;
 }

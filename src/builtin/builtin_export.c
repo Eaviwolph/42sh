@@ -8,14 +8,15 @@
 ** Last update Fri Nov 17 12:57:12 2006 seblu
 */
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
+
 #include "../shell/shell.h"
 
-int	builtin_export(char *argv[])
+int builtin_export(char *argv[])
 {
-  assert(argv);
-  fprintf(stderr, "%s: export: not yet implemeted.\n", shell->name);
-  (void) argv;
-  return 1;
+    assert(argv);
+    fprintf(stderr, "%s: export: not yet implemeted.\n", shell->name);
+    (void)argv;
+    return 1;
 }

@@ -8,12 +8,12 @@
 ** Last update Tue Aug 22 22:43:54 2006 Seblu
 */
 
-int		isdigitstr(const char *str)
+int isdigitstr(const char *str)
 {
-  if (*str == 0)
-    return 0;
-  for (; *str; str++)
-    if (!(*str >= '0' && *str <= '9'))
-      return 0;
-  return 1;
+    if (*str == 0)
+        return 0;
+    for (; *str; str++)
+        if (!(*str >= '0' && *str <= '9'))
+            return 0;
+    return 1;
 }

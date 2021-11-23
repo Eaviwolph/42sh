@@ -9,8 +9,9 @@
 */
 
 #ifndef FUNCTION_H_
-# define FUNCTION_H_
+#define FUNCTION_H_
 
+#include <stddef.h>
 /*!
 ** Merge strings
 **
@@ -20,7 +21,7 @@
 ** @return malloced string merged
 ** @warning the returned string must be freed by the caller
 */
-char            *strmerge(int n, const char *s1, ...);
+char *strmerge(int n, const char *s1, ...);
 
 /*!
 ** Merge a vector of string
@@ -29,7 +30,7 @@ char            *strmerge(int n, const char *s1, ...);
 **
 ** @return a string merged from @arg vtable
 */
-char            *strvmerge(const char * const *vtable);
+char *strvmerge(const char *const *vtable);
 
 /*!
 ** Return a malloc copy of the given, conserving only the basename
@@ -40,7 +41,7 @@ char            *strvmerge(const char * const *vtable);
 ** @warning Not use the standard function for reason of vicious
 ** definition in manuel.
 */
-char		*basename(const char *path);
+char *basename(const char *path);
 
 /*!
 ** Duplicate a string for @arg n characteres
@@ -50,7 +51,7 @@ char		*basename(const char *path);
 **
 ** @return a new malloced string
 */
-char            *strndup(const char *str, size_t n);
+char *strndup(const char *str, size_t n);
 
 /*!
 ** Compute if string is composed only by digit
@@ -59,7 +60,7 @@ char            *strndup(const char *str, size_t n);
 **
 ** @return boolean result
 */
-int		isdigitstr(const char *str);
+int isdigitstr(const char *str);
 
 /*!
 ** Add @arg str at the end of @arg vector. vector is a
@@ -72,16 +73,16 @@ int		isdigitstr(const char *str);
 ** @return the new vector. You should not think that have the
 ** same address that @arg vector
 */
-char		**strvectoradd(char **vector, char *str);
+char **strvectoradd(char **vector, char *str);
 
 /*!
 ** Return the current working directory in a malloced string.
 **
 ** @return the current working directory
 */
-char			*getcwd2(void);
+char *getcwd2(void);
 
-# define setenv setenv2
+//#define setenv setenv2
 
 /*!
 ** Add a name and value to the current environment
@@ -92,11 +93,9 @@ char			*getcwd2(void);
 **
 ** @return boolean success
 */
-int		setenv2(char	*name,
-			char	*value,
-			int	overwrite);
+int senv2(char *name, char *value, int overwrite);
 
-# define unsetenv unsetenv2
+//#define unsetenv unsetenv2
 
 /*!
 ** Remove from environment a variable.
@@ -106,6 +105,6 @@ int		setenv2(char	*name,
 **
 ** @return boolean success
 */
-int		unsetenv2(const char *name);
+int unsenv2(const char *name);
 
 #endif

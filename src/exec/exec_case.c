@@ -10,10 +10,10 @@
 
 #include "exec.h"
 
-void		exec_case(s_case_node *node)
+void exec_case(s_case_node *node)
 {
-  assert(node);
-  //FIXME: code it
-  assert(0);
-  (void) node;
+    assert(node);
+    // FIXME: code it
+    assert(0);
+    (void)node;
 }
