@@ -10,13 +10,10 @@
 
 #include "ast.h"
 
-s_ast_node	*ast_for_create(char		*varname,
-				char		**values,
-				s_ast_node	*exec)
-{
-  s_ast_node	*node;
+s_ast_node *ast_for_create(char *varname, char **values, s_ast_node *exec) {
+  s_ast_node *node;
 
-  secmalloc(node, sizeof (s_ast_node));
+  secmalloc(node, sizeof(s_ast_node));
   node->type = T_FOR;
   node->body.child_for.varname = varname;
   node->body.child_for.values = values;
@@ -24,16 +21,15 @@ s_ast_node	*ast_for_create(char		*varname,
   return node;
 }
 
-void		ast_for_print(s_ast_node *node, FILE *fs, unsigned *node_id)
-{
-  unsigned	cur_node;
+void ast_for_print(s_ast_node *node, FILE *fs, unsigned *node_id) {
+  unsigned cur_node;
 
   if (node->type != T_FOR)
     return;
-  fprintf(fs, "%u [label = \"FOR\\nvariable: %s\"];\n",
-	  cur_node = *node_id, node->body.child_for.varname);
+  fprintf(fs, "%u [label = \"FOR\\nvariable: %s\"];\n", cur_node = *node_id,
+          node->body.child_for.varname);
   ++*node_id;
-  //values
+  // values
   if (node->body.child_for.values) {
     fprintf(fs, "%u -> %u\n", cur_node, *node_id);
     fprintf(fs, "%u [ label = \"Values\\n", *node_id);
@@ -42,15 +38,14 @@ void		ast_for_print(s_ast_node *node, FILE *fs, unsigned *node_id)
       fprintf(fs, "id=%zu %s\\n", i, node->body.child_for.values[i]);
     fprintf(fs, "\"];");
   }
-  //execution
+  // execution
   if (node->body.child_for.exec) {
     fprintf(fs, "%u -> %u\n", cur_node, *node_id);
     ast_print_node(node->body.child_for.exec, fs, node_id);
   }
 }
 
-void		ast_for_destruct_node(s_ast_node *node)
-{
+void ast_for_destruct_node(s_ast_node *node) {
   if (node->type != T_FOR)
     return;
   free(node->body.child_for.varname);
@@ -60,8 +55,7 @@ void		ast_for_destruct_node(s_ast_node *node)
   free(node);
 }
 
-void		ast_for_destruct(s_ast_node *node)
-{
+void ast_for_destruct(s_ast_node *node) {
   if (node->type != T_FOR)
     return;
   ast_destruct(node->body.child_for.exec);

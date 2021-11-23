@@ -12,14 +12,12 @@
 
 typedef void (*destruct_fct)(s_ast_node *);
 
-struct		ast_destruct_switch
-{
-  e_node_type	type;
-  destruct_fct	fct;
+struct ast_destruct_switch {
+  e_node_type type;
+  destruct_fct fct;
 };
 
-struct ast_destruct_switch destruction_table[NODE_TYPE_COUNT] =
-  {
+struct ast_destruct_switch destruction_table[NODE_TYPE_COUNT] = {
     {T_IF, ast_if_destruct},
     {T_FOR, ast_for_destruct},
     {T_WHILE, ast_while_destruct},
@@ -33,11 +31,9 @@ struct ast_destruct_switch destruction_table[NODE_TYPE_COUNT] =
     {T_SEPAND, ast_sepand_destruct},
     {T_SEP, ast_sep_destruct},
     {T_CASE, ast_case_destruct},
-    {T_RED, ast_red_destruct}
-  };
+    {T_RED, ast_red_destruct}};
 
-struct ast_destruct_switch destruction_node_table[NODE_TYPE_COUNT] =
-  {
+struct ast_destruct_switch destruction_node_table[NODE_TYPE_COUNT] = {
     {T_IF, ast_if_destruct_node},
     {T_FOR, ast_for_destruct_node},
     {T_WHILE, ast_while_destruct_node},
@@ -51,11 +47,9 @@ struct ast_destruct_switch destruction_node_table[NODE_TYPE_COUNT] =
     {T_SEPAND, ast_sepand_destruct_node},
     {T_SEP, ast_sep_destruct_node},
     {T_CASE, ast_case_destruct_node},
-    {T_RED, ast_red_destruct_node}
-  };
+    {T_RED, ast_red_destruct_node}};
 
-void	ast_destruct(s_ast_node *ast)
-{
+void ast_destruct(s_ast_node *ast) {
   if (ast == NULL)
     return;
   for (register int i = 0; i < NODE_TYPE_COUNT; ++i)
@@ -65,8 +59,7 @@ void	ast_destruct(s_ast_node *ast)
     }
 }
 
-void	ast_destruct_node(s_ast_node *ast)
-{
+void ast_destruct_node(s_ast_node *ast) {
   if (ast == NULL)
     return;
   for (register int i = 0; i < NODE_TYPE_COUNT; ++i)
