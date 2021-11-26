@@ -3,7 +3,7 @@
 struct node *tree_while_create(struct node *condition, struct node *command)
 {
     struct node *n;
-    secmalloc(n, sizeof(struct node));
+    safe_malloc(n, sizeof(struct node));
     n->type = WHILE;
     n->data.whilenode.condition = condition;
     n->data.whilenode.command = command;

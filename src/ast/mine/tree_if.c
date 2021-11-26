@@ -3,7 +3,7 @@
 struct node *tree_if_create(struct node *c, struct node *c_t, struct node *c_e)
 {
     struct node *new;
-    secmalloc(new, sizeof(struct node));
+    safe_malloc(new, sizeof(struct node));
     new->data.ifnode.c_then = c_t;
     new->data.ifnode.c_else = c_e;
     new->type = IF;

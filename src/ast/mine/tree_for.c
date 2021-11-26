@@ -3,7 +3,7 @@
 struct node *tree_for_createvoid(char *var, char **vals, struct node *command)
 {
     struct node *new;
-    secmalloc(new, sizeof(struct node));
+    safe_malloc(new, sizeof(struct node));
     new->type = FOR;
     new->data.fornode.var = var;
     new->data.fornode.vals = vals;
