@@ -31,7 +31,7 @@
 //  -destruct tree
 
 #include <stdio.h>
-#include "macro/macro.h"
+#include "../../common/mine/macro.h"
 
 struct node_if
 {
