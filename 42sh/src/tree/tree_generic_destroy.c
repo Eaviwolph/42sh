@@ -9,9 +9,9 @@ struct tree_destruct_dictionary_elem
 struct tree_destruct_dictionary_elem dic[NODE_TYPE_COUNT] = {
     { IF, tree_if_destroy },
     { FOR, tree_for_destroy },
-    { WHILE, tree_while_destroy }/*,
+    { WHILE, tree_while_destroy },
     { CMD, tree_cmd_destroy },
-    { AND,treet_and_destroy },
+    { AND,tree_and_destroy },
     { OR, tree_or_destroy },
     { SUBSHELL, tree_subshell_destroy },
     { FUNCDEC, tree_funcdec_destroy },
@@ -20,13 +20,13 @@ struct tree_destruct_dictionary_elem dic[NODE_TYPE_COUNT] = {
     { SEPAND, tree_sepand_destroy },
     { SEP, tree_sep_destroy },
     { CASE, tree_case_destroy },
-    { RED, tree_red_destroy }*/
+    { RED, tree_red_destroy }
 };
 
 struct tree_destruct_dictionary_elem dic_node[NODE_TYPE_COUNT] = {
     { IF, tree_if_destroy_node },
     { FOR, tree_for_destroy_node },
-    { WHILE, tree_while_destroy_node }/*,
+    { WHILE, tree_while_destroy_node },
     { CMD, tree_cmd_destroy_node },
     { AND, tree_and_destroy_node },
     { OR, tree_or_destroy_node },
@@ -37,7 +37,7 @@ struct tree_destruct_dictionary_elem dic_node[NODE_TYPE_COUNT] = {
     { SEPAND, tree_sepand_destroy_node },
     { SEP, tree_sep_destroy_node },
     { CASE, tree_case_destroy_node },
-    { RED, tree_red_destroy_node }*/
+    { RED, tree_red_destroy_node }
 };
 
 void tree_destroy(struct node *tree)

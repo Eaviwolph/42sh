@@ -77,10 +77,10 @@ void tree_cmd_print(struct node *node, FILE *stream)
     fprintf(stream, "\"];\n");
 }
 
-/*void tree_cmd_destroy_node(struct node *node)
+void tree_cmd_destroy_node(struct node *node)
 {
-    tree_cmd_destruct(node);
-}*/
+    tree_cmd_destroy(node);
+}
 
 void tree_cmd_destroy(struct node *node)
 {

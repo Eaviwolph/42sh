@@ -31,7 +31,7 @@
 //  -destruct tree
 
 #include <stdio.h>
-// #include "macro/macro.h"
+#include "../common/macro.h"
 
 struct node_if
 {
@@ -202,6 +202,7 @@ void tree_while_destroy(struct node *n);
 void tree_cmd_pref(struct node *node, char *word);
 void tree_cmd_argv(struct node *node, char *argv);
 void tree_cmd_print(struct node *node, FILE *stream);
+void tree_cmd_destroy_node(struct node *node);
 void tree_cmd_destroy(struct node *node);
 
 void tree_and_print(struct node *node, FILE *fs, unsigned int *node_id);
@@ -241,7 +242,10 @@ void tree_sep_print(struct node *node, FILE *fs, unsigned int *node_id);
 void tree_sep_destroy_node(struct node *node);
 void tree_sep_destroy(struct node *node);
 
-
+void tree_red_add(struct node *node, enum red_type type, int fd, char *word);
+void tree_red_print(struct node *node, FILE *fs, unsigned *node_id);
+void tree_red_destroy_node(struct node *node);
+void tree_red_destroy(struct node *node);
 
 void tree_destroy(struct node *tree);
 void tree_destroy_node(struct node *tree);
