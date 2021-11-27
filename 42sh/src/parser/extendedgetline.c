@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../../common/mine/macro.h"
+#include "macro.h"
 
 #define safe_strlen(s) ((s) == NULL ? 0 : strlen(s))
 
@@ -30,7 +30,7 @@ struct line *exgetline_start(int fd)
 
 void exgetline_end(struct line *buffer, int closefd)
 {
-    if (closefd != 0)
+    if (closefd < 3)
         close(buffer->fd);
     free(buffer);
 }

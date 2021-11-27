@@ -1,7 +1,7 @@
 #ifndef EXTENDEDGETLINE_H
 #define EXTENDEDGETLINE_H
 
-#define BUF_SIZE 1024
+#define BUF_SIZE 4096
 
 struct line
 {
