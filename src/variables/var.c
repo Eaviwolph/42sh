@@ -5,10 +5,81 @@
 
 #include "dvar.h"
 
+static char *strdup(const char *s)
+{
+    size_t len = strlen(s) + 1;
+    void *new = malloc(len);
+    if (new == NULL)
+        return NULL;
+    return (char *)memcpy(new, s, len);
+}
+
+static char *concat(char *dst, char *src, int lendst)
+{
+    int i = 0;
+    if (lendst > 0)
+    {
+        dst[lendst] = ' ';
+        lendst++;
+    }
+    while (src[i])
+    {
+        dst[lendst] = src[i];
+        i++;
+        lendst++;
+    }
+    dst[lendst] = '\0';
+    return dst;
+}
+
 static int testshortvar(char c)
 {
     return isdigit(c) || c == '#' || c == '@' || c == '$' || c == '?'
         || c == '*';
+}
+
+static char *my_itoa(int value, char *s)
+{
+    if (value == 0)
+    {
+        s[0] = '0';
+        s[1] = '\0';
+    }
+    else
+    {
+        size_t i = 0;
+        if (value < 0)
+        {
+            s[0] = '-';
+            value = -value;
+            i++;
+        }
+        size_t cp = value;
+        while (cp > 0)
+        {
+            cp /= 10;
+            i++;
+        }
+        s[i] = '\0';
+        i--;
+        while (value > 0)
+        {
+            s[i] = '0' + (value % 10);
+            i--;
+            value /= 10;
+        }
+    }
+    return s;
+}
+
+static char *get_random(void)
+{
+    int r;
+    for (int i = 0; i < 10; i++)
+        r = rand() % 32767;
+    char *s = calloc(7, sizeof(char));
+    s = my_itoa(r, s);
+    return s;
 }
 
 static char *get_fnprintf(char *s, int j, int io, struct dvar *var)
@@ -23,7 +94,10 @@ static char *get_fnprintf(char *s, int j, int io, struct dvar *var)
     {
         name[k] = s[io + k];
     }
-    printf("name = %s\n", name);
+    if (strcmp(name, "RANDOM") == 0)
+    {
+        dvar_add_var(var, strdup("RANDOM"), get_random());
+    }
     char *val = dvar_find(var, name);
     if (!val)
     {
@@ -50,11 +124,11 @@ static int newchar(char *s, int j, int *i, char *t)
     }
     int len = strlen(s);
     int len2 = strlen(t);
-    *i += j + len2 - len;
+    *i = j + len2 - len;
     return len2;
 }
 
-char *strrep(char *s, struct dvar *var)
+char *varstrrep(char *s, struct dvar *var)
 {
     int i = 0;
     int len = strlen(s);
@@ -97,33 +171,6 @@ char *strrep(char *s, struct dvar *var)
         }
     }
     return s;
-}
-
-char *strdup(const char *s)
-{
-    size_t len = strlen(s) + 1;
-    void *new = malloc(len);
-    if (new == NULL)
-        return NULL;
-    return (char *)memcpy(new, s, len);
-}
-
-static char *concat(char *dst, char *src, int lendst)
-{
-    int i = 0;
-    if (lendst > 0)
-    {
-        dst[lendst] = ' ';
-        lendst++;
-    }
-    while (src[i])
-    {
-        dst[lendst] = src[i];
-        i++;
-        lendst++;
-    }
-    dst[lendst] = '\0';
-    return dst;
 }
 
 struct dvar *initvars(char **names, char **vars, int size)

@@ -1,21 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "alias.h"
+
+static char *strdup(const char *s)
+{
+    size_t len = strlen(s) + 1;
+    void *new = malloc(len);
+    if (new == NULL)
+        return NULL;
+    return (char *)memcpy(new, s, len);
+}
 
 int main(void)
 {
-    char *names[] = { strdup("0"), strdup("1"), strdup("2"), strdup("3") };
-    char *vars[] = { strdup("Je"), strdup("Suis"), strdup("Une"),
-                     strdup("Variable") };
-    struct dalias *d = initvars(names, vars, 4);
-    dalias_add_var(d, strdup("Hello"), strdup("World"));
-    dalias_add_var(d, strdup("Bonsoir"), strdup("Salut"));
-    dalias_add_var(d, strdup("Holla"), strdup("BONYOUR"));
-    dalias_add_var(d, strdup("Priviet"), strdup(""));
+    struct dalias *d = dalias_init();
+    dalias_add_alias(d, strdup("Hello"), strdup("World"));
+    dalias_add_alias(d, strdup("Bonsoir"), strdup("Salut"));
+    dalias_add_alias(d, strdup("Holla"), strdup("BONYOUR"));
+    dalias_add_alias(d, strdup("Priviet"), strdup(""));
+    dalias_add_alias(d, strdup("gccx"), strdup("gcc -Wall -Werror -Wextra -std=c99 -pedantic -g3 -fsanitize=address"));
     dalias_print(d);
     printf("------------------\n");
-    char *s = strdup("$#Hello");
-    s = strrep(s, d);
+    char *s = strdup("*.c gccx");
+    s = aliasstrrep(s, d);
     printf("s = %s\n", s);
     free(s);
     dalias_destroy(d);

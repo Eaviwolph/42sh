@@ -41,9 +41,9 @@ char *dalias_find(const struct dalias *list, char *name)
     return NULL;
 }
 
-int dalias_add_var(struct dalias *list, char *name, char *element)
+int dalias_add_alias(struct dalias *list, char *name, char *element)
 {
-    return dalias_replace_var(list, name, element)
+    return dalias_replace_alias(list, name, element)
         || dalias_push_back(list, name, element);
 }
 

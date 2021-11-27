@@ -33,8 +33,8 @@ void dalias_remove_at(struct dalias *list, size_t index);
 
 // Threshold 3.
 void dalias_concat(struct dalias *list1, struct dalias *list2);
-int dalias_add_var(struct dalias *list, char *name, char *element);
-int dalias_replace_var(struct dalias *list, char *name, char *element);
+int dalias_add_alias(struct dalias *list, char *name, char *element);
+int dalias_replace_alias(struct dalias *list, char *name, char *element);
 void dalias_destroy(struct dalias *list);
 
 #endif // dalias_H

@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 #include "var.h"
 
 int main(void)
 {
+    srand(time(NULL));
     char *names[] = { strdup("0"), strdup("1"), strdup("2"), strdup("3") };
     char *vars[] = { strdup("Je"), strdup("Suis"), strdup("Une"),
                      strdup("Variable") };
@@ -12,10 +15,8 @@ int main(void)
     dvar_add_var(d, strdup("Bonsoir"), strdup("Salut"));
     dvar_add_var(d, strdup("Holla"), strdup("BONYOUR"));
     dvar_add_var(d, strdup("Priviet"), strdup(""));
-    dvar_print(d);
-    printf("------------------\n");
-    char *s = strdup("$#Hello");
-    s = strrep(s, d);
+    char *s = strdup("$RANDOM$Hello$RANDOM");
+    s = varstrrep(s, d);
     printf("s = %s\n", s);
     free(s);
     dvar_destroy(d);

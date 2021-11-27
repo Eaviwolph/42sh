@@ -3,7 +3,7 @@
 
 #include "dvar.h"
 
-char *strrep(char *s, struct dvar *var);
+char *varstrrep(char *s, struct dvar *var);
 struct dvar *initvars(char **names, char **vars, int size);
 char *strdup(const char *s);
 

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int dalias_replace_var(struct dalias *list, char *name, char *element)
+int dalias_replace_alias(struct dalias *list, char *name, char *element)
 {
     size_t i = 0;
     struct dalias_item *h = list->head;

@@ -1,3 +1,5 @@
-alias bonsoir='echo Bonsoir'
-alias bon='bonsoir'
-bon
+#!/bin/sh
+
+alias bonsoir='echo bonsoir'
+alias bon='bonsoir soir'
+bon	soir
