@@ -23,25 +23,6 @@ enum
 
 typedef enum type token_id;
 
-struct token
-{
-    token_id id;
-    char *str;
-    size_t len;
-};
-
-struct lexer
-{
-    struct token current; // working token
-    struct token previous;
-    FILE *fs;
-    char eof;
-    char *buf;
-    size_t buf_size; // without \0
-    size_t buf_pos;
-    s_getline *stream;
-};
-
 struct parser
 {
     int error;

@@ -41,8 +41,8 @@ enum type
 
 struct token
 {
-    char *val;
     enum type op;
+    char *val;
 };
 
 struct dtoken_item

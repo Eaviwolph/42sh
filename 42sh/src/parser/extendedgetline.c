@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "macro.h"
+#include "../common/macro.h"
 
 #define safe_strlen(s) ((s) == NULL ? 0 : strlen(s))
 
