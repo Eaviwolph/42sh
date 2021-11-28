@@ -12,6 +12,12 @@ enum error
     ERROR_ONFORKPROC = 4, // error in fork
     ERROR_ONPIPELINK = 5, // error in pipe
 };
+enum prompt {
+  TYPEIN_PS1 = 1,
+  TYPEIN_PS2 = 2,
+  TYPEIN_PS4 = 4
+};
+
 #define safe_malloc(varname, size)                                                  \
     if (!(varname = malloc(size)))                                                \
     exit(ERROR_ONMALLOC)

@@ -1,13 +1,3 @@
-/*
-** parser.c for 42sh
-**
-** Made by Seblu
-** Login   <seblu@epita.fr>
-**
-** Started on  Wed Aug  2 00:56:07 2006 Seblu
-** Last update Thu Nov 23 14:24:39 2006 seblu
-*/
-
 #include "parser.h"
 
 #include <assert.h>
@@ -23,13 +13,7 @@
 #include "../shell/shell.h"
 #include "getline.h"
 
-/*
-** ============
-** DECLARATIONS
-** ============
-*/
-
-static s_ast_node *regnode(s_parser *parser, s_ast_node *node);
+static struct node *regnode(struct parser *parser, struct node *node);
 
 /*!
 ** Parse an input, following the Grammar rule input
@@ -42,29 +26,29 @@ static s_ast_node *regnode(s_parser *parser, s_ast_node *node);
 **
 ** @return parent ast node, for execution
 */
-static s_ast_node *parse_input(s_parser *parser);
-static s_ast_node *parse_list(s_parser *parser);
-static s_ast_node *parse_andor(s_parser *parser);
-static s_ast_node *parse_pipeline(s_parser *parser);
-static s_ast_node *parse_command(s_parser *parser);
-static s_ast_node *parse_simplecommand(s_parser *parser);
-static s_ast_node *parse_shellcommand(s_parser *parser);
-static s_ast_node *parse_rulefor(s_parser *parser);
-static s_ast_node *parse_rulewhile(s_parser *parser);
-static s_ast_node *parse_ruleuntil(s_parser *parser);
-static s_ast_node *parse_ruleif(s_parser *parser);
-static s_ast_node *parse_rulecase(s_parser *parser);
-static s_ast_node *parse_compound_list(s_parser *parser);
-static s_ast_node *parse_pipeline_command(s_parser *parser);
-static s_ast_node *parse_funcdec(s_parser *parser);
-static s_ast_node *parse_elseclause(s_parser *parser);
-static s_ast_node *parse_dogroup(s_parser *parser);
-static void parse_caseclause(s_parser *parser, s_ast_node *casenode);
-static void parse_caseitem(s_parser *parser, s_ast_node *casenode);
-static int parse_prefix(s_parser *parser, s_ast_node *cmd, s_ast_node **red);
-static int parse_element(s_parser *parser, s_ast_node *cmd, s_ast_node **red);
-static void parse_redirection(s_parser *parser, s_ast_node **reds);
-static int is_keyword(const s_token t);
+static struct node *parse_input(struct parser *parser);
+static struct node *parse_list(struct parser *parser);
+static struct node *parse_andor(struct parser *parser);
+static struct node *parse_pipeline(struct parser *parser);
+static struct node *parse_command(struct parser *parser);
+static struct node *parse_simplecommand(struct parser *parser);
+static struct node *parse_shellcommand(struct parser *parser);
+static struct node *parse_rulefor(struct parser *parser);
+static struct node *parse_rulewhile(struct parser *parser);
+static struct node *parse_ruleuntil(struct parser *parser);
+static struct node *parse_ruleif(struct parser *parser);
+static struct node *parse_rulecase(struct parser *parser);
+static struct node *parse_compound_list(struct parser *parser);
+static struct node *parse_pipeline_command(struct parser *parser);
+static struct node *parse_funcdec(struct parser *parser);
+static struct node *parse_elseclause(struct parser *parser);
+static struct node *parse_dogroup(struct parser *parser);
+static void parse_caseclause(struct parser *parser, struct node *casenode);
+static void parse_caseitem(struct parser *parser, struct node *casenode);
+static int parse_prefix(struct parser *parser, struct node *cmd, struct node **red);
+static int parse_element(struct parser *parser, struct node *cmd, struct node **red);
+static void parse_redirection(struct parser *parser, struct node **reds);
+static int is_keyword(const struct token t);
 
 /*!
 ** Notify a parse error
@@ -72,7 +56,7 @@ static int is_keyword(const s_token t);
 ** @param parser parser where error appear
 ** @param t token near of the error
 */
-static void parse_error(s_parser *parser, s_token t);
+static void parse_error(struct parser *parser, struct token t);
 
 /*
 ** ===========
@@ -89,10 +73,10 @@ static void parse_error(s_parser *parser, s_token t);
 #define is_assignment(t) ((*(t).str != '=') && (strchr((t).str, '=') != NULL))
 
 #define eat_newline()                                                          \
-    while (lexer_lookahead(parser->lexer).id == TOK_NEWLINE)                   \
+    while (lexer_lookahead(parser->lexer).id == LNEWL)                   \
     {                                                                          \
         lexer_gettoken(parser->lexer);                                         \
-        show_prompt(PROMPT_PS2);                                               \
+        show_prompt(TYPEIN_PS2);                                               \
     }
 
 /*
@@ -101,22 +85,22 @@ static void parse_error(s_parser *parser, s_token t);
 ** ===========
 */
 
-static const s_token keyword_table[] = {
-    { TOK_WORD, "!", 1 },     { TOK_WORD, "{", 1 },
-    { TOK_WORD, "}", 1 },     { TOK_WORD, "if", 2 },
-    { TOK_WORD, "in", 2 },    { TOK_WORD, "fi", 2 },
-    { TOK_WORD, "do", 2 },    { TOK_WORD, "then", 4 },
-    { TOK_WORD, "else", 4 },  { TOK_WORD, "elif", 4 },
-    { TOK_WORD, "done", 4 },  { TOK_WORD, "case", 4 },
-    { TOK_WORD, "esac", 4 },  { TOK_WORD, "while", 5 },
-    { TOK_WORD, "until", 5 }, { TOK_WORD, "function", 8 }
+static const struct token keyword_table[] = {
+    { LWORD, "!", 1 },     { LWORD, "{", 1 },
+    { LWORD, "}", 1 },     { LWORD, "if", 2 },
+    { LWORD, "in", 2 },    { LWORD, "fi", 2 },
+    { LWORD, "do", 2 },    { LWORD, "then", 4 },
+    { LWORD, "else", 4 },  { LWORD, "elif", 4 },
+    { LWORD, "done", 4 },  { LWORD, "case", 4 },
+    { LWORD, "esac", 4 },  { LWORD, "while", 5 },
+    { LWORD, "until", 5 }, { LWORD, "function", 8 }
 };
 
-s_parser *parser_init(int fd)
+struct parser *parser_init(int fd)
 {
-    s_parser *new;
+    struct parser *new;
 
-    secmalloc(new, sizeof(s_parser));
+    safe_malloc(new, sizeof(struct parser));
     new->lexer = lexer_init(fd);
     new->error = 0;
     new->regnodes = NULL;
@@ -124,31 +108,31 @@ s_parser *parser_init(int fd)
     return new;
 }
 
-static s_ast_node *regnode(s_parser *parser, s_ast_node *node)
+static struct node *regnode(struct parser *parser, struct node *node)
 {
     if (!node)
         return node;
     if (parser->regpos >= parser->regsize)
     {
         parser->regsize += 50;
-        secrealloc(parser->regnodes, parser->regnodes,
-                   parser->regsize * sizeof(s_ast_node));
+        safe_realloc(parser->regnodes, parser->regnodes,
+                   parser->regsize * sizeof(struct node));
     }
     parser->regnodes[parser->regpos] = node;
     ++parser->regpos;
     return node;
 }
 
-static void parse_error(s_parser *parser, s_token t)
+static void parse_error(struct parser *parser, struct token t)
 {
-    if (t.id == TOK_EOF)
+    if (t.id == LEOF)
         fprintf(stderr, "%s: syntax error: unexpected end of file.\n",
                 shell->name);
     else
         fprintf(stderr, "%s: syntax error near unexpected token `%s'.\n",
                 shell->name, t.str);
     parser->error = 1;
-    shell->status = ERROR_PARSE;
+    shell->status = ERROR_ONPARSING;
     if (parser->regnodes)
         for (register int i = 0; parser->regnodes[i]; ++i)
             ast_destruct_node(parser->regnodes[i]);
@@ -156,75 +140,75 @@ static void parse_error(s_parser *parser, s_token t)
     longjmp(parser->stack, 1);
 }
 
-s_ast_node *parse(s_parser *parser)
+struct node *parse(struct parser *parser)
 {
     parser->regpos = 0;
     parser->error = 0;
     // prevent of too big register ast size
     if (parser->regsize >= REGISTER_REDUCE_SIZE)
-        secrealloc(parser->regnodes, parser->regnodes,
+        safe_realloc(parser->regnodes, parser->regnodes,
                    (parser->regsize = REGISTER_DEFAULT_SIZE)
-                       * sizeof(s_ast_node));
+                       * sizeof(struct node));
     // return from parse_error (return !0)
     if (setjmp(parser->stack))
         return NULL;
-    show_prompt(PROMPT_PS1);
+    show_prompt(TYPEIN_PS1);
 #if DEBUG_LEXER == 1
     // test lexer mode
     for (;;)
     {
-        s_token tok = lexer_gettoken(parser->lexer);
+        struct token tok = lexer_gettoken(parser->lexer);
         printf("Returned token: %d [%s]\n", tok.id,
                (*tok.str == '\n') ? "\\n" : tok.str);
-        if (tok.id == TOK_EOF)
+        if (tok.id == LEOF)
             exit(69);
-        if (tok.id == TOK_NEWLINE)
-            show_prompt(PROMPT_PS1);
+        if (tok.id == LNEWL)
+            show_prompt(TYPEIN_PS1);
     }
 #endif
     return parse_input(parser);
 }
 
-static s_ast_node *parse_input(s_parser *parser)
+static struct node *parse_input(struct parser *parser)
 {
-    s_token token;
-    s_ast_node *buf;
+    struct token token;
+    struct node *buf;
 
     debugmsg("parse_input");
     token = lexer_lookahead(parser->lexer);
-    if (token.id == TOK_EOF)
+    if (token.id == LEOF)
         return NULL;
-    if (token.id == TOK_NEWLINE)
+    if (token.id == LNEWL)
     {
         token = lexer_gettoken(parser->lexer);
         return NULL;
     }
     buf = parse_list(parser);
     token = lexer_gettoken(parser->lexer);
-    if (token.id != TOK_EOF && token.id != TOK_NEWLINE)
+    if (token.id != LEOF && token.id != LNEWL)
         parse_error(parser, token);
     return buf;
 }
 
-static s_ast_node *parse_list(s_parser *parser)
+static struct node *parse_list(struct parser *parser)
 {
-    s_token token, token2;
-    s_ast_node *lhs;
-    s_ast_node *rhs;
+    struct token token, token2;
+    struct node *lhs;
+    struct node *rhs;
 
     debugmsg("parse_list");
     lhs = parse_andor(parser);
     token = lexer_lookahead(parser->lexer);
-    if (token.id == TOK_SEP || token.id == TOK_SEPAND)
+    if (token.id == LSEMI || token.id == LSEPAND)
     {
         lexer_gettoken(parser->lexer);
-        if ((token2 = lexer_lookahead(parser->lexer)).id == TOK_NEWLINE
-            || token2.id == TOK_EOF)
+        if ((token2 = lexer_lookahead(parser->lexer)).id == LNEWL
+            || token2.id == LEOF)
             return regnode(
                 parser,
-                (token.id == TOK_SEP ? lhs : ast_sepand_create(lhs, NULL)));
+                (token.id == LSEMI ? lhs : ast_sepand_create(lhs, NULL)));
         rhs = parse_list(parser);
-        if (token.id == TOK_SEP)
+        if (token.id == LSEMI)
             return regnode(parser, ast_sep_create(lhs, rhs));
         else
             return regnode(parser, ast_sepand_create(lhs, rhs));
@@ -232,21 +216,21 @@ static s_ast_node *parse_list(s_parser *parser)
     return lhs;
 }
 
-static s_ast_node *parse_andor(s_parser *parser)
+static struct node *parse_andor(struct parser *parser)
 {
-    s_token token;
-    s_ast_node *lhs;
-    s_ast_node *rhs;
+    struct token token;
+    struct node *lhs;
+    struct node *rhs;
 
     debugmsg("parse_andor");
     lhs = parse_pipeline(parser);
     token = lexer_lookahead(parser->lexer);
-    if (token.id == TOK_AND || token.id == TOK_OR)
+    if (token.id == LAND || token.id == LOR)
     {
         lexer_gettoken(parser->lexer);
         eat_newline();
         rhs = parse_andor(parser);
-        if (token.id == TOK_AND)
+        if (token.id == LAND)
             return regnode(parser, ast_and_create(lhs, rhs));
         else
             return regnode(parser, ast_or_create(lhs, rhs));
@@ -254,21 +238,21 @@ static s_ast_node *parse_andor(s_parser *parser)
     return lhs;
 }
 
-static s_ast_node *parse_pipeline(s_parser *parser)
+static struct node *parse_pipeline(struct parser *parser)
 {
-    s_token token;
-    s_ast_node *node, *lhs;
+    struct token token;
+    struct node *node, *lhs;
     int banged = 0;
 
     debugmsg("parse_pipeline");
     token = lexer_lookahead(parser->lexer);
-    if (token.id == TOK_WORD && !strcmp(token.str, "!"))
+    if (token.id == LWORD && !strcmp(token.str, "!"))
     {
         lexer_gettoken(parser->lexer);
         banged = 1;
     }
     lhs = parse_command(parser);
-    if ((token = lexer_lookahead(parser->lexer)).id == TOK_PIPE)
+    if ((token = lexer_lookahead(parser->lexer)).id == LPIPE)
         node = regnode(parser,
                        ast_pipe_create(lhs, parse_pipeline_command(parser)));
     else
@@ -278,39 +262,39 @@ static s_ast_node *parse_pipeline(s_parser *parser)
     return node;
 }
 
-static s_ast_node *parse_pipeline_command(s_parser *parser)
+static struct node *parse_pipeline_command(struct parser *parser)
 {
-    s_token token;
-    s_ast_node *lhs;
+    struct token token;
+    struct node *lhs;
 
     debugmsg("parse_pipeline_command");
-    if ((token = lexer_gettoken(parser->lexer)).id != TOK_PIPE)
+    if ((token = lexer_gettoken(parser->lexer)).id != LPIPE)
         parse_error(parser, token);
     eat_newline();
     lhs = parse_command(parser);
-    if ((token = lexer_lookahead(parser->lexer)).id == TOK_PIPE)
+    if ((token = lexer_lookahead(parser->lexer)).id == LPIPE)
         return regnode(parser,
                        ast_pipe_create(lhs, parse_pipeline_command(parser)));
     return lhs;
 }
 
-static s_ast_node *parse_command(s_parser *parser)
+static struct node *parse_command(struct parser *parser)
 {
-    s_token token;
+    struct token token;
 
     debugmsg("parse_command");
     token = lexer_lookahead(parser->lexer);
-    if (token.id == TOK_LPAREN
-        || (token.id == TOK_WORD
+    if (token.id == LPAO
+        || (token.id == LWORD
             && (!strcmp(token.str, "for") || !strcmp(token.str, "while")
                 || !strcmp(token.str, "if") || !strcmp(token.str, "until")
                 || !strcmp(token.str, "{") || !strcmp(token.str, "case"))))
         return parse_shellcommand(parser);
-    else if ((token.id == TOK_WORD && !strcmp(token.str, "function"))
-             || (token.id == TOK_WORD
-                 && lexer_lookahead2(parser->lexer).id == TOK_LPAREN))
+    else if ((token.id == LWORD && !strcmp(token.str, "function"))
+             || (token.id == LWORD
+                 && lexer_lookahead2(parser->lexer).id == LPAO))
         return parse_funcdec(parser);
-    else if (token.id >= TOK_DLESSDASH && token.id <= TOK_WORD)
+    else if (token.id >= LDLESSDASH && token.id <= LWORD)
         return parse_simplecommand(parser);
     else
         parse_error(parser, token);
@@ -318,10 +302,10 @@ static s_ast_node *parse_command(s_parser *parser)
     return NULL;
 }
 
-static s_ast_node *parse_simplecommand(s_parser *parser)
+static struct node *parse_simplecommand(struct parser *parser)
 {
-    s_ast_node *cmd;
-    s_ast_node *red = NULL;
+    struct node *cmd;
+    struct node *red = NULL;
     int found = 0;
 
     debugmsg("parse_simplecommand");
@@ -338,9 +322,9 @@ static s_ast_node *parse_simplecommand(s_parser *parser)
     return cmd;
 }
 
-static int parse_element(s_parser *parser, s_ast_node *cmd, s_ast_node **red)
+static int parse_element(struct parser *parser, struct node *cmd, struct node **red)
 {
-    s_token token;
+    struct token token;
     int found = 0;
     int first = 1;
 
@@ -348,19 +332,19 @@ static int parse_element(s_parser *parser, s_ast_node *cmd, s_ast_node **red)
     for (;;)
     {
         token = lexer_lookahead(parser->lexer);
-        if (token.id >= TOK_DLESSDASH && token.id <= TOK_IONUMBER)
+        if (token.id >= LDLESSDASH && token.id <= LIONUMBER)
         {
             parse_redirection(parser, red);
             ++found;
         }
-        else if (token.id == TOK_WORD && first && !is_keyword(token))
+        else if (token.id == LWORD && first && !is_keyword(token))
         {
             first = 0;
             // FIXME: gestion des alias
             ast_cmd_add_argv(cmd, lexer_gettoken(parser->lexer).str);
             ++found;
         }
-        else if (token.id == TOK_WORD && !first)
+        else if (token.id == LWORD && !first)
             ast_cmd_add_argv(cmd, lexer_gettoken(parser->lexer).str);
         else
             break;
@@ -368,16 +352,16 @@ static int parse_element(s_parser *parser, s_ast_node *cmd, s_ast_node **red)
     return found;
 }
 
-static int parse_prefix(s_parser *parser, s_ast_node *cmd, s_ast_node **red)
+static int parse_prefix(struct parser *parser, struct node *cmd, struct node **red)
 {
-    s_token token;
+    struct token token;
     int found = 0;
 
     debugmsg("parse_prefix");
     for (;;)
     {
         token = lexer_lookahead(parser->lexer);
-        if (token.id >= TOK_DLESSDASH && token.id <= TOK_IONUMBER)
+        if (token.id >= LDLESSDASH && token.id <= LIONUMBER)
         {
             parse_redirection(parser, red);
             ++found;
@@ -393,10 +377,10 @@ static int parse_prefix(s_parser *parser, s_ast_node *cmd, s_ast_node **red)
     return found;
 }
 
-static s_ast_node *parse_shellcommand(s_parser *parser)
+static struct node *parse_shellcommand(struct parser *parser)
 {
-    s_token token;
-    s_ast_node *node;
+    struct token token;
+    struct node *node;
 
     debugmsg("parse_shellcommand");
     token = lexer_lookahead(parser->lexer);
@@ -414,17 +398,17 @@ static s_ast_node *parse_shellcommand(s_parser *parser)
     {
         lexer_gettoken(parser->lexer);
         node = parse_compound_list(parser);
-        if ((token = lexer_gettoken(parser->lexer)).id != TOK_WORD
+        if ((token = lexer_gettoken(parser->lexer)).id != LWORD
             || strcmp(token.str, "}"))
             parse_error(parser, token);
         return node;
     }
-    else if (token.id == TOK_LPAREN)
+    else if (token.id == LPAO)
     {
         lexer_gettoken(parser->lexer);
         node =
             regnode(parser, ast_subshell_create(parse_compound_list(parser)));
-        if ((token = lexer_gettoken(parser->lexer)).id != TOK_RPAREN)
+        if ((token = lexer_gettoken(parser->lexer)).id != LPAC)
             parse_error(parser, token);
         return node;
     }
@@ -434,32 +418,32 @@ static s_ast_node *parse_shellcommand(s_parser *parser)
     return NULL;
 }
 
-static s_ast_node *parse_funcdec(s_parser *parser)
+static struct node *parse_funcdec(struct parser *parser)
 {
-    s_token tok;
+    struct token tok;
     char *funcname;
-    s_ast_node *body;
-    s_ast_node *reds = NULL;
+    struct node *body;
+    struct node *reds = NULL;
 
     debugmsg("parse_funcdec");
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id == TOK_WORD && !strcmp(tok.str, "function"))
+    if (tok.id == LWORD && !strcmp(tok.str, "function"))
     {
         free(tok.str);
         tok = lexer_gettoken(parser->lexer);
     }
-    if (tok.id != TOK_WORD)
+    if (tok.id != LWORD)
         parse_error(parser, tok);
     funcname = tok.str;
-    if (lexer_gettoken(parser->lexer).id != TOK_LPAREN)
+    if (lexer_gettoken(parser->lexer).id != LPAO)
         parse_error(parser, tok);
-    if (lexer_gettoken(parser->lexer).id != TOK_RPAREN)
+    if (lexer_gettoken(parser->lexer).id != LPAC)
         parse_error(parser, tok);
     eat_newline();
     body = parse_shellcommand(parser);
     // parse redirection
-    while ((tok = lexer_lookahead(parser->lexer)).id >= TOK_DLESSDASH
-           && tok.id <= TOK_IONUMBER)
+    while ((tok = lexer_lookahead(parser->lexer)).id >= LDLESSDASH
+           && tok.id <= LIONUMBER)
         parse_redirection(parser, &reds);
     if (reds)
     {
@@ -469,9 +453,9 @@ static s_ast_node *parse_funcdec(s_parser *parser)
     return regnode(parser, ast_funcdec_create(funcname, body));
 }
 
-static void parse_redirection(s_parser *parser, s_ast_node **reds)
+static void parse_redirection(struct parser *parser, struct node **reds)
 {
-    s_token token;
+    struct token token;
     long int fd = -1;
     e_red_type redtype;
 
@@ -479,7 +463,7 @@ static void parse_redirection(s_parser *parser, s_ast_node **reds)
     if (*reds == NULL)
         *reds = regnode(parser, ast_red_create());
     // retrieve redirection fd if exist
-    if ((token = lexer_lookahead(parser->lexer)).id == TOK_IONUMBER)
+    if ((token = lexer_lookahead(parser->lexer)).id == LIONUMBER)
     {
         lexer_gettoken(parser->lexer);
         errno = 0;
@@ -491,47 +475,47 @@ static void parse_redirection(s_parser *parser, s_ast_node **reds)
     token = lexer_gettoken(parser->lexer);
     switch (token.id)
     {
-    case TOK_GREAT:
+    case LGREAT:
         redtype = R_GREAT;
         if (fd == -1)
             fd = 1;
         break;
-    case TOK_DGREAT:
+    case LDGREAT:
         redtype = R_DLESS;
         if (fd == -1)
             fd = 1;
         break;
-    case TOK_DLESSDASH:
+    case LDLESSDASH:
         redtype = R_DLESSDASH;
         if (fd == -1)
             fd = 0;
         break;
-    case TOK_DLESS:
+    case LDLESS:
         redtype = R_DLESS;
         if (fd == -1)
             fd = 0;
         break;
-    case TOK_LESSGREAT:
+    case LLESSGREAT:
         redtype = R_LESSGREAT;
         if (fd == -1)
             fd = 0;
         break;
-    case TOK_LESSAND:
+    case LLESSAND:
         redtype = R_LESSAND;
         if (fd == -1)
             fd = 0;
         break;
-    case TOK_LESS:
+    case LLESS:
         redtype = R_LESS;
         if (fd == -1)
             fd = 0;
         break;
-    case TOK_CLOBBER:
+    case LCLOBBER:
         redtype = R_CLOBBER;
         if (fd == -1)
             fd = 1;
         break;
-    case TOK_GREATAND:
+    case LGREATAND:
         redtype = R_GREATAND;
         if (fd == -1)
             fd = 1;
@@ -542,16 +526,16 @@ static void parse_redirection(s_parser *parser, s_ast_node **reds)
     }
     // retrieve redirection word
     token = lexer_gettoken(parser->lexer);
-    if (token.id == TOK_WORD)
+    if (token.id == LWORD)
         ast_red_add(*reds, redtype, fd, token.str);
     else
         parse_error(parser, token);
 }
 
-static s_ast_node *parse_compound_list(s_parser *parser)
+static struct node *parse_compound_list(struct parser *parser)
 {
-    s_ast_node *lhs;
-    s_token tok, tok2;
+    struct node *lhs;
+    struct token tok, tok2;
 
     debugmsg("parse_compound_list");
     // eat newline
@@ -560,27 +544,27 @@ static s_ast_node *parse_compound_list(s_parser *parser)
     lhs = parse_andor(parser);
     // looking for ';' or '&' or '\n
     tok = lexer_lookahead(parser->lexer);
-    if (tok.id == TOK_SEP || tok.id == TOK_SEPAND || tok.id == TOK_NEWLINE)
+    if (tok.id == LSEMI || tok.id == LSEPAND || tok.id == LNEWL)
     {
         lexer_gettoken(parser->lexer);
-        if (tok.id == TOK_NEWLINE)
-            show_prompt(PROMPT_PS2);
+        if (tok.id == LNEWL)
+            show_prompt(TYPEIN_PS2);
         eat_newline();
         // check for and_or
         tok2 = lexer_lookahead(parser->lexer);
         // false condition
-        if (tok2.id == TOK_DSEMI || tok2.id == TOK_RPAREN || tok2.id == TOK_SEP
-            || tok2.id == TOK_SEPAND || tok2.id == TOK_EOF
-            || (tok2.id == TOK_WORD
+        if (tok2.id == LDSEMI || tok2.id == LPAC || tok2.id == LSEMI
+            || tok2.id == LSEPAND || tok2.id == LEOF
+            || (tok2.id == LWORD
                 && (!strcmp(tok2.str, "}") || !strcmp(tok2.str, "do")
                     || !strcmp(tok2.str, "fi") || !strcmp(tok2.str, "done")
                     || !strcmp(tok2.str, "else") || !strcmp(tok2.str, "elif")
                     || !strcmp(tok2.str, "esac") || !strcmp(tok2.str, "then"))))
-            return (tok.id == TOK_SEP || tok.id == TOK_NEWLINE)
+            return (tok.id == LSEMI || tok.id == LNEWL)
                 ? lhs
                 : regnode(parser, ast_sepand_create(lhs, NULL));
         else
-            return (tok.id == TOK_SEP || tok.id == TOK_NEWLINE)
+            return (tok.id == LSEMI || tok.id == LNEWL)
                 ? regnode(parser,
                           ast_sep_create(lhs, parse_compound_list(parser)))
                 : regnode(parser,
@@ -589,40 +573,40 @@ static s_ast_node *parse_compound_list(s_parser *parser)
     return lhs;
 }
 
-static s_ast_node *parse_rulefor(s_parser *parser)
+static struct node *parse_rulefor(struct parser *parser)
 {
-    s_token tok;
+    struct token tok;
     char *varname;
     char **values = NULL;
 
     debugmsg("parse_rulefor");
     // check for token 'for'
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "for"))
+    if (tok.id != LWORD || strcmp(tok.str, "for"))
         parse_error(parser, tok);
     free(tok.str);
     // varname
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD)
+    if (tok.id != LWORD)
         parse_error(parser, tok);
     varname = tok.str;
     // eat newline
     eat_newline();
     // check for in
-    if ((tok = lexer_lookahead(parser->lexer)).id == TOK_WORD
+    if ((tok = lexer_lookahead(parser->lexer)).id == LWORD
         && !strcmp(tok.str, "in"))
     {
         tok = lexer_gettoken(parser->lexer);
         free(tok.str);
         do
         {
-            if ((tok = lexer_gettoken(parser->lexer)).id != TOK_WORD)
+            if ((tok = lexer_gettoken(parser->lexer)).id != LWORD)
                 parse_error(parser, tok);
             values = strvectoradd(values, tok.str);
-        } while ((tok = lexer_lookahead(parser->lexer)).id == TOK_WORD);
+        } while ((tok = lexer_lookahead(parser->lexer)).id == LWORD);
         // check for ';' or '\n'
-        if ((tok = lexer_gettoken(parser->lexer)).id != TOK_SEP
-            && tok.id != TOK_NEWLINE)
+        if ((tok = lexer_gettoken(parser->lexer)).id != LSEMI
+            && tok.id != LNEWL)
             parse_error(parser, tok);
         // eat newline
         eat_newline();
@@ -631,97 +615,97 @@ static s_ast_node *parse_rulefor(s_parser *parser)
                    ast_for_create(varname, values, parse_dogroup(parser)));
 }
 
-static s_ast_node *parse_rulewhile(s_parser *parser)
+static struct node *parse_rulewhile(struct parser *parser)
 {
-    s_ast_node *cond;
-    s_token tok;
+    struct node *cond;
+    struct token tok;
 
     debugmsg("parse_rulewhile");
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "while"))
+    if (tok.id != LWORD || strcmp(tok.str, "while"))
         parse_error(parser, tok);
     free(tok.str);
     cond = parse_compound_list(parser);
     return regnode(parser, ast_while_create(cond, parse_dogroup(parser)));
 }
 
-static s_ast_node *parse_ruleuntil(s_parser *parser)
+static struct node *parse_ruleuntil(struct parser *parser)
 {
-    s_ast_node *cond;
-    s_token tok;
+    struct node *cond;
+    struct token tok;
 
     debugmsg("parse_ruleuntil");
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "until"))
+    if (tok.id != LWORD || strcmp(tok.str, "until"))
         parse_error(parser, tok);
     free(tok.str);
     cond = regnode(parser, ast_bang_create(parse_compound_list(parser)));
     return regnode(parser, ast_while_create(cond, parse_dogroup(parser)));
 }
 
-static s_ast_node *parse_ruleif(s_parser *parser)
+static struct node *parse_ruleif(struct parser *parser)
 {
-    s_token tok;
-    s_ast_node *cond;
-    s_ast_node *cond_true;
-    s_ast_node *cond_false;
+    struct token tok;
+    struct node *cond;
+    struct node *cond_true;
+    struct node *cond_false;
 
     debugmsg("parse_rule_if");
     // if
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "if"))
+    if (tok.id != LWORD || strcmp(tok.str, "if"))
         parse_error(parser, tok);
     free(tok.str);
     cond = parse_compound_list(parser);
     // then
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "then"))
+    if (tok.id != LWORD || strcmp(tok.str, "then"))
         parse_error(parser, tok);
     free(tok.str);
     cond_true = parse_compound_list(parser);
     // elses
     tok = lexer_lookahead(parser->lexer);
-    if (tok.id == TOK_WORD
+    if (tok.id == LWORD
         && (!strcmp(tok.str, "else") || !strcmp(tok.str, "elif")))
         cond_false = parse_elseclause(parser);
     else
         cond_false = NULL;
     // fi
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "fi"))
+    if (tok.id != LWORD || strcmp(tok.str, "fi"))
         parse_error(parser, tok);
     free(tok.str);
     // create if node
     return regnode(parser, ast_if_create(cond, cond_true, cond_false));
 }
 
-static s_ast_node *parse_elseclause(s_parser *parser)
+static struct node *parse_elseclause(struct parser *parser)
 {
-    s_token tok;
+    struct token tok;
 
     debugmsg("parse_elseclause");
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id == TOK_WORD && !strcmp(tok.str, "else"))
+    if (tok.id == LWORD && !strcmp(tok.str, "else"))
     {
         free(tok.str);
         return parse_compound_list(parser);
     }
-    else if (tok.id == TOK_WORD && !strcmp(tok.str, "elif"))
+    else if (tok.id == LWORD && !strcmp(tok.str, "elif"))
     {
-        s_ast_node *cond, *cond_true, *cond_false;
+        struct node *cond, *cond_true, *cond_false;
 
         free(tok.str);
         // if
         cond = parse_compound_list(parser);
         // then
         tok = lexer_gettoken(parser->lexer);
-        if (tok.id != TOK_WORD || strcmp(tok.str, "then"))
+        if (tok.id != LWORD || strcmp(tok.str, "then"))
             parse_error(parser, tok);
         free(tok.str);
         cond_true = parse_compound_list(parser);
         // elses
         tok = lexer_lookahead(parser->lexer);
-        if (tok.id == TOK_WORD
+        if (tok.id == LWORD
             && (!strcmp(tok.str, "else") || !strcmp(tok.str, "elif")))
             cond_false = parse_elseclause(parser);
         else
@@ -734,123 +718,123 @@ static s_ast_node *parse_elseclause(s_parser *parser)
     return NULL;
 }
 
-static s_ast_node *parse_dogroup(s_parser *parser)
+static struct node *parse_dogroup(struct parser *parser)
 {
-    s_token tok;
-    s_ast_node *exec;
+    struct token tok;
+    struct node *exec;
 
     debugmsg("parse_dogroup");
     // do
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "do"))
+    if (tok.id != LWORD || strcmp(tok.str, "do"))
         parse_error(parser, tok);
     free(tok.str);
     // exec part
     exec = parse_compound_list(parser);
     // done
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "done"))
+    if (tok.id != LWORD || strcmp(tok.str, "done"))
         parse_error(parser, tok);
     free(tok.str);
     return exec;
 }
 
-static s_ast_node *parse_rulecase(s_parser *parser)
+static struct node *parse_rulecase(struct parser *parser)
 {
-    s_token tok;
-    s_ast_node *casenode = NULL; // NULL if no case_clause
+    struct token tok;
+    struct node *casenode = NULL; // NULL if no case_clause
     char *varname;
 
     debugmsg("parse_rulecase");
     // check for token 'case'
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "case"))
+    if (tok.id != LWORD || strcmp(tok.str, "case"))
         parse_error(parser, tok);
     free(tok.str);
     // get varname
-    if ((tok = lexer_gettoken(parser->lexer)).id != TOK_WORD)
+    if ((tok = lexer_gettoken(parser->lexer)).id != LWORD)
         parse_error(parser, tok);
     varname = tok.str;
     // eat newline
     eat_newline();
     // check for token 'in'
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "in"))
+    if (tok.id != LWORD || strcmp(tok.str, "in"))
         parse_error(parser, tok);
     free(tok.str);
     // eat newline
     eat_newline();
     // parse case body
     tok = lexer_lookahead(parser->lexer);
-    if ((tok.id == TOK_WORD && strcmp(tok.str, "esac")) || tok.id == TOK_LPAREN)
+    if ((tok.id == LWORD && strcmp(tok.str, "esac")) || tok.id == LPAO)
     {
         casenode = regnode(parser, ast_case_create(varname));
         parse_caseclause(parser, casenode);
     }
     // check for token 'esac'
     tok = lexer_gettoken(parser->lexer);
-    if (tok.id != TOK_WORD || strcmp(tok.str, "esac"))
+    if (tok.id != LWORD || strcmp(tok.str, "esac"))
         parse_error(parser, tok);
     free(tok.str);
     return casenode;
 }
 
-static void parse_caseclause(s_parser *parser, s_ast_node *casenode)
+static void parse_caseclause(struct parser *parser, struct node *casenode)
 {
-    s_token tok;
+    struct token tok;
 
     debugmsg("parse_caseclause");
     do
     {
         parse_caseitem(parser, casenode);
         tok = lexer_lookahead(parser->lexer);
-        if (tok.id == TOK_DSEMI)
+        if (tok.id == LDSEMI)
         {
             lexer_gettoken(parser->lexer);
             eat_newline();
             tok = lexer_lookahead(parser->lexer);
         }
-        if (tok.id == TOK_WORD && !strcmp(tok.str, "esac"))
+        if (tok.id == LWORD && !strcmp(tok.str, "esac"))
             return;
     } while (1);
 }
 
-static void parse_caseitem(s_parser *parser, s_ast_node *casenode)
+static void parse_caseitem(struct parser *parser, struct node *casenode)
 {
-    s_token tok;
+    struct token tok;
     char **pattern = NULL;
-    s_ast_node *exec = NULL;
+    struct node *exec = NULL;
 
     debugmsg("parse_caseitem");
     tok = lexer_gettoken(parser->lexer);
     // check for a '(' before pattern list
-    if (tok.id == TOK_LPAREN)
+    if (tok.id == LPAO)
         tok = lexer_gettoken(parser->lexer);
     // retrieve pattern list
-    if (tok.id != TOK_WORD)
+    if (tok.id != LWORD)
         parse_error(parser, tok);
     pattern = strvectoradd(pattern, tok.str);
-    while ((tok = lexer_lookahead(parser->lexer)).id == TOK_PIPE)
+    while ((tok = lexer_lookahead(parser->lexer)).id == LPIPE)
     {
         lexer_gettoken(parser->lexer);
-        if ((tok = lexer_gettoken(parser->lexer)).id != TOK_WORD)
+        if ((tok = lexer_gettoken(parser->lexer)).id != LWORD)
             parse_error(parser, tok);
         pattern = strvectoradd(pattern, tok.str);
     }
     // check for ')'
-    if ((tok = lexer_gettoken(parser->lexer)).id != TOK_RPAREN)
+    if ((tok = lexer_gettoken(parser->lexer)).id != LPAC)
         parse_error(parser, tok);
     // eat newline
     eat_newline();
-    if ((tok = lexer_lookahead(parser->lexer)).id != TOK_DSEMI
-        && !(tok.id == TOK_WORD && !strcmp(tok.str, "esac")))
+    if ((tok = lexer_lookahead(parser->lexer)).id != LDSEMI
+        && !(tok.id == LWORD && !strcmp(tok.str, "esac")))
         exec = parse_compound_list(parser);
     ast_case_add_item(casenode, pattern, exec);
 }
 
-static int is_keyword(const s_token t)
+static int is_keyword(const struct token t)
 {
-    if (t.id == TOK_WORD)
+    if (t.id == LWORD)
         for (register int i = 0; i < KEYWORD_COUNT; ++i)
             if (!strcmp(t.str, keyword_table[i].str))
                 return 1;
