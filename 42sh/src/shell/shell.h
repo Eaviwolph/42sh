@@ -4,12 +4,14 @@
 #include "../alias/alias.h"
 #include "../parser/dtoken.h"
 #include "../variables/var.h"
+#include "../tree/tree.h"
 
 struct shell
 {
     struct dvar *var;
     struct dalias *alias;
     struct dtoken *token;
+    struct node *tree;
 };
 
 #endif

@@ -19,35 +19,44 @@ void tree_if_print(struct node *node, FILE *stream)
     if (node->data.ifnode.condition)
     {
         fprintf(stream, "if { ");
+        fflush(stream);
         tree_print_node(node->data.ifnode.condition, stream);
+        fprintf(stream, "}; ");
+        fflush(stream);
     }
     // then exists
     if (node->data.ifnode.c_then)
     {
         fprintf(stream, "then { ");
+        fflush(stream);
         tree_print_node(node->data.ifnode.c_then, stream);
+        fprintf(stream, "}; ");
+        fflush(stream);
     }
     // else exists
     if (node->data.ifnode.c_else)
     {
         fprintf(stream, "else { ");
+        fflush(stream);
         tree_print_node(node->data.ifnode.c_else, stream);
+        fprintf(stream, "}; ");
+        fflush(stream);
     }
 }
 
 void tree_if_destroy_node(struct node *n)
 {
-    if (n->type != IF)
+    if (!n || n->type != IF)
         return;
     free(n);
 }
 
 void tree_if_destroy(struct node *n)
 {
-    if (n->type != IF)
+    if (!n || n->type != IF)
         return;
-    tree_if_destroy(n->data.ifnode.condition);
-    tree_if_destroy(n->data.ifnode.c_then);
-    tree_if_destroy(n->data.ifnode.c_else);
+    tree_destroy(n->data.ifnode.condition);
+    tree_destroy(n->data.ifnode.c_then);
+    tree_destroy(n->data.ifnode.c_else);
     free(n);
 }

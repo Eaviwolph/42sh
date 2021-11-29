@@ -49,14 +49,12 @@ void tree_cmd_print(struct node *node, FILE *stream)
     {
         for (int i = 0; prefix && prefix[i]; i++)
         {
-            fprintf(stream, "prefix[%d]:", i);
             size_t last = 0, p = 0;
             for (; prefix[i][p]; ++p)
                 if (prefix[i][p] == '"')
-                    fprintf(stream, "%.*s\\", (int)(p - last), prefix[i] + last),
+                    fprintf(stream, "%.*s ", (int)(p - last), prefix[i] + last),
                         last = p;
-            fprintf(stream, "%*s", (int)(p - last), prefix[i] + last), last = p;
-            fprintf(stream, "\\n");
+            fprintf(stream, "%*s ", (int)(p - last), prefix[i] + last), last = p;
         }
     }
 
@@ -65,16 +63,14 @@ void tree_cmd_print(struct node *node, FILE *stream)
     if (argv && argv[0])
         for (int i = 0; argv && argv[i]; ++i)
         {
-            fprintf(stream, "argv[%d]:", i);
             size_t last = 0, p = 0;
             for (; argv[i][p]; ++p)
                 if (argv[i][p] == '"')
-                    fprintf(stream, "%.*s\\", (int)(p - last), argv[i] + last),
+                    fprintf(stream, "%.*s ", (int)(p - last), argv[i] + last),
                         last = p;
-            fprintf(stream, "%*s", (int)(p - last), argv[i] + last), last = p;
-            fprintf(stream, "\\n");
+            fprintf(stream, "%*s ", (int)(p - last), argv[i] + last), last = p;
         }
-    fprintf(stream, "\"];\n");
+    fflush(stream);
 }
 
 void tree_cmd_destroy_node(struct node *node)
@@ -84,17 +80,21 @@ void tree_cmd_destroy_node(struct node *node)
 
 void tree_cmd_destroy(struct node *node)
 {
+    if (!node)
+        return;
     if (node->type != CMD)
         return;
     if (node->data.cmdnode.argv)
     {
-        for (register int i = 0; node->data.cmdnode.argv[i]; ++i)
+        for (int i = 0; node->data.cmdnode.argv[i]; i++)
+        {
             free(node->data.cmdnode.argv[i]);
+        }
         free(node->data.cmdnode.argv);
     }
     if (node->data.cmdnode.pref)
     {
-        for (register int i = 0; node->data.cmdnode.pref[i]; ++i)
+        for (int i = 0; node->data.cmdnode.pref[i]; i++)
             free(node->data.cmdnode.pref[i]);
         free(node->data.cmdnode.pref);
     }

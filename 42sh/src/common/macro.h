@@ -21,6 +21,9 @@ enum prompt {
 #define safe_malloc(varname, size)                                                  \
     if (!(varname = malloc(size)))                                                \
     exit(ERROR_ONMALLOC)
+#define safe_calloc(varname, count, size)                                                  \
+    if (!(varname = calloc(count, size)))                                                \
+    exit(ERROR_ONMALLOC)
 #define safe_realloc(newname, oldname, size)                                            \
     if (!(newname = realloc(oldname, size)))                                          \
     exit(ERROR_ONMALLOC)

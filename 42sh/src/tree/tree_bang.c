@@ -11,16 +11,12 @@ struct node *tree_bang_create(struct node *child)
     return node;
 }
 
-void tree_bang_print(struct node *node, FILE *fs, unsigned int *node_id)
+void tree_bang_print(struct node *node, FILE *fs)
 {
-    unsigned int lhs_id, cur_id;
-
     if (node->type != BANG)
         return;
-    fprintf(fs, "%u [label = \"!\"];\n", cur_id = *node_id);
-    lhs_id = ++*node_id;
+    fprintf(fs, "bang ");
     tree_print_node(node->data.bangnode.left, fs);
-    fprintf(fs, "%u -> %u\n", cur_id, lhs_id);
 }
 
 void tree_bang_destroy_node(struct node *node)

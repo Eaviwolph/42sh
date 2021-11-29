@@ -9,17 +9,21 @@
 #include <sys/types.h>
 
 #include "../parser/token.h"
+#include "../parser/parser.h"
+#include "../common/macro.h"
 
 void freeshell(struct shell *sh)
 {
     destroy_dtoken(sh->token);
+    tree_destroy(sh->tree);
     free(sh);
 }
 
 int main(int argc, char *argv[])
 {
     int fd = 0;
-    struct shell *sh = calloc(1, sizeof(struct shell));
+    struct shell *sh;
+    safe_calloc(sh, 1, sizeof(struct shell));
     if (argc <= 2)
     {
         if (argc == 2)
@@ -39,6 +43,8 @@ int main(int argc, char *argv[])
         sh->token = str_to_dtoken(sh->token, argv[2], &quoted);
     }
     print_dtoken(sh->token);
+    sh->tree = parse(sh->token);
+    tree_print_node(sh->tree, stdout);
     freeshell(sh);
     return 0;
 }

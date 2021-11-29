@@ -30,32 +30,24 @@ void tree_case_add_item(struct node *node, char **pattern, struct node *exec)
 
 void tree_case_print(struct node *node, FILE *fs)
 {
-    unsigned cur_node;
     struct node_case_item *item;
-    unsigned item_id;
-    unsigned item_node;
 
     if (node->type != CASE)
         return;
-    fprintf(fs, "%u [label = \"CASE\\nword: %s\"];\n", cur_node = *node_id,
-            node->data.casenode.word);
-    ++*node_id;
+    fprintf(fs, "case ");
     // show items
+    int item_id;
     for (item = node->data.casenode.items, item_id = 0; item;
          item = item->next, ++item_id)
     {
-        fprintf(fs, "%u -> %u\n", cur_node, *node_id);
-        fprintf(fs, "%u [label = \"Item %u\\n", item_node = *node_id, item_id);
-        ++*node_id;
+        fprintf(fs, "%u ", item_id);
         // print pattern
         if (item->pattern)
             for (int i = 0; item->pattern[i]; ++i)
-                fprintf(fs, "%s\\n", item->pattern[i]);
-        fprintf(fs, "\"];\n");
+                fprintf(fs, "%s: ", item->pattern[i]);
         // print exec
         if (item->exec)
         {
-            fprintf(fs, "%u -> %u\n", item_node, *node_id);
             tree_print_node(item->exec, fs);
         }
     }

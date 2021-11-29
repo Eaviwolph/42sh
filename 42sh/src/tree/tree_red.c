@@ -28,22 +28,17 @@ void tree_red_add(struct node *node, enum red_type type, int fd, char *word)
     reds->word[reds->size - 1] = word;
 }
 
-void tree_red_print(struct node *node, FILE *fs, unsigned *node_id)
+void tree_red_print(struct node *node, FILE *fs)
 {
-    unsigned cur_id = *node_id;
-
     if (node->type != RED)
         return;
     struct node_red *reds = (struct node_red *)&node->data.rednode;
     if (reds->size == 0)
         return;
-    fprintf(fs, "%u [label = \"Redirection\\n", *node_id);
-    ++*node_id;
+    fprintf(fs, "red ");
     for (register size_t i = 0; i < reds->size; ++i)
-        fprintf(fs, "id=%zu, fd=%d, type=%d, word=%s\\n", i, reds->fd[i],
+        fprintf(fs, "id=%zu, fd=%d, type=%d, word=%s ", i, reds->fd[i],
                 reds->type[i], reds->word[i]);
-    fprintf(fs, "\"];\n");
-    fprintf(fs, "%u -> %u\n", cur_id, *node_id);
     if (reds->mhs)
         tree_print_node(reds->mhs, fs);
 }

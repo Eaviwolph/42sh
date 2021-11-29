@@ -186,7 +186,6 @@ struct node
     union node_data data;
 };
 
-void tree_print(struct node *tree_ref, const char *filename);
 void tree_print_node(struct node *tree_ref, FILE *stream);
 
 struct node *tree_if_create(struct node *c, struct node *c_t, struct node *c_e);
@@ -233,33 +232,33 @@ void tree_funcdec_destroy(struct node *node);
 
 struct node *tree_case_create(char *word);
 void tree_case_add_item(struct node *node, char **pattern, struct node *exec);
-void tree_case_print(struct node *node, FILE *fs, unsigned *node_id);
+void tree_case_print(struct node *node, FILE *fs);
 void tree_case_destroy_node(struct node *node);
 void tree_case_destroy(struct node *node);
 
 struct node *tree_bang_create(struct node *child);
-void tree_bang_print(struct node *node, FILE *fs, unsigned int *node_id);
+void tree_bang_print(struct node *node, FILE *fs);
 void tree_bang_destroy_node(struct node *node);
 void tree_bang_destroy(struct node *node);
 
 struct node *tree_pipe_create(struct node *lhs, struct node *rhs);
-void tree_pipe_print(struct node *node, FILE *fs, unsigned int *node_id);
+void tree_pipe_print(struct node *node, FILE *fs);
 void tree_pipe_destroy_node(struct node *node);
 void tree_pipe_destroy(struct node *node);
 
 struct node *tree_sepand_create(struct node *lhs, struct node *rhs);
-void tree_sepand_print(struct node *node, FILE *fs, unsigned int *node_id);
+void tree_sepand_print(struct node *node, FILE *fs);
 void tree_sepand_destroy_node(struct node *node);
 void tree_sepand_destroy(struct node *node);
 
 struct node *tree_sep_create(struct node *lhs, struct node *rhs);
-void tree_sep_print(struct node *node, FILE *fs, unsigned int *node_id);
+void tree_sep_print(struct node *node, FILE *fs);
 void tree_sep_destroy_node(struct node *node);
 void tree_sep_destroy(struct node *node);
 
 struct node *tree_red_create(void);
 void tree_red_add(struct node *node, enum red_type type, int fd, char *word);
-void tree_red_print(struct node *node, FILE *fs, unsigned *node_id);
+void tree_red_print(struct node *node, FILE *fs);
 void tree_red_destroy_node(struct node *node);
 void tree_red_destroy(struct node *node);
 
