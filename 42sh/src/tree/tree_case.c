@@ -4,7 +4,7 @@ struct node *tree_case_create(char *word)
 {
     struct node *node;
 
-    secmalloc(node, sizeof(struct node));
+    safe_malloc(node, sizeof(struct node));
     node->type = CASE;
     node->data.casenode.word = word;
     node->data.casenode.items = NULL;
@@ -18,11 +18,12 @@ void tree_case_add_item(struct node *node, char **pattern, struct node *exec)
 
     if (node->type != CASE)
         return;
-    secmalloc(item, sizeof(struct node_case_item));
+    safe_malloc(item, sizeof(struct node_case_item));
     item->pattern = pattern;
     item->exec = exec;
     item->next = NULL;
-    for (this = &node->data.casenode.items; *this; this = &(*this)->next)
+    this = &node->data.casenode.items;
+    for (; *this; this = &(*this)->next)
         ; // do nothing
     *this = item;
 }
@@ -55,7 +56,7 @@ void tree_case_print(struct node *node, FILE *fs, unsigned *node_id)
         if (item->exec)
         {
             fprintf(fs, "%u -> %u\n", item_node, *node_id);
-            ast_print_node(item->exec, fs, node_id);
+            tree_print_node(item->exec, fs);
         }
     }
 }
@@ -92,7 +93,7 @@ void tree_case_destroy(struct node *node)
         for (register int i = 0; this->pattern[i]; ++i)
             free(this->pattern[i]);
         free(this->pattern);
-        ast_destruct(this->exec);
+        tree_destroy(this->exec);
         buf = this->next;
         free(this);
     }

@@ -4,7 +4,7 @@ struct node *tree_bang_create(struct node *child)
 {
     struct node *node;
 
-    secmalloc(node, sizeof(struct node_bang));
+    safe_malloc(node, sizeof(struct node_bang));
     node->type = BANG;
     node->data.bangnode.left = child;
     node->data.bangnode.right = NULL;
@@ -19,7 +19,7 @@ void tree_bang_print(struct node *node, FILE *fs, unsigned int *node_id)
         return;
     fprintf(fs, "%u [label = \"!\"];\n", cur_id = *node_id);
     lhs_id = ++*node_id;
-    ast_print_node(node->data.bangnode.left, fs, node_id);
+    tree_print_node(node->data.bangnode.left, fs);
     fprintf(fs, "%u -> %u\n", cur_id, lhs_id);
 }
 
@@ -34,6 +34,6 @@ void tree_bang_destroy(struct node *node)
 {
     if (node->type != BANG)
         return;
-    ast_destruct(node->data.bangnode.left);
+    tree_destroy(node->data.bangnode.left);
     free(node);
 }

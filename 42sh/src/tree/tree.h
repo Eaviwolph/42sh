@@ -87,13 +87,13 @@ struct node_case_item
 {
   char **pattern;
   struct node *exec;
-  struct case_item *next;
+  struct node_case_item *next;
 };
 
 struct node_case
 {
   char *word;
-  struct case_item *items;
+  struct node_case_item *items;
 };
 
 struct node_bang
@@ -133,7 +133,7 @@ enum red_type
     R_DLESSDASH // <<-
 } ;
 
-typedef struct node_red
+struct node_red
 {
     size_t size;
     enum red_type *type;

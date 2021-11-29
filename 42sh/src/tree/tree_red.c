@@ -4,7 +4,7 @@ struct node *tree_red_create(void)
 {
     struct node *node;
 
-    secmalloc(node, sizeof(struct node));
+    safe_malloc(node, sizeof(struct node));
     node->type = RED;
     node->data.rednode.size = 0;
     node->data.rednode.type = NULL;
@@ -20,11 +20,11 @@ void tree_red_add(struct node *node, enum red_type type, int fd, char *word)
         return;
     struct node_red *reds = (struct node_red *)&node->data.rednode;
     ++reds->size;
-    secrealloc(reds->type, reds->type, sizeof(enum red_type) * reds->size);
+    safe_realloc(reds->type, reds->type, sizeof(enum red_type) * reds->size);
     reds->type[reds->size - 1] = type;
-    secrealloc(reds->fd, reds->fd, sizeof(int) * reds->size);
+    safe_realloc(reds->fd, reds->fd, sizeof(int) * reds->size);
     reds->fd[reds->size - 1] = fd;
-    secrealloc(reds->word, reds->word, sizeof(char *) * reds->size);
+    safe_realloc(reds->word, reds->word, sizeof(char *) * reds->size);
     reds->word[reds->size - 1] = word;
 }
 
@@ -45,7 +45,7 @@ void tree_red_print(struct node *node, FILE *fs, unsigned *node_id)
     fprintf(fs, "\"];\n");
     fprintf(fs, "%u -> %u\n", cur_id, *node_id);
     if (reds->mhs)
-        ast_print_node(reds->mhs, fs, node_id);
+        tree_print_node(reds->mhs, fs);
 }
 
 void tree_red_destroy_node(struct node *node)
@@ -70,6 +70,6 @@ void tree_red_destroy(struct node *node)
 {
     if (node->type != RED)
         return;
-    ast_destruct(node->data.rednode.mhs);
-    ast_red_destruct_node(node);
+    tree_destroy(node->data.rednode.mhs);
+    tree_and_destroy_node(node);
 }

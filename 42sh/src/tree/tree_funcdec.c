@@ -4,7 +4,7 @@ struct node *tree_funcdec_create(char *name, struct node *body)
 {
     struct node *node;
 
-    secmalloc(node, sizeof(struct node));
+    safe_malloc(node, sizeof(struct node));
     node->type = FUNCDEC;
     node->data.funcdecnode.name = name;
     node->data.funcdecnode.body = body;
@@ -25,7 +25,7 @@ void tree_funcdec_print(struct node *node, FILE *fs, unsigned *node_id)
     fprintf(fs, "%u -> %u\n", cur_id, lhs_id);
 }
 
-void tree_funcdec_destruct_node(struct node *node)
+void tree_funcdec_destroy_node(struct node *node)
 {
     if (node->type != FUNCDEC)
         return;
@@ -34,13 +34,13 @@ void tree_funcdec_destruct_node(struct node *node)
     free(node);
 }
 
-void tree_funcdec_destruct(struct node *node)
+void tree_funcdec_destroy(struct node *node)
 {
     if (node->type != FUNCDEC)
         return;
     if (node->data.funcdecnode.name)
         free(node->data.funcdecnode.name);
     if (node->data.funcdecnode.body)
-        ast_destruct(node->data.funcdecnode.body);
+        tree_destroy(node->data.funcdecnode.body);
     free(node);
 }
