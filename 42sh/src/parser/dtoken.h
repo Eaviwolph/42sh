@@ -16,6 +16,7 @@ enum type
     LFI,
 
     LFOR,
+    LIN,
     LDO,
     LDONE,
     LWHILE,
