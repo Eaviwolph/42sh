@@ -167,7 +167,7 @@ void print_tok3(struct token t)
     else if (e == LLOBBER)
         printf(".>|");
     else
-        printf("%s", t.val);
+        printf("+%s+", t.val);
 }
 
 void print_tok2(struct token t)
