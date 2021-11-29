@@ -12,18 +12,13 @@ struct node *tree_subshell_create(struct node *child)
     return node;
 }
 
-void tree_subshell_print(struct node *node, FILE *fs, unsigned int *node_id)
+void tree_subshell_print(struct node *node, FILE *fs)
 {
-    unsigned int left;
-    unsigned int cur_id;
-
     if (node->type != SUBSHELL)
         return;
 
-    fprintf(fs, "%u [label = \"()\"];\n", cur_id = *node_id);
-    left = ++*node_id;
+    fprintf(fs, "( ");
     tree_print_node(node->data.subshnode.left, fs);
-    fprintf(fs, "%u -> %u\n", cur_id, left);
 }
 
 void tree_subshell_destroy_node(struct node *node)

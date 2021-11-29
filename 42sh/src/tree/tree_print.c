@@ -18,7 +18,7 @@ struct tree_print_table_elem
 struct tree_print_table_elem dictionary[NODE_TYPE_COUNT] = {
     { IF, tree_if_print },
     { FOR, tree_for_print },
-    { WHILE, tree_while_print } /*,
+    { WHILE, tree_while_print },
      { CMD, tree_cmd_print },
      { AND, tree_and_print },
      { OR, tree_or_print },
@@ -29,7 +29,7 @@ struct tree_print_table_elem dictionary[NODE_TYPE_COUNT] = {
      { SEPAND, tree_sepand_print },
      { SEP, tree_sep_print },
      { CASE, tree_case_print },
-     { RED, tree_red_print }*/
+     { RED, tree_red_print }
 };
 
 void tree_print(struct node *tree_ref, const char *filename)

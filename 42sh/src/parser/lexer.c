@@ -8,6 +8,8 @@
 
 #include "dtoken.h"
 #include "extendedgetline.h"
+#include "parser.h"
+#include "../tree/tree.h"
 
 int cutword(char c)
 {
@@ -116,9 +118,14 @@ void readlines(int fd)
     while ((line = exgetline(buffer)) != NULL)
     {
         d = str_to_dtoken(d, line, &quote);
+        print_dtoken(d);
         free(line);
     }
     exgetline_end(buffer, fd);
+    
     print_dtoken(d);
+    struct node *tree = parse(d);
+    tree_print_node(tree, NULL);
+    
     destroy_dtoken(d);
 }

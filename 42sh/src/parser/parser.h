@@ -35,6 +35,6 @@ struct parser
 
 struct parser *parser_init(int fd);
 
-struct node *parse(struct parser *parser);
+struct node *parse(struct dtoken *tokens);
 
 #endif

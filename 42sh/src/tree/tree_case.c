@@ -28,7 +28,7 @@ void tree_case_add_item(struct node *node, char **pattern, struct node *exec)
     *this = item;
 }
 
-void tree_case_print(struct node *node, FILE *fs, unsigned *node_id)
+void tree_case_print(struct node *node, FILE *fs)
 {
     unsigned cur_node;
     struct node_case_item *item;
