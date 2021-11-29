@@ -4,7 +4,7 @@ struct node *tree_and_create(struct node *left_node, struct node *right_node)
 {
     struct node *node;
 
-    secmalloc(node, sizeof(struct node));
+    safe_malloc(node, sizeof(struct node));
     node->type = AND;
     node->data.andnode.left = left_node;
     node->data.andnode.left = right_node;
@@ -19,10 +19,10 @@ void tree_and_print(struct node *node, FILE *fs, unsigned int *node_id)
         return;
     fprintf(fs, "%u [label = \"&&\"];\n", cur_id = *node_id);
     left_id = ++*node_id;
-    ast_print_node(node->data.andnode.left, fs, node_id);
+    tree_print_node(node->data.andnode.left, fs);
     fprintf(fs, "%u -> %u\n", cur_id, left_id);
     right_id = *node_id;
-    ast_print_node(node->data.andnode.right, fs, node_id);
+    tree_print_node(node->data.andnode.right, fs);
     fprintf(fs, "%u -> %u\n", cur_id, right_id);
 }
 

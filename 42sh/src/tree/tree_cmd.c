@@ -3,7 +3,7 @@
 struct node *tree_cmd_create(void)
 {
     struct node *n;
-    secmalloc(n, sizeof(struct node));
+    safe_malloc(n, sizeof(struct node));
     n->type = CMD;
     n->data.cmdnode.argv = NULL;
     n->data.cmdnode.pref = NULL;
@@ -18,7 +18,7 @@ void tree_cmd_pref(struct node *node, char *word)
     if (node->data.cmdnode.pref)
         while (node->data.cmdnode.pref[size])
             ++size;
-    secrealloc(node->data.cmdnode.pref, node->data.cmdnode.pref,
+    safe_realloc(node->data.cmdnode.pref, node->data.cmdnode.pref,
                (++size + 1) * sizeof(char *));
     node->data.cmdnode.pref[size - 1] = word;
     node->data.cmdnode.pref[size] = NULL;
@@ -32,7 +32,7 @@ void tree_cmd_argv(struct node *node, char *argv)
     if (node->data.cmdnode.argv)
         while (node->data.cmdnode.argv[size])
             ++size;
-    secrealloc(node->data.cmdnode.argv, node->data.cmdnode.argv,
+    safe_realloc(node->data.cmdnode.argv, node->data.cmdnode.argv,
                (++size + 1) * sizeof(char *));
     node->data.cmdnode.argv[size - 1] = argv;
     node->data.cmdnode.argv[size] = NULL;

@@ -2,9 +2,9 @@
 
 struct node *tree_or_create(struct node *left, struct node *right)
 {
-    s_ast_node *node;
+    struct node *node;
 
-    secmalloc(node, sizeof(struct node));
+    safe_malloc(node, sizeof(struct node));
     node->type = OR;
     node->data.ornode.left = left;
     node->data.ornode.right = right;
@@ -20,10 +20,10 @@ void tree_or_print(struct node *node, FILE *file, unsigned int *node_id)
 
     fprintf(file, "%u [label = \"||\"];\n", cur_id = *node_id);
     left_id = ++*node_id;
-    tree_print_node(node->data.ornode.left, file, node_id);
+    tree_print_node(node->data.ornode.left, file);
     fprintf(file, "%u -> %u\n", cur_id, left_id);
     right_id = *node_id;
-    tree_print_node(node->data.ornode.right, file, node_id);
+    tree_print_node(node->data.ornode.right, file);
     fprintf(file, "%u -> %u\n", cur_id, right_id);
 }
 
