@@ -118,7 +118,6 @@ struct dtoken *readlines(int fd)
     while ((line = exgetline(buffer)) != NULL)
     {
         d = str_to_dtoken(d, line, &quote);
-        print_dtoken(d);
         free(line);
     }
     exgetline_end(buffer, fd);
