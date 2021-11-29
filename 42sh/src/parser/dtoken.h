@@ -1,5 +1,5 @@
-#ifndef dtoken_H
-#define dtoken_H
+#ifndef DTOKEN_H
+#define DTOKEN_H
 
 #include <stddef.h>
 

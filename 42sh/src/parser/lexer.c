@@ -107,7 +107,7 @@ struct dtoken *str_to_dtoken(struct dtoken *d, char *s, char *quoted)
     return d;
 }
 
-void readlines(int fd)
+struct dtoken *readlines(int fd)
 {
     struct line *buffer = exgetline_start(fd);
     char *line;
@@ -119,6 +119,5 @@ void readlines(int fd)
         free(line);
     }
     exgetline_end(buffer, fd);
-    print_dtoken(d);
-    destroy_dtoken(d);
+    return d;
 }
