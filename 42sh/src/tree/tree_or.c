@@ -11,20 +11,14 @@ struct node *tree_or_create(struct node *left, struct node *right)
     return node;
 }
 
-void tree_or_print(struct node *node, FILE *file, unsigned int *node_id)
+void tree_or_print(struct node *node, FILE *file)
 {
-    unsigned int left_id, right_id, cur_id;
-
     if (node->type != OR)
         return;
 
-    fprintf(file, "%u [label = \"||\"];\n", cur_id = *node_id);
-    left_id = ++*node_id;
+    fprintf(file, "|| ");
     tree_print_node(node->data.ornode.left, file);
-    fprintf(file, "%u -> %u\n", cur_id, left_id);
-    right_id = *node_id;
     tree_print_node(node->data.ornode.right, file);
-    fprintf(file, "%u -> %u\n", cur_id, right_id);
 }
 
 void tree_or_destroy_node(struct node *node)

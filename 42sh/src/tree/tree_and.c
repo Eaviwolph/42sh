@@ -11,19 +11,13 @@ struct node *tree_and_create(struct node *left_node, struct node *right_node)
     return node;
 }
 
-void tree_and_print(struct node *node, FILE *fs, unsigned int *node_id)
+void tree_and_print(struct node *node, FILE *fs)
 {
-    unsigned int left_id, right_id, cur_id;
-
     if (node->type != AND)
         return;
-    fprintf(fs, "%u [label = \"&&\"];\n", cur_id = *node_id);
-    left_id = ++*node_id;
+    fprintf(fs, "&& ");
     tree_print_node(node->data.andnode.left, fs);
-    fprintf(fs, "%u -> %u\n", cur_id, left_id);
-    right_id = *node_id;
     tree_print_node(node->data.andnode.right, fs);
-    fprintf(fs, "%u -> %u\n", cur_id, right_id);
 }
 
 void tree_and_destroy_node(struct node *node)
