@@ -91,6 +91,8 @@ enum type char_to_type3(char *t)
         return LLESSGREAT;
     else if (strcmp(t, ">|") == 0)
         return LLOBBER;
+    else if (strcmp(t, "in") == 0)
+        return LIN;
     else
         return LWORD;
 }
@@ -166,6 +168,8 @@ void print_tok3(struct token t)
         printf(".<>");
     else if (e == LLOBBER)
         printf(".>|");
+    else if (e == LIN)
+        printf("IN");
     else
         printf("+%s+", t.val);
 }
