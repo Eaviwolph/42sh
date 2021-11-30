@@ -1,1 +1,4 @@
-echo $0
+while true
+do
+    echo BITE
+done

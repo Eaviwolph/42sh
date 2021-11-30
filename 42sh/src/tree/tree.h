@@ -56,8 +56,8 @@ struct node_while
 
 struct node_cmd
 {
-    char **argv;
     char **pref;
+    char **argv;
 };
 
 struct node_and
