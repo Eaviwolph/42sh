@@ -1,6 +1,7 @@
 #include "parser.h"
 
 #include <assert.h>
+#include <err.h>
 #include <errno.h>
 #include <setjmp.h>
 #include <stdio.h>
@@ -23,6 +24,11 @@ struct token peak_token(struct dtoken *list) // list musn't be empty!
     return list->head->data;
 }
 
+struct token peak_token_2(struct dtoken *list) // list musn't be empty!
+{
+    return list->head->next->data;
+}
+
 void eat_newlines(struct dtoken *list)
 {
     while (list->head && list->head->data.op == LNEWL)
@@ -37,17 +43,58 @@ int is_end(struct dtoken *list)
     return t.op == LNEWL;
 }
 
+int is_shellcmd(struct token t)
+{
+    return t.op == LPAO || t.op == LFOR || t.op == LWHILE || t.op == LIF
+        || t.op == LUNTIL || t.op == LACOO || t.op == LCASE;
+}
+
+int is_prefix(struct token t)
+{
+    return t.op == LDLESSDASH || // <<- HAHAH
+        t.op == LDLESS || // <<
+        t.op == LLESSGREAT || // <>
+        t.op == LLESSAND || // <&
+        t.op == LLESS || // <
+        t.op == LDGREAT || // >>
+        t.op == LGREATAND || // >&
+        t.op == LLOBBER || // >|
+        t.op == LGREAT || // >
+        t.op == LIONUMBER || // number juste before '>' or '<'
+        t.op == LWORD; // all others HIHI
+}
+
+struct node *parse_command(struct dtoken *t)
+{
+    struct token token;
+
+    token = peak_token(t);
+    if (is_shellcmd(token))
+        return parse_shellcommand(t);
+    else if (token.op == LWORD
+             && (!strcmp(token.val, "function") || peak_token_2(t).op == LPAO))
+        return parse_funcdec(t);
+    else if (is_prefix(token))
+        return parse_simplecommand(t);
+    else
+        errx(1, "Error parsing");
+    assert(0);
+    return NULL;
+}
+
 // rec aux of pipeline to process rec on ('|' ('\n')* command)*
 static struct node *parse_pipeline_command(struct dtoken *t)
 {
     struct token token;
     struct node *lhs;
 
-    if ((token = get_token(t)).op != LPIPE) // needs to have a pipe !
+    token = get_token(t);
+    if (token.op != LPIPE) // needs to have a pipe !
         errx(1, "PARSE ERROR\n");
-    eat_newline(t); // eat infinite \n
+    eat_newlines(t); // eat infinite \n
     lhs = parse_command(t); // command
-    if ((token = peak_token(t)).op == LPIPE)
+    token = peak_token(t);
+    if (token.op == LPIPE)
         // if pipe / then : rec / else : done
         return tree_pipe_create(lhs, parse_pipeline_command(t));
     return lhs;
@@ -67,9 +114,8 @@ struct node *parse_pipeline(struct dtoken *t)
     struct node *lhs;
     lhs = parse_command(t); // command
     struct node *result;
-    token = peak_token(t);
-    if (token.op == LPIPE) // optional ( | ... )* doing rec on
-                           // ('|' ('\n')* command)*
+    if (peak_token(t).op == LPIPE) // optional ( | ... )* doing rec on
+                                   // ('|' ('\n')* command)*
         result = tree_pipe_create(lhs, parse_pipeline_command(t));
     else
         result = lhs;
@@ -83,9 +129,10 @@ struct node *parse_and_or(struct dtoken *t)
     struct node *lhs;
     lhs = parse_pipeline(t); // pipeline
     struct token token;
-    token = get_token(t);
+    token = peak_token(t);
     if (token.op == LAND || token.op == LOR) // (('&&'|'||') ('\n')* pipeline)*
     { // rec
+        get_token(t);
         eat_newlines(t); // (\n)*
         struct node *rhs;
         rhs = parse_and_or(t); // pipeline (recursive)
@@ -109,7 +156,7 @@ struct node *parse_list(struct dtoken *t)
         if (is_end(t)) // know if [; | &] or ((; | &) and_or)*
             return middle.op == LSEMI ? left : tree_sepand_create(left, NULL);
         struct node *right = parse_list(t); // very smart !! simplifies w/ rec
-        if (middle.op == LSEMI) //
+        if (middle.op == LSEMI)
             return tree_sep_create(left, right);
         else
             return tree_sepand_create(left, right);
@@ -122,16 +169,18 @@ struct node *parse_input(struct dtoken *tokens)
 {
     if (!tokens)
         return NULL;
-    if (!tokens->head || tokens->head->data.op == LNEWL) // \n EOF sole
+    struct token token;
+    if (!tokens->head || peak_token(tokens).op == LNEWL) // \n EOF sole
+    {
+        token = get_token(tokens);
         return NULL;
-
+    }
     struct node *buffer; // list
     buffer = parse_list(tokens);
 
-    struct token token; // \n EOF
-    token = get_token(tokens);
+    token = get_token(tokens); // \n EOF
     if (tokens->head && tokens->head->data.op != LNEWL)
-        printf("ERROR PARSE\n");
+        errx(1, "ERROR PARSE\n");
     return buffer;
 }
 

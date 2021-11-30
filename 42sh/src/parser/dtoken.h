@@ -36,6 +36,7 @@ enum type
     LDGREAT, // >>
     LLESSGREAT, // <>
     LLOBBER, // >|
+    // PUT IONUMBER HERE
 
     LWORD,
 };
