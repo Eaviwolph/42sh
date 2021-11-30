@@ -44,6 +44,8 @@ enum type
     LCASE, // until
     LESAC, // esac
 
+    LIONUMBER, // io
+
     // PUT IONUMBER HERE
 
     LWORD,

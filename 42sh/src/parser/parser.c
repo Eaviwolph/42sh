@@ -82,25 +82,23 @@ static int is_keyword(const struct token t)
     return 0;
 }
 
-
-
 static struct node *parse_compound_list(struct dtoken *parser)
 {
     struct node *lhs;
     struct token tok, tok2;
 
     // eat newlines
-    eat_newline();
+    eat_newlines(parser);
     // parse andor
-    lhs = parse_andor(parser);
+    lhs = parse_and_or(parser);
     // looking for ';' or '&' or '\n
     tok = peak_token(parser);
     if (tok.op == LSEMI || tok.op == LSEPAND || tok.op == LNEWL)
     {
         get_token(parser);
         if (tok.op == LNEWL)
-            show_prompt(TYPEIN_PS2);
-        eat_newline();
+            show_prompt(parser);
+        eat_newlines(parser);
         // check for and_or
         tok2 = peak_token(parser);
         // false condition
@@ -220,12 +218,12 @@ static struct node *parse_funcdec(struct dtoken *parser)
         errx(1, "Error parsing");
     if (get_token(parser).op != LPAC) // )
         errx(1, "Error parsing");
-    eat_newline(); // eat infinite \n
-    body = parse_shellcommand(parser); // shell_command
+    eat_newlines(parser); // eat infinite \n
+    body = parse_shell_command(parser); // shell_command
     return tree_funcdec_create(funcname, body);
 }
 
-static struct node *parse_shellcommand(struct dtoken *t)
+static struct node *parse_shell_command(struct dtoken *t)
 {
     struct token token;
     struct node *node;
@@ -350,12 +348,12 @@ struct node *parse_command(struct dtoken *t)
 
     token = peak_token(t);
     if (is_shellcmd(token))
-        return parse_shellcommand(t); // shell_command
+        return parse_shell_command(t); // shell_command
     else if (token.op == LWORD
              && (!strcmp(token.val, "function") || peak_token_2(t).op == LPAO))
         return parse_funcdec(t); // funcdec
     else if (is_prefix(token) || token.op == LWORD)
-        return parse_simplecommand(t); // simple_command
+        return parse_simple_command(t); // simple_command
     else
         errx(1, "Error parsing");
     assert(0);
@@ -466,5 +464,13 @@ struct node *parse_input(struct dtoken *tokens)
 
 struct node *parse(struct dtoken *tokens)
 {
+    struct dtoken_item *l = tokens->head;
+    while (l)
+    {
+        if (l->data.op != LIONUMBER && is_prefix(l->data) && l->next
+            && l->next->data.op == LWORD)
+            l->next->data.op = LIONUMBER;
+        l = l->next;
+    }
     return parse_input(tokens);
 }
