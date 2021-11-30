@@ -1,1 +1,1 @@
-echo $0
+!echo hello && echo salut

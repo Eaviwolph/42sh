@@ -9,6 +9,7 @@ enum type
     LPAO, // (
     LACOC, // }
     LACOO, // {
+    LBANG, // !
 
     LIF,  // if
     LTHEN,  // then

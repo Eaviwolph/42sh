@@ -103,6 +103,8 @@ enum type char_to_type3(char *t)
         return LDLESSDASH;
     else if (strcmp(t, "<<") == 0)
         return LDLESS;
+    else if (strcmp(t, "!") == 0)
+        return LBANG;
     else
         return LWORD;
 }
@@ -112,9 +114,9 @@ enum type char_to_type2(char *t)
     if (strcmp(t, "while") == 0)
         return LWHILE;
 
-    else if (strcmp(t, "and") == 0)
+    else if (strcmp(t, "&&") == 0)
         return LAND;
-    else if (strcmp(t, "or") == 0)
+    else if (strcmp(t, "||") == 0)
         return LOR;
 
     else if (strcmp(t, ";") == 0)
@@ -190,6 +192,8 @@ void print_tok3(struct token t)
         printf(".<<-");
     else if (e == LDLESS)
         printf(".<<");
+    else if (e == LBANG)
+        printf(".!");
     else
         printf("+%s+", t.val);
 }
@@ -214,7 +218,7 @@ void print_tok2(struct token t)
     else if (e == LPIPE)
         printf(".|");
     else if (e == LSEPAND)
-        printf("&");
+        printf(".&");
     else if (e == LGREAT)
         printf(".>");
     else if (e == LLESS)

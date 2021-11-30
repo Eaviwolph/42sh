@@ -13,7 +13,7 @@ int cutword(char c)
 {
     return (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')'
             || c == '{' || c == '}' || c == ';' || c == '\n' || c == '"'
-            || c == '\'');
+            || c == '\'' || c == '!');
 }
 
 size_t nextchar(char *s, size_t i)
