@@ -30,6 +30,7 @@ char *dvar_get(struct dvar *list, size_t index);
 int dvar_insert_at(struct dvar *list, char *name, char *element, size_t index);
 char *dvar_find(const struct dvar *list, char *name);
 void dvar_remove_at(struct dvar *list, size_t index);
+void dvar_remove_elm(struct dvar *list, char *elm);
 
 // Threshold 3.
 void dvar_concat(struct dvar *list1, struct dvar *list2);

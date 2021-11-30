@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
             char quoted = '\0';
             sh->token = dtoken_init();
             sh->token = str_to_dtoken(sh->token, argv[2], &quoted);
+            sh->token = dtoken_add(sh->token, calloc(1, sizeof(char)));
+            sh->token->tail->data.op = LEOF;
+
             sh->var = getvars(argc - 3, argv + 3);
         }
         else
@@ -75,6 +78,9 @@ int main(int argc, char *argv[])
         sh->var = getvars(argc, argv);
         sh->token = readlines(fd);
     }
+    dvar_print(sh->var);
+    dvar_remove_elm(sh->var, "1");
+    printf("-------------------\n");
     dvar_print(sh->var);
     print_dtoken(sh->token);
     // sh->tree = parse(sh->token);
