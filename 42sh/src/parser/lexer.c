@@ -44,6 +44,10 @@ size_t eatmore(char *s, size_t i, size_t j)
     {
         j++;
     }
+    else if (s[i] == ';' && s[j] == ';')
+    {
+        j++;
+    }
     else if (s[i] == '<' && s[j] == '<')
     {
         j++;
