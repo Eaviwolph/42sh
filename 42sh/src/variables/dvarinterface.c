@@ -41,6 +41,32 @@ char *dvar_find(const struct dvar *list, char *name)
     return NULL;
 }
 
+void dvar_remove_elm(struct dvar *list, char *elm)
+{
+    size_t i = 0;
+    struct dvar_item *h = list->head;
+    while (h && strcmp(elm, h->name) != 0)
+    {
+        h = h->next;
+        i++;
+    }
+    if (h)
+    {
+        if (h->prev)
+            h->prev->next = h->next;
+        else
+            list->head = h->next;
+        if (h->next)
+            h->next->prev = h->prev;
+        else
+            list->tail = h->prev;
+        free(h->data);
+        free(h->name);
+        free(h);
+        list->size--;
+    }
+}
+
 int dvar_add_var(struct dvar *list, char *name, char *element)
 {
     return dvar_replace_var(list, name, element)

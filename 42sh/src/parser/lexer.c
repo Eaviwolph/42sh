@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../tree/tree.h"
 #include "dtoken.h"
 #include "extendedgetline.h"
 #include "parser.h"
-#include "../tree/tree.h"
 
 int cutword(char c)
 {
@@ -129,5 +129,7 @@ struct dtoken *readlines(int fd)
         free(line);
     }
     exgetline_end(buffer, fd);
+    d = dtoken_add(d, calloc(1, sizeof(char)));
+    d->tail->data.op = LEOF;
     return d;
 }

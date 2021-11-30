@@ -47,6 +47,7 @@ enum type
     // PUT IONUMBER HERE
 
     LWORD,
+    LEOF,
 };
 
 struct token

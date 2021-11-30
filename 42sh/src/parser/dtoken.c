@@ -194,6 +194,8 @@ void print_tok3(struct token t)
         printf(".<<");
     else if (e == LBANG)
         printf(".!");
+    else if(e == LEOF)
+        printf(".EOF\n");
     else
         printf("+%s+", t.val);
 }
@@ -266,7 +268,8 @@ void print_dtoken(struct dtoken *l)
     while (t)
     {
         print_tok(t->data);
-        printf(" ");
+        if (t->data.op != LNEWL && t->data.op != LEOF)
+            printf(" ");
         t = t->next;
     }
 }
