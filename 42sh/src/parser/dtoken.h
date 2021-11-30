@@ -5,28 +5,28 @@
 
 enum type
 {
-    LPAC,
-    LPAO,
-    LACOC,
-    LACOO,
+    LPAC, // )
+    LPAO, // (
+    LACOC, // }
+    LACOO, // {
 
-    LIF,
-    LTHEN,
-    LELSE,
-    LFI,
+    LIF,  // if
+    LTHEN,  // then
+    LELSE, // else
+    LFI, // fi
 
-    LFOR,
-    LIN,
-    LDO,
-    LDONE,
-    LWHILE,
+    LFOR, // for
+    LIN, // in
+    LDO, // do
+    LDONE, // done
+    LWHILE, // while
 
-    LAND,
-    LOR,
+    LAND, // &&
+    LOR, // ||
 
     LSEMI, // ;
     LDSEMI, // ;;
-    LNEWL,
+    LNEWL, // \n
     LPIPE, // |
     LSEPAND, // &
     LGREAT, // >
@@ -36,6 +36,13 @@ enum type
     LDGREAT, // >>
     LLESSGREAT, // <>
     LLOBBER, // >|
+    LDLESSDASH, // <<-
+    LDLESS, // <<
+
+    LUNTIL, // until
+    LCASE, // until
+    LESAC, // esac
+
     // PUT IONUMBER HERE
 
     LWORD,

@@ -93,6 +93,16 @@ enum type char_to_type3(char *t)
         return LLOBBER;
     else if (strcmp(t, "in") == 0)
         return LIN;
+    else if (strcmp(t, "until") == 0)
+        return LUNTIL;
+    else if (strcmp(t, "case") == 0)
+        return LCASE;
+    else if (strcmp(t, "esac") == 0)
+        return LESAC;
+    else if (strcmp(t, "<<-") == 0)
+        return LDLESSDASH;
+    else if (strcmp(t, "<<") == 0)
+        return LDLESS;
     else
         return LWORD;
 }
@@ -170,6 +180,16 @@ void print_tok3(struct token t)
         printf(".>|");
     else if (e == LIN)
         printf("IN");
+    else if (e == LUNTIL)
+        printf("UNTIL");
+    else if (e == LCASE)
+        printf("LCASE");
+    else if (e == LESAC)
+        printf("LESAC");
+    else if (e == LDLESSDASH)
+        printf(".<<-");
+    else if (e == LDLESS)
+        printf(".<<");
     else
         printf("+%s+", t.val);
 }

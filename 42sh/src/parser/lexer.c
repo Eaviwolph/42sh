@@ -36,15 +36,21 @@ size_t eatmore(char *s, size_t i, size_t j)
 {
     if ((s[i] == '&' && s[j] == '&') || (s[i] == '|' && s[j] == '|'))
     {
-        return j + 1;
+        j++;
     }
-    if (s[i] == '>' && (s[j] == '>' || s[j] == '|' || s[j] == '&'))
+    else if (s[i] == '>' && (s[j] == '>' || s[j] == '|' || s[j] == '&'))
     {
-        return j + 1;
+        j++;
     }
-    if (s[i] == '<' && (s[j] == '>' || s[j] == '&'))
+    else if (s[i] == '<' && (s[j] == '>' || s[j] == '&'))
     {
-        return j + 1;
+        j++;
+    }
+    else if (s[i] == '<' && s[j] == '<')
+    {
+        j++;
+        if (s[j] == '-')
+            j++;
     }
     return j;
 }
