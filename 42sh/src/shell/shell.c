@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
                 errx(1, "%s: can't be open or doesn't exist", argv[1]);
             sh->token = readlines(fd);
         }
-        // dvar_print(sh->var);
-        // print_dtoken(sh->token);
+        dvar_print(sh->var);
+        print_dtoken(sh->token);
         // sh->tree = parse(sh->token);
         // tree_print_node(sh->tree, stdout);
     }
