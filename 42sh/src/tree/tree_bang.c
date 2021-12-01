@@ -4,10 +4,9 @@ struct node *tree_bang_create(struct node *child)
 {
     struct node *node;
 
-    safe_malloc(node, sizeof(struct node_bang));
+    safe_calloc(node, 1, sizeof(struct node));
     node->type = BANG;
     node->data.bangnode.left = child;
-    node->data.bangnode.right = NULL;
     return node;
 }
 

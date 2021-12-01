@@ -84,11 +84,8 @@ int main(int argc, char *argv[])
         sh->var = getvars(argc, argv);
         sh->token = readlines(fd);
     }
-    dvar_print(sh->var);
-    dvar_remove_elm(sh->var, "1");
-    printf("-------------------\n");
-    dvar_print(sh->var);
-    print_dtoken(sh->token);
+    //dvar_print(sh->var);
+    //print_dtoken(sh->token);
     faketree(sh);
     // sh->tree = parse(sh->token);
     // tree_print_node(sh->tree, stdout);

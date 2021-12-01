@@ -4,7 +4,13 @@ all:
 	./exec
 
 CC=gcc -Wall -Werror -Wextra -std=c99 -pedantic -g3 -fsanitize=address
+
+var=variables/dvar.c variables/var.c variables/dvarinterface.c
+parser=parser/dtoken.c parser/lexer.c parser/extendedgetline.c
+alias=alias/dalias.c alias/alias.c alias/daliasinterface.c
+tools=tools/*.c
+exect=exectree/*.c
+tree=tree/*.c
+
 eavi:
-	${CC} shell/shell.c variables/dvar.c variables/var.c variables/dvarinterface.c parser/dtoken.c parser/lexer.c parser/extendedgetline.c alias/dalias.c alias/alias.c alias/daliasinterface.c
-eavi2:
-	${CC} tree/*.c exectree/*.c shell/shell.c variables/dvar.c variables/var.c variables/dvarinterface.c parser/dtoken.c parser/lexer.c parser/extendedgetline.c alias/dalias.c alias/alias.c alias/daliasinterface.c
+	${CC} shell/shell.c $(var) $(parser) $(alias) $(tools) $(exect) $(tree)

@@ -3,16 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../tools/tools.h"
 #include "dvar.h"
-
-static char *strdup(const char *s)
-{
-    size_t len = strlen(s) + 1;
-    void *new = malloc(len);
-    if (new == NULL)
-        return NULL;
-    return (char *)memcpy(new, s, len);
-}
 
 static char *concat(char *dst, char *src, int lendst)
 {
@@ -38,47 +30,13 @@ static int testshortvar(char c)
         || c == '*';
 }
 
-static char *my_itoa(int value, char *s)
-{
-    if (value == 0)
-    {
-        s[0] = '0';
-        s[1] = '\0';
-    }
-    else
-    {
-        size_t i = 0;
-        if (value < 0)
-        {
-            s[0] = '-';
-            value = -value;
-            i++;
-        }
-        size_t cp = value;
-        while (cp > 0)
-        {
-            cp /= 10;
-            i++;
-        }
-        s[i] = '\0';
-        i--;
-        while (value > 0)
-        {
-            s[i] = '0' + (value % 10);
-            i--;
-            value /= 10;
-        }
-    }
-    return s;
-}
-
 static char *get_random(void)
 {
     int r;
     for (int i = 0; i < 10; i++)
         r = rand() % 32767;
     char *s = calloc(7, sizeof(char));
-    s = my_itoa(r, s);
+    s = myitoa(r, s);
     return s;
 }
 
@@ -96,7 +54,7 @@ static char *get_fnprintf(char *s, int j, int io, struct dvar *var)
     }
     if (strcmp(name, "RANDOM") == 0)
     {
-        dvar_add_var(var, strdup("RANDOM"), get_random());
+        dvar_add_var(var, mystrdup("RANDOM"), get_random());
     }
     char *val = dvar_find(var, name);
     if (!val)
@@ -196,12 +154,12 @@ struct dvar *initvars(char **names, char **vars, int size)
         size--;
     }
     sprintf(s, "%d", size);
-    dvar_add_var(d, strdup("#"), s);
-    dvar_add_var(d, strdup("?"), strdup("0"));
+    dvar_add_var(d, mystrdup("#"), s);
+    dvar_add_var(d, mystrdup("?"), mystrdup("0"));
     if (list)
     {
-        dvar_add_var(d, strdup("*"), list);
-        dvar_add_var(d, strdup("@"), strdup(list));
+        dvar_add_var(d, mystrdup("*"), list);
+        dvar_add_var(d, mystrdup("@"), mystrdup(list));
     }
     return d;
 }
