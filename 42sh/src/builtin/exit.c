@@ -1,12 +1,10 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
+#include "builtin.h"
 
-void my_exit(char *s)
+void my_exit(char *arg[], size_t len)
 {
     char *end;
-    long status = strtol(s, &end, 10);
+    long status = strtol(arg[0], &end, 10);
     if (*end)
-        fprintf(stderr, "42sh: exit(%s): only numeric argument !\n", s);
+        fprintf(stderr, "42sh: exit(%s): only numeric argument !\n", arg[0]);
     _exit((!*end) ? status : 255);
 }
