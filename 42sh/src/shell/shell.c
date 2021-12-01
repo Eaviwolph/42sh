@@ -12,6 +12,8 @@
 #include "../parser/parser.h"
 #include "../parser/token.h"
 
+void faketree(struct shell *s);
+
 void freeshell(struct shell *sh)
 {
     if (sh->token)
@@ -52,6 +54,10 @@ int main(int argc, char *argv[])
     int fd = 0;
     struct shell *sh;
     safe_calloc(sh, 1, sizeof(struct shell));
+    if (argc >= 1)
+    {
+        sh->name = argv[0];
+    }
     if (argc >= 2)
     {
         if (argc > 2 && strcmp(argv[1], "-c") == 0)
@@ -83,6 +89,7 @@ int main(int argc, char *argv[])
     printf("-------------------\n");
     dvar_print(sh->var);
     print_dtoken(sh->token);
+    faketree(sh);
     // sh->tree = parse(sh->token);
     // tree_print_node(sh->tree, stdout);
     freeshell(sh);

@@ -3,7 +3,7 @@
 struct node *tree_cmd_create(void)
 {
     struct node *n;
-    safe_malloc(n, sizeof(struct node));
+    safe_calloc(n, 1, sizeof(struct node));
     n->type = CMD;
     n->data.cmdnode.argv = NULL;
     n->data.cmdnode.pref = NULL;

@@ -4,7 +4,7 @@ struct node *tree_and_create(struct node *left_node, struct node *right_node)
 {
     struct node *node;
 
-    safe_malloc(node, sizeof(struct node));
+    safe_calloc(node, 1, sizeof(struct node));
     node->type = AND;
     node->data.andnode.left = left_node;
     node->data.andnode.left = right_node;

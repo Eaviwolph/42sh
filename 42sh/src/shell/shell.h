@@ -8,6 +8,7 @@
 
 struct shell
 {
+    char *name;
     struct dvar *var;
     struct dalias *alias;
     struct dtoken *token;

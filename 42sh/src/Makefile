@@ -6,3 +6,5 @@ all:
 CC=gcc -Wall -Werror -Wextra -std=c99 -pedantic -g3 -fsanitize=address
 eavi:
 	${CC} shell/shell.c variables/dvar.c variables/var.c variables/dvarinterface.c parser/dtoken.c parser/lexer.c parser/extendedgetline.c alias/dalias.c alias/alias.c alias/daliasinterface.c
+eavi2:
+	${CC} tree/*.c exectree/*.c shell/shell.c variables/dvar.c variables/var.c variables/dvarinterface.c parser/dtoken.c parser/lexer.c parser/extendedgetline.c alias/dalias.c alias/alias.c alias/daliasinterface.c

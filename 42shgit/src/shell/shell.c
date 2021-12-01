@@ -79,8 +79,11 @@ int main(int argc, char *argv[])
             continue;
         else if (parser->error)
             return ERROR_PARSE;
-        if (option_is_set(shell->option, "ast_print"))
+        ast_print(ast, "test");
+        /*if (option_is_set(shell->option, "ast_print") || 1)
+        {
             ast_print(ast, NULL);
+        }*/
         if (ast)
             exec_node(ast);
         ast_destruct(ast);

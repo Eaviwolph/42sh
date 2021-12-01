@@ -197,6 +197,7 @@ struct dvar *initvars(char **names, char **vars, int size)
     }
     sprintf(s, "%d", size);
     dvar_add_var(d, strdup("#"), s);
+    dvar_add_var(d, strdup("?"), strdup("0"));
     if (list)
     {
         dvar_add_var(d, strdup("*"), list);
