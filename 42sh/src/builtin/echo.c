@@ -1,8 +1,4 @@
-#include <ctype.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "builtin.h"
 
 void get_opt(size_t *n, size_t *e, char *arg[], size_t len)
 {
@@ -31,9 +27,8 @@ void octal(char **s)
     char *end;
 
     for (; i < 4 && is_octale(**s); i++, ++*s)
-    {
         buf[i] = **s;
-    }
+
     --*s;
     buf[i] = '\0';
     unsigned long x = strtoul(buf, &end, 8);
@@ -49,11 +44,11 @@ void hexa(char **s)
 
     for (; i < 3 && isxdigit(**s); i++, ++*s)
         buf[i] = **s;
-    
+
     --*s;
     buf[i] = '\0';
     unsigned long x = strtoul(buf, &end, 16);
-    char c = x; 
+    char c = x;
     printf("%c", c);
 }
 
@@ -61,22 +56,22 @@ char special_char(char c)
 {
     switch (c)
     {
-        case 'a':
-            return '\a';
-        case 'b':
-            return '\b';
-        case 'f':
-            return '\f';
-        case 'n':
-            return '\n';
-        case 'r':
-            return '\r';
-        case 't':
-            return '\t';
-        case 'v':
-            return '\v';
-        default:
-            return 0;
+    case 'a':
+        return '\a';
+    case 'b':
+        return '\b';
+    case 'f':
+        return '\f';
+    case 'n':
+        return '\n';
+    case 'r':
+        return '\r';
+    case 't':
+        return '\t';
+    case 'v':
+        return '\v';
+    default:
+        return 0;
     }
 }
 
@@ -118,12 +113,4 @@ void my_echo(char *arg[], size_t len)
         e_treat(arg[len - 1]);
     if (n)
         putchar('\n');
-}
-
-int main()
-{
-    char **s = malloc(sizeof(char *) * 1);
-    s[0] = "banane\\z oui\\n";
-    my_echo(s, 1);
-    free(s);
 }
