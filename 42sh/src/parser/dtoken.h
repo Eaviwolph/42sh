@@ -7,20 +7,6 @@ enum type
 {
     LPAC, // )
     LPAO, // (
-    LACOC, // }
-    LACOO, // {
-    LBANG, // !
-
-    LIF,  // if
-    LTHEN,  // then
-    LELSE, // else
-    LFI, // fi
-
-    LFOR, // for
-    LIN, // in
-    LDO, // do
-    LDONE, // done
-    LWHILE, // while
 
     LAND, // &&
     LOR, // ||
@@ -40,13 +26,7 @@ enum type
     LDLESSDASH, // <<-
     LDLESS, // <<
 
-    LUNTIL, // until
-    LCASE, // until
-    LESAC, // esac
-
     LIONUMBER, // io
-
-    // PUT IONUMBER HERE
 
     LWORD,
     LEOF,
