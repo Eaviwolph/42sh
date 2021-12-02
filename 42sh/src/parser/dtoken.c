@@ -151,7 +151,7 @@ void print_tok3(struct token t)
         printf(".<<-");
     else if (e == LDLESS)
         printf(".<<");
-    else if(e == LEOF)
+    else if (e == LEOF)
         printf(".EOF\n");
     else
         printf("+%s+", t.val);
@@ -223,7 +223,8 @@ void destroy_dtoken_item(struct dtoken_item *l)
     if (l)
     {
         destroy_dtoken_item(l->next);
-        free(l->data.val);
+        if (l->data.val)
+            free(l->data.val);
         free(l);
     }
 }
