@@ -17,7 +17,10 @@
 
 struct token get_token(struct dtoken *list)
 {
-    return dtoken_remove_at(list, 0);
+    struct token t = dtoken_remove_at(list, 0);
+    if (t.op != LWORD)
+        free(t.val);
+    return t;
 }
 
 struct token peak_token(struct dtoken *list) // list musn't be empty!
@@ -44,10 +47,13 @@ int is_end(struct dtoken *list)
     return t.op == LNEWL;
 }
 
-int is_shellcmd(struct token t)
+int is_shellcmd(struct token token)
 {
-    return t.op == LPAO || t.op == LFOR || t.op == LWHILE || t.op == LIF
-        || t.op == LUNTIL || t.op == LACOO || t.op == LCASE;
+    return token.op == LPAO
+        || (token.op == LWORD
+            && (!strcmp(token.val, "for") || !strcmp(token.val, "while")
+                || !strcmp(token.val, "if") || !strcmp(token.val, "until")
+                || !strcmp(token.val, "{") || !strcmp(token.val, "case")));
 }
 
 int is_prefix(struct token t)
