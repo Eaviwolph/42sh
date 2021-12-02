@@ -1,7 +1,12 @@
 CFILES=common/*.c parser/*.c tree/*.c shell/*.c tools/*.c variables/*.c
-all:
-	gcc -Werror -Wextra -Wall -g -std=c99 -pedantic -fsanitize=address $(CFILES) -o exec
+prompt: build
 	./exec
+
+file: build
+	cat ahahah.sh | ./exec
+
+build:
+		gcc -Werror -Wextra -Wall -g -std=c99 -pedantic -fsanitize=address $(CFILES) -o exec
 
 CC=gcc -Wall -Werror -Wextra -std=c99 -pedantic -g3 -fsanitize=address
 

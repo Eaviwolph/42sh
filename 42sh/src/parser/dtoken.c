@@ -295,6 +295,8 @@ void destroy_dtoken_item(struct dtoken_item *l)
 
 void destroy_dtoken(struct dtoken *l)
 {
+    if (!l)
+        return;
     destroy_dtoken_item(l->head);
     free(l);
 }
