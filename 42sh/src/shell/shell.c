@@ -22,8 +22,8 @@ void freeshell(struct shell *sh)
         dvar_destroy(sh->var);
     if (sh->tree)
         tree_destroy(sh->tree);
-    /*if (sh->alias)
-        dalias_destroy(sh->alias);*/
+    if (sh->alias)
+        dalias_destroy(sh->alias);
     free(sh);
 }
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     // print_dtoken(sh->token);
     // faketree(sh);
     sh->tree = parse(sh->token);
-    tree_print_node(sh->tree, stdout);
+    //tree_print_node(sh->tree, stdout);
     freeshell(sh);
     return 0;
 }

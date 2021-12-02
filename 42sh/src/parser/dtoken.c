@@ -91,30 +91,17 @@ enum type char_to_type3(char *t)
         return LLESSGREAT;
     else if (strcmp(t, ">|") == 0)
         return LLOBBER;
-    else if (strcmp(t, "in") == 0)
-        return LIN;
-    else if (strcmp(t, "until") == 0)
-        return LUNTIL;
-    else if (strcmp(t, "case") == 0)
-        return LCASE;
-    else if (strcmp(t, "esac") == 0)
-        return LESAC;
     else if (strcmp(t, "<<-") == 0)
         return LDLESSDASH;
     else if (strcmp(t, "<<") == 0)
         return LDLESS;
-    else if (strcmp(t, "!") == 0)
-        return LBANG;
     else
         return LWORD;
 }
 
 enum type char_to_type2(char *t)
 {
-    if (strcmp(t, "while") == 0)
-        return LWHILE;
-
-    else if (strcmp(t, "&&") == 0)
+    if (strcmp(t, "&&") == 0)
         return LAND;
     else if (strcmp(t, "||") == 0)
         return LOR;
@@ -145,26 +132,6 @@ enum type char_to_type(char *t)
         return LPAC;
     else if (strcmp(t, "(") == 0)
         return LPAO;
-    else if (strcmp(t, "{") == 0)
-        return LACOO;
-    else if (strcmp(t, "}") == 0)
-        return LACOC;
-
-    else if (strcmp(t, "if") == 0)
-        return LIF;
-    else if (strcmp(t, "then") == 0)
-        return LTHEN;
-    else if (strcmp(t, "else") == 0)
-        return LELSE;
-    else if (strcmp(t, "fi") == 0)
-        return LFI;
-
-    else if (strcmp(t, "for") == 0)
-        return LFOR;
-    else if (strcmp(t, "do") == 0)
-        return LDO;
-    else if (strcmp(t, "done") == 0)
-        return LDONE;
     else
         return char_to_type2(t);
 }
@@ -180,20 +147,10 @@ void print_tok3(struct token t)
         printf(".<>");
     else if (e == LLOBBER)
         printf(".>|");
-    else if (e == LIN)
-        printf("IN");
-    else if (e == LUNTIL)
-        printf("UNTIL");
-    else if (e == LCASE)
-        printf("LCASE");
-    else if (e == LESAC)
-        printf("LESAC");
     else if (e == LDLESSDASH)
         printf(".<<-");
     else if (e == LDLESS)
         printf(".<<");
-    else if (e == LBANG)
-        printf(".!");
     else if(e == LEOF)
         printf(".EOF\n");
     else
@@ -203,10 +160,8 @@ void print_tok3(struct token t)
 void print_tok2(struct token t)
 {
     enum type e = t.op;
-    if (e == LWHILE)
-        printf("WHILE");
 
-    else if (e == LAND)
+    if (e == LAND)
         printf(".&&");
     else if (e == LOR)
         printf(".||");
@@ -238,26 +193,6 @@ void print_tok(struct token t)
         printf(")");
     else if (e == LPAO)
         printf("(");
-    else if (e == LACOO)
-        printf("{");
-    else if (e == LACOC)
-        printf("}");
-
-    else if (e == LIF)
-        printf("IF");
-    else if (e == LTHEN)
-        printf("THEN");
-    else if (e == LELSE)
-        printf("ELSE");
-    else if (e == LFI)
-        printf("FI");
-
-    else if (e == LFOR)
-        printf("FOR");
-    else if (e == LDO)
-        printf("DO");
-    else if (e == LDONE)
-        printf("DONE");
     else
         print_tok2(t);
 }
