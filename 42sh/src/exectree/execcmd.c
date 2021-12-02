@@ -1,5 +1,6 @@
 #define _GNU_SOURCE
 #include <err.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +10,7 @@
 #include "../tools/tools.h"
 #include "exectree.h"
 
-int decode_status(int status, struct shell *s, char *name)
+int decode_status(int status)
 {
     if (WIFEXITED(status))
     {
@@ -17,7 +18,6 @@ int decode_status(int status, struct shell *s, char *name)
         return rc;
     }
     int sig = WTERMSIG(status);
-    fprintf(stderr, "%s: %s: not found", s->name, name);
     return sig;
 }
 
@@ -31,6 +31,10 @@ void execcmd(struct node_cmd n, struct shell *s)
     else if (pid == 0)
     {
         execvp(n.argv[0], n.argv);
+        if (errno == ENOENT)
+            fprintf(stderr, "%s: %s: command not found.\n", s->name, n.argv[0]);
+        else
+            perror(s->name);
         exit(EXIT_FAILURE);
     }
     int status;
@@ -39,6 +43,6 @@ void execcmd(struct node_cmd n, struct shell *s)
         errx(1, "waitpid");
 
     char *temp = calloc(12, sizeof(char));
-    temp = myitoa(decode_status(status, s, n.argv[0]), temp);
+    temp = myitoa(decode_status(status), temp);
     dvar_add_var(s->var, mystrdup("?"), temp);
 }

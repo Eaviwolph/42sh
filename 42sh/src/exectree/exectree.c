@@ -18,4 +18,8 @@ void exectree(struct node *n, struct shell *s)
     {
         execbang(n->data.bangnode, s);
     }
+    else if (n->type == PIPE)
+    {
+        exec_pipe(n->data.pipenode, s);
+    }
 }

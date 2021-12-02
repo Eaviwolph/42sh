@@ -1,0 +1,1 @@
+echo yolo > t | uniq -c
