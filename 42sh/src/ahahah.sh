@@ -1,1 +1,1 @@
-if echo ok; then echo prout; fi
+echo yolo && echo world

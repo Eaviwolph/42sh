@@ -205,26 +205,26 @@ static struct node *parse_rule_if(struct dtoken *parser)
 
     // if
     tok = get_token(parser);
-    if (tok.op != LIF || strcmp(tok.val, "if"))
+    if (tok.op != LWORD || strcmp(tok.val, "if"))
         errx(1, "Parse Error 1");
     free(tok.val);
     cond = parse_compound_list(parser);
     // then
     tok = get_token(parser);
-    if (tok.op != LTHEN || strcmp(tok.val, "then"))
+    if (tok.op != LWORD || strcmp(tok.val, "then"))
         errx(1, "Parse Error 2");
     free(tok.val);
     cond_true = parse_compound_list(parser);
     // elses
     tok = peak_token(parser);
-    if (tok.op == LELSE
+    if (tok.op == LWORD
         && (!strcmp(tok.val, "else") || !strcmp(tok.val, "elif")))
         cond_false = parse_else_clause(parser);
     else
         cond_false = NULL;
     // fi
     tok = get_token(parser);
-    if (tok.op != LFI || strcmp(tok.val, "fi"))
+    if (tok.op != LWORD || strcmp(tok.val, "fi"))
         errx(1, "Parse Error 3");
     free(tok.val);
     // create if node
@@ -713,8 +713,8 @@ struct node *parse_input(struct dtoken *tokens)
     struct node *buffer; // list
     buffer = parse_list(tokens);
 
-    get_token(tokens); // \n EOF
-    if (tokens->head->data.op != LEOF && tokens->head->data.op != LNEWL)
+    struct token t = peak_token(tokens); // \n EOF
+    if (t.op != LEOF && t.op != LNEWL)
         errx(1, "Error parsing 40");
     return buffer;
 }
