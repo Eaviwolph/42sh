@@ -14,5 +14,6 @@
 void my_echo(char *arg[], size_t len);
 void my_exit(char *arg[], size_t len);
 void my_cd(char *arg[], size_t len);
+void my_export(char *arg[], size_t len);
 
 #endif

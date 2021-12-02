@@ -21,7 +21,7 @@ void my_cd(char *arg[], size_t len)
         if ((tmp = getenv("PWD")))
             setenv("OLDPWD", tmp, !0);
         tmp = getcwd(tmp, PATH_MAX * sizeof(char));
-        setenv("PWD", tmp, !0); 
+        setenv("PWD", tmp, !0);
     }
     else
         errx(1, "cd: %s: No such file or directory", arg[0]);
