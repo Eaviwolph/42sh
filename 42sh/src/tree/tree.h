@@ -193,7 +193,7 @@ void tree_if_print(struct node *node, FILE *stream);
 void tree_if_destroy_node(struct node *n);
 void tree_if_destroy(struct node *n);
 
-struct node *tree_for_createvoid(char *var, char **vals, struct node *command);
+struct node *tree_for_create(char *var, char **vals, struct node *command);
 void tree_for_print(struct node *n, FILE *stream);
 void tree_for_destroy_node(struct node *n);
 void tree_for_destroy(struct node *n);

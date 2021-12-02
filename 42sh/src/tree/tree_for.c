@@ -1,6 +1,6 @@
 #include "tree.h"
 
-struct node *tree_for_createvoid(char *var, char **vals, struct node *command)
+struct node *tree_for_create(char *var, char **vals, struct node *command)
 {
     struct node *new;
     safe_malloc(new, sizeof(struct node));

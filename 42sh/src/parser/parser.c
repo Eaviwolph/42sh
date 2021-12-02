@@ -11,6 +11,7 @@
 
 #include "../common/function.h"
 #include "../common/macro.h"
+#include "../shell/shell.h"
 #include "../tree/tree.h"
 #include "dtoken.h"
 
@@ -82,14 +83,265 @@ static int is_keyword(const struct token t)
     return 0;
 }
 
+static struct node *parse_compound_list(struct dtoken *parser);
+struct node *parse_and_or(struct dtoken *t);
+static struct node *parse_shell_command(struct dtoken *t);
+
+static void parse_case_item(struct dtoken *parser, struct node *casenode)
+{
+    struct token tok;
+    char **pattern = NULL;
+    struct node *exec = NULL;
+
+    tok = get_token(parser);
+    // check for a '(' before pattern list
+    if (tok.op == LPAO)
+        tok = get_token(parser);
+    // retrieve pattern list
+    if (tok.op != LWORD)
+        errx(1, "Parse Error");
+    pattern = string_array_append(pattern, tok.val);
+    while ((tok = peak_token(parser)).op == LPIPE)
+    {
+        get_token(parser);
+        if ((tok = get_token(parser)).op != LWORD)
+            errx(1, "Parse Error");
+        pattern = string_array_append(pattern, tok.val);
+    }
+    // check for ')'
+    if ((tok = get_token(parser)).op != LPAC)
+        errx(1, "Parse Error");
+    // eat newline
+    eat_newlines(parser);
+    if ((tok = peak_token(parser)).op != LDSEMI
+        && !(tok.op == LWORD && !strcmp(tok.val, "esac")))
+        exec = parse_compound_list(parser);
+    tree_case_add_item(casenode, pattern, exec);
+}
+
+static void parse_case_clause(struct dtoken *parser, struct node *casenode)
+{
+    struct token tok;
+
+    do
+    {
+        parse_case_item(parser, casenode);
+        tok = peak_token(parser);
+        if (tok.op == LDSEMI)
+        {
+            get_token(parser);
+            eat_newlines(parser);
+            tok = peak_token(parser);
+        }
+        if (tok.op == LWORD && !strcmp(tok.val, "esac"))
+            return;
+    } while (1);
+}
+
+static struct node *parse_do_group(struct dtoken *parser)
+{
+    struct token tok;
+    struct node *exec;
+
+    // do
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "do"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    // exec part
+    exec = parse_compound_list(parser);
+    // done
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "done"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    return exec;
+}
+
+static struct node *parse_else_clause(struct dtoken *parser)
+{
+    struct token tok;
+
+    tok = get_token(parser);
+    if (tok.op == LWORD && !strcmp(tok.val, "else"))
+    {
+        free(tok.val);
+        return parse_compound_list(parser);
+    }
+    else if (tok.op == LWORD && !strcmp(tok.val, "elif"))
+    {
+        struct node *cond, *cond_true, *cond_false;
+
+        free(tok.val);
+        // if
+        cond = parse_compound_list(parser);
+        // then
+        tok = get_token(parser);
+        if (tok.op != LWORD || strcmp(tok.val, "then"))
+            errx(1, "Parse Error");
+        free(tok.val);
+        cond_true = parse_compound_list(parser);
+        // elses
+        tok = peak_token(parser);
+        if (tok.op == LWORD
+            && (!strcmp(tok.val, "else") || !strcmp(tok.val, "elif")))
+            cond_false = parse_else_clause(parser);
+        else
+            cond_false = NULL;
+        return tree_if_create(cond, cond_true, cond_false);
+    }
+    else
+        errx(1, "Parse Error");
+    assert(0);
+    return NULL;
+}
+
+static struct node *parse_rule_if(struct dtoken *parser)
+{
+    struct token tok;
+    struct node *cond;
+    struct node *cond_true;
+    struct node *cond_false;
+
+    // if
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "if"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    cond = parse_compound_list(parser);
+    // then
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "then"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    cond_true = parse_compound_list(parser);
+    // elses
+    tok = peak_token(parser);
+    if (tok.op == LWORD
+        && (!strcmp(tok.val, "else") || !strcmp(tok.val, "elif")))
+        cond_false = parse_else_clause(parser);
+    else
+        cond_false = NULL;
+    // fi
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "fi"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    // create if node
+    return tree_if_create(cond, cond_true, cond_false);
+}
+static struct node *parse_rule_case(struct dtoken *parser)
+{
+    struct token tok;
+    struct node *casenode = NULL; // NULL if no case_clause
+    char *varname;
+
+    // check for token 'case'
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "case"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    // get varname
+    if ((tok = get_token(parser)).op != LWORD)
+        errx(1, "Parse Error");
+    varname = tok.val;
+    // eat newline
+    eat_newlines(parser);
+    // check for token 'in'
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "in"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    // eat newline
+    eat_newlines(parser);
+    // parse case body
+    tok = peak_token(parser);
+    if ((tok.op == LWORD && strcmp(tok.val, "esac")) || tok.op == LPAO)
+    {
+        casenode = tree_case_create(varname);
+        parse_case_clause(parser, casenode);
+    }
+    // check for token 'esac'
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "esac"))
+        errx(1, "Parse Error");
+    free(tok.val);
+    return casenode;
+}
+
+static struct node *parse_rule_until(struct dtoken *parser)
+{
+    struct node *cond;
+    struct token tok;
+
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "until")) // until
+        errx(1, "Error Parsing");
+    free(tok.val);
+    cond = tree_bang_create(parse_compound_list(parser)); // inverse
+    return tree_while_create(cond, parse_do_group(parser)); // while
+}
+
+static struct node *parse_rule_while(struct dtoken *parser)
+{
+    struct node *cond;
+    struct token tok;
+
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "while")) // while
+        errx(1, "Parse Error");
+    free(tok.val);
+    cond = parse_compound_list(parser); // condition
+    return tree_while_create(cond, parse_do_group(parser)); // do_group
+}
+
+static struct node *parse_rule_for(struct dtoken *parser)
+{
+    struct token tok;
+    char *varname;
+    char **values = NULL;
+
+    // for
+    tok = get_token(parser);
+    if (tok.op != LWORD || strcmp(tok.val, "for"))
+        errx(1, "Parsing Error");
+    free(tok.val);
+    // varname
+    tok = get_token(parser);
+    if (tok.op != LWORD)
+        errx(1, "Parsing Error");
+    varname = tok.val;
+    // eat infinite newlines
+    eat_newlines(parser);
+    // check for in
+    if ((tok = peak_token(parser)).op == LWORD && !strcmp(tok.val, "in"))
+    {
+        tok = get_token(parser);
+        free(tok.val);
+        do
+        { // add each word into "values"
+            if ((tok = get_token(parser)).op != LWORD)
+                errx(1, "Parsing Error");
+            values = string_array_append(values, tok.val);
+        } while ((tok = peak_token(parser)).op == LWORD);
+        // check for ';' or '\n'
+        if ((tok = get_token(parser)).op != LSEMI && tok.op != LNEWL)
+            errx(1, "Parsing Error");
+        // eat infinite newlines
+        eat_newlines(parser);
+    }
+    // parse the command
+    return tree_for_create(varname, values, parse_do_group(parser));
+}
+
 static struct node *parse_compound_list(struct dtoken *parser)
 {
     struct node *lhs;
     struct token tok, tok2;
 
-    // eat newlines
+    // eat infinite newlines
     eat_newlines(parser);
-    // parse andor
+    // parse and_or
     lhs = parse_and_or(parser);
     // looking for ';' or '&' or '\n
     tok = peak_token(parser);
@@ -97,7 +349,11 @@ static struct node *parse_compound_list(struct dtoken *parser)
     {
         get_token(parser);
         if (tok.op == LNEWL)
-            show_prompt(parser);
+        {
+            printf("MAKE PROMPT.C>");
+            fflush(stdout); // show_prompt(parser);
+        }
+        // eat infinite newlines
         eat_newlines(parser);
         // check for and_or
         tok2 = peak_token(parser);
@@ -105,14 +361,11 @@ static struct node *parse_compound_list(struct dtoken *parser)
         if (tok2.op == LDSEMI || tok2.op == LPAC || tok2.op == LSEMI
             || tok2.op == LSEPAND || tok2.op == LEOF
             || (tok2.op == LWORD
-                && (!strcmp(tok2.val, "}") || !strcmp(tok2.val, "do")
-                    || !strcmp(tok2.val, "fi") || !strcmp(tok2.val, "done")
-                    || !strcmp(tok2.val, "else") || !strcmp(tok2.val, "elif")
-                    || !strcmp(tok2.val, "esac") || !strcmp(tok2.val, "then"))))
-            return (tok.op == LSEMI || tok.op == LNEWL)
+                && (strcmp(tok2.val, "function") && is_keyword(tok2))))
+            return (tok.op == LSEMI || tok.op == LNEWL) // new line = new tree
                 ? lhs
                 : tree_sepand_create(lhs, NULL);
-        else
+        else // smart recursion
             return (tok.op == LSEMI || tok.op == LNEWL)
                 ? tree_sep_create(lhs, parse_compound_list(parser))
                 : tree_sepand_create(lhs, parse_compound_list(parser));
@@ -126,9 +379,10 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
     long int fd = -1;
     enum red_type redtype;
 
+    // setup reds to be able to hold redirections
     if (*reds == NULL)
         *reds = tree_red_create();
-    // retrieve redirection fd if exist
+    // IONUMBER
     if ((token = peak_token(parser)).op == LIONUMBER)
     {
         get_token(parser);
@@ -137,7 +391,7 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
         if (errno || fd < 0 || fd > FD_MAX)
             errx(1, "Error parsing");
     }
-    // retrieve redirection type
+    // redirection name '<<' >' '|>'...
     token = get_token(parser);
     switch (token.op)
     {
@@ -190,7 +444,7 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
         errx(1, "Error parsing");
         redtype = 0; // to avoid warning about redtype may be unitialized
     }
-    // retrieve redirection word
+    // word
     token = get_token(parser);
     if (token.op == LWORD)
         tree_red_add(*reds, redtype, fd, token.val);
@@ -203,7 +457,6 @@ static struct node *parse_funcdec(struct dtoken *parser)
     struct token tok;
     char *funcname;
     struct node *body;
-    struct node *reds = NULL;
 
     tok = get_token(parser);
     if (tok.op == LWORD && !strcmp(tok.val, "function")) // WORD
@@ -268,7 +521,7 @@ static struct node *parse_shell_command(struct dtoken *t)
     return node;
 }
 
-static int parse_element(struct node *t, struct node *cmd, struct node **red)
+static int parse_element(struct dtoken *t, struct node *cmd, struct node **red)
 {
     struct token token;
     int found = 0;
@@ -276,7 +529,7 @@ static int parse_element(struct node *t, struct node *cmd, struct node **red)
 
     for (;;)
     {
-        token = peak_token(cmd);
+        token = peak_token(t);
         if (is_redirection(token))
         {
             parse_redirection(t, red);
@@ -286,18 +539,20 @@ static int parse_element(struct node *t, struct node *cmd, struct node **red)
         {
             first = 0;
             // FIXME: gestion des alias
-            tree_cmd_add_argv(cmd, get_token(t).val);
+            tree_cmd_argv(cmd, get_token(t).val);
             ++found;
         }
         else if (token.op == LWORD && !first)
-            tree_cmd_add_argv(cmd, get_token(t).val);
+            tree_cmd_argv(cmd, get_token(t).val);
         else
             break;
     }
     return found;
 }
 
-static int parse_prefix(struct node *t, struct node *cmd, struct node **red)
+#define is_var_assignment(t) ((*(t).val != '=') && (strchr((t).val, '=') != NULL))
+
+static int parse_prefix(struct dtoken *t, struct node *cmd, struct node **red)
 {
     struct token token;
     int found = 0;
@@ -310,9 +565,9 @@ static int parse_prefix(struct node *t, struct node *cmd, struct node **red)
             parse_redirection(t, red);
             ++found;
         }
-        else if (is_assignment(token)) // ASSIGNMENT_WORD
+        else if (is_var_assignment(token)) // ASSIGNMENT_WORD
         {
-            tree_cmd_add_prefix(cmd, get_token(t).val);
+            tree_cmd_pref(cmd, get_token(t).val);
             ++found;
         }
         else
@@ -447,16 +702,15 @@ struct node *parse_input(struct dtoken *tokens)
 {
     if (!tokens)
         return NULL;
-    struct token token;
     if (!tokens->head || peak_token(tokens).op == LNEWL) // \n EOF sole
     {
-        token = get_token(tokens);
+        get_token(tokens);
         return NULL;
     }
     struct node *buffer; // list
     buffer = parse_list(tokens);
 
-    token = get_token(tokens); // \n EOF
+    get_token(tokens); // \n EOF
     if (tokens->head && tokens->head->data.op != LNEWL)
         errx(1, "ERROR PARSE\n");
     return buffer;
