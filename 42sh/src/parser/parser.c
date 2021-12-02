@@ -19,7 +19,10 @@ struct token get_token(struct dtoken *list)
 {
     struct token t = dtoken_remove_at(list, 0);
     if (t.op != LWORD)
+    {
         free(t.val);
+        t.val = NULL;
+    }
     return t;
 }
 
