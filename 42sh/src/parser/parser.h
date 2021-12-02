@@ -21,6 +21,8 @@ enum
     REGISTER_DEFAULT_SIZE = 50,
 };
 
+struct token token_cache;
+
 typedef enum type token_id;
 
 struct parser
