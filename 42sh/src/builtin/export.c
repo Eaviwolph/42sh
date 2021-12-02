@@ -8,7 +8,6 @@ void my_export(char *arg[], size_t len)
         char *tmp = arg[i];
         char *token = strtok_r(tmp, "=", &tmp);
         setenv(token, tmp, !0);
-        printf("%s: %s\n", token, tmp);
         i++;
     }
 }
