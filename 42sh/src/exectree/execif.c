@@ -9,5 +9,6 @@ void execif(struct node_if n, struct shell *s)
         exectree(n.c_then, s);
         return;
     }
-    exectree(n.c_else, s);
+    if (n.c_else)
+        exectree(n.c_else, s);
 }

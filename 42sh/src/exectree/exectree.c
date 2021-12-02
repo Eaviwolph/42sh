@@ -22,4 +22,8 @@ void exectree(struct node *n, struct shell *s)
     {
         exec_pipe(n->data.pipenode, s);
     }
+    else if (n->type == IF)
+    {
+        execif(n->data.ifnode, s);
+    }
 }

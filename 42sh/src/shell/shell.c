@@ -9,6 +9,7 @@
 #include <sys/types.h>
 
 #include "../common/macro.h"
+#include "../exectree/exectree.h"
 #include "../parser/parser.h"
 #include "../parser/token.h"
 
@@ -88,7 +89,8 @@ int main(int argc, char *argv[])
     // print_dtoken(sh->token);
     // faketree(sh);
     sh->tree = parse(sh->token);
-    //tree_print_node(sh->tree, stdout);
+    // tree_print_node(sh->tree, stdout);
+    exectree(sh->tree, sh);
     freeshell(sh);
     return 0;
 }

@@ -1,6 +1,7 @@
-if echo condition
+if false
 then
-    echo command
-else
-    echo command2
+    echo yolo
+elif true
+then
+    echo world
 fi
