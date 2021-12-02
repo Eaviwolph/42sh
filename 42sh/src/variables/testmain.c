@@ -3,7 +3,7 @@
 #include <time.h>
 
 #include "var.h"
-
+/*
 int main(void)
 {
     srand(time(NULL));
@@ -22,4 +22,4 @@ int main(void)
     dvar_destroy(d);
 
     return 0;
-}
+}*/

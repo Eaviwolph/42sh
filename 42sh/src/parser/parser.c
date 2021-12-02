@@ -550,7 +550,8 @@ static int parse_element(struct dtoken *t, struct node *cmd, struct node **red)
     return found;
 }
 
-#define is_var_assignment(t) ((*(t).val != '=') && (strchr((t).val, '=') != NULL))
+#define is_var_assignment(t)                                                   \
+    ((*(t).val != '=') && (strchr((t).val, '=') != NULL))
 
 static int parse_prefix(struct dtoken *t, struct node *cmd, struct node **red)
 {
@@ -702,7 +703,9 @@ struct node *parse_input(struct dtoken *tokens)
 {
     if (!tokens)
         return NULL;
-    if (!tokens->head || peak_token(tokens).op == LNEWL) // \n EOF sole
+    print_dtoken(tokens);
+    if (peak_token(tokens).op == LEOF
+        || peak_token(tokens).op == LNEWL) // \n EOF sole
     {
         get_token(tokens);
         return NULL;
@@ -711,8 +714,8 @@ struct node *parse_input(struct dtoken *tokens)
     buffer = parse_list(tokens);
 
     get_token(tokens); // \n EOF
-    if (tokens->head && tokens->head->data.op != LNEWL)
-        errx(1, "ERROR PARSE\n");
+    if (tokens->head->data.op != LEOF && tokens->head->data.op != LNEWL)
+        errx(1, "Error parsing");
     return buffer;
 }
 
