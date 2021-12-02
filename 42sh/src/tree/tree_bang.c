@@ -14,7 +14,7 @@ void tree_bang_print(struct node *node, FILE *fs)
 {
     if (node->type != BANG)
         return;
-    fprintf(fs, "bang ");
+    fprintf(fs, "! ");
     tree_print_node(node->data.bangnode.left, fs);
 }
 

@@ -15,9 +15,10 @@ void tree_and_print(struct node *node, FILE *fs)
 {
     if (node->type != AND)
         return;
-    fprintf(fs, "&& ");
     tree_print_node(node->data.andnode.left, fs);
+    fprintf(fs, "&& ");
     tree_print_node(node->data.andnode.right, fs);
+    fflush(fs);
 }
 
 void tree_and_destroy_node(struct node *node)

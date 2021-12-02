@@ -99,18 +99,18 @@ static void parse_case_item(struct dtoken *parser, struct node *casenode)
         tok = get_token(parser);
     // retrieve pattern list
     if (tok.op != LWORD)
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 6");
     pattern = string_array_append(pattern, tok.val);
     while ((tok = peak_token(parser)).op == LPIPE)
     {
         get_token(parser);
         if ((tok = get_token(parser)).op != LWORD)
-            errx(1, "Parse Error");
+            errx(1, "Parse Error 7");
         pattern = string_array_append(pattern, tok.val);
     }
     // check for ')'
     if ((tok = get_token(parser)).op != LPAC)
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 8");
     // eat newline
     eat_newlines(parser);
     if ((tok = peak_token(parser)).op != LDSEMI
@@ -146,14 +146,14 @@ static struct node *parse_do_group(struct dtoken *parser)
     // do
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "do"))
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 9");
     free(tok.val);
     // exec part
     exec = parse_compound_list(parser);
     // done
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "done"))
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 10");
     free(tok.val);
     return exec;
 }
@@ -178,7 +178,7 @@ static struct node *parse_else_clause(struct dtoken *parser)
         // then
         tok = get_token(parser);
         if (tok.op != LWORD || strcmp(tok.val, "then"))
-            errx(1, "Parse Error");
+            errx(1, "Parse Error 11");
         free(tok.val);
         cond_true = parse_compound_list(parser);
         // elses
@@ -191,7 +191,7 @@ static struct node *parse_else_clause(struct dtoken *parser)
         return tree_if_create(cond, cond_true, cond_false);
     }
     else
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 12");
     assert(0);
     return NULL;
 }
@@ -205,27 +205,27 @@ static struct node *parse_rule_if(struct dtoken *parser)
 
     // if
     tok = get_token(parser);
-    if (tok.op != LWORD || strcmp(tok.val, "if"))
-        errx(1, "Parse Error");
+    if (tok.op != LIF || strcmp(tok.val, "if"))
+        errx(1, "Parse Error 1");
     free(tok.val);
     cond = parse_compound_list(parser);
     // then
     tok = get_token(parser);
-    if (tok.op != LWORD || strcmp(tok.val, "then"))
-        errx(1, "Parse Error");
+    if (tok.op != LTHEN || strcmp(tok.val, "then"))
+        errx(1, "Parse Error 2");
     free(tok.val);
     cond_true = parse_compound_list(parser);
     // elses
     tok = peak_token(parser);
-    if (tok.op == LWORD
+    if (tok.op == LELSE
         && (!strcmp(tok.val, "else") || !strcmp(tok.val, "elif")))
         cond_false = parse_else_clause(parser);
     else
         cond_false = NULL;
     // fi
     tok = get_token(parser);
-    if (tok.op != LWORD || strcmp(tok.val, "fi"))
-        errx(1, "Parse Error");
+    if (tok.op != LFI || strcmp(tok.val, "fi"))
+        errx(1, "Parse Error 3");
     free(tok.val);
     // create if node
     return tree_if_create(cond, cond_true, cond_false);
@@ -239,18 +239,18 @@ static struct node *parse_rule_case(struct dtoken *parser)
     // check for token 'case'
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "case"))
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 13");
     free(tok.val);
     // get varname
     if ((tok = get_token(parser)).op != LWORD)
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 14");
     varname = tok.val;
     // eat newline
     eat_newlines(parser);
     // check for token 'in'
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "in"))
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 15");
     free(tok.val);
     // eat newline
     eat_newlines(parser);
@@ -264,7 +264,7 @@ static struct node *parse_rule_case(struct dtoken *parser)
     // check for token 'esac'
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "esac"))
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 16");
     free(tok.val);
     return casenode;
 }
@@ -276,7 +276,7 @@ static struct node *parse_rule_until(struct dtoken *parser)
 
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "until")) // until
-        errx(1, "Error Parsing");
+        errx(1, "Error Parsing 17");
     free(tok.val);
     cond = tree_bang_create(parse_compound_list(parser)); // inverse
     return tree_while_create(cond, parse_do_group(parser)); // while
@@ -289,7 +289,7 @@ static struct node *parse_rule_while(struct dtoken *parser)
 
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "while")) // while
-        errx(1, "Parse Error");
+        errx(1, "Parse Error 18");
     free(tok.val);
     cond = parse_compound_list(parser); // condition
     return tree_while_create(cond, parse_do_group(parser)); // do_group
@@ -304,12 +304,12 @@ static struct node *parse_rule_for(struct dtoken *parser)
     // for
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "for"))
-        errx(1, "Parsing Error");
+        errx(1, "Parsing Error 19");
     free(tok.val);
     // varname
     tok = get_token(parser);
     if (tok.op != LWORD)
-        errx(1, "Parsing Error");
+        errx(1, "Parsing Error 20");
     varname = tok.val;
     // eat infinite newlines
     eat_newlines(parser);
@@ -321,12 +321,12 @@ static struct node *parse_rule_for(struct dtoken *parser)
         do
         { // add each word into "values"
             if ((tok = get_token(parser)).op != LWORD)
-                errx(1, "Parsing Error");
+                errx(1, "Parsing Error 21");
             values = string_array_append(values, tok.val);
         } while ((tok = peak_token(parser)).op == LWORD);
         // check for ';' or '\n'
         if ((tok = get_token(parser)).op != LSEMI && tok.op != LNEWL)
-            errx(1, "Parsing Error");
+            errx(1, "Parsing Error 22");
         // eat infinite newlines
         eat_newlines(parser);
     }
@@ -389,7 +389,7 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
         errno = 0;
         fd = strtol(token.val, NULL, 10);
         if (errno || fd < 0 || fd > FD_MAX)
-            errx(1, "Error parsing");
+            errx(1, "Error parsing 24");
     }
     // redirection name '<<' >' '|>'...
     token = get_token(parser);
@@ -441,7 +441,7 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
             fd = 1;
         break;
     default:
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 25");
         redtype = 0; // to avoid warning about redtype may be unitialized
     }
     // word
@@ -449,7 +449,7 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
     if (token.op == LWORD)
         tree_red_add(*reds, redtype, fd, token.val);
     else
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 26");
 }
 
 static struct node *parse_funcdec(struct dtoken *parser)
@@ -465,12 +465,12 @@ static struct node *parse_funcdec(struct dtoken *parser)
         tok = get_token(parser);
     }
     if (tok.op != LWORD)
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 27");
     funcname = tok.val;
     if (get_token(parser).op != LPAO) // (
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 28");
     if (get_token(parser).op != LPAC) // )
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 29");
     eat_newlines(parser); // eat infinite \n
     body = parse_shell_command(parser); // shell_command
     return tree_funcdec_create(funcname, body);
@@ -497,17 +497,17 @@ static struct node *parse_shell_command(struct dtoken *t)
         get_token(t);
         node = parse_compound_list(t); // compound_list
         if ((token = get_token(t)).op != LWORD || strcmp(token.val, "}")) // }
-            errx(1, "Error parsing");
+            errx(1, "Error parsing 30");
     }
     else if (token.op == LPAO) // (
     {
         get_token(t);
         node = tree_subshell_create(parse_compound_list(t)); // complist
         if ((token = get_token(t)).op != LPAC) // )
-            errx(1, "Error parsing");
+            errx(1, "Error parsing 31");
     }
     else
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 32");
     // parse redirection (because of command)
     struct token tok = peak_token(t);
     struct node *reds = NULL;
@@ -588,7 +588,7 @@ static struct node *parse_simple_command(struct dtoken *t)
     found += parse_prefix(t, cmd, &red); // (prefix) + or (prefix)*
     found += parse_element(t, cmd, &red); // (element)+
     if (!found)
-        errx(1, "Error Parsing");
+        errx(1, "Error Parsing 35");
     if (red)
     {
         // put in rednode in
@@ -611,7 +611,7 @@ struct node *parse_command(struct dtoken *t)
     else if (is_prefix(token) || token.op == LWORD)
         return parse_simple_command(t); // simple_command
     else
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 36");
     assert(0);
     return NULL;
 }
@@ -715,7 +715,7 @@ struct node *parse_input(struct dtoken *tokens)
 
     get_token(tokens); // \n EOF
     if (tokens->head->data.op != LEOF && tokens->head->data.op != LNEWL)
-        errx(1, "Error parsing");
+        errx(1, "Error parsing 40");
     return buffer;
 }
 

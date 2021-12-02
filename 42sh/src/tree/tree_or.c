@@ -16,9 +16,10 @@ void tree_or_print(struct node *node, FILE *file)
     if (node->type != OR)
         return;
 
-    fprintf(file, "|| ");
     tree_print_node(node->data.ornode.left, file);
+    fprintf(file, "|| ");
     tree_print_node(node->data.ornode.right, file);
+    fflush(file);
 }
 
 void tree_or_destroy_node(struct node *node)

@@ -20,8 +20,8 @@ void freeshell(struct shell *sh)
         destroy_dtoken(sh->token);
     if (sh->var)
         dvar_destroy(sh->var);
-    // if (sh->tree)
-    // tree_destroy(sh->tree);
+    if (sh->tree)
+        tree_destroy(sh->tree);
     /*if (sh->alias)
         dalias_destroy(sh->alias);*/
     free(sh);
