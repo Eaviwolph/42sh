@@ -1,7 +1,7 @@
-if false
+if true
 then
     echo yolo
-elif true
+elif false
 then
     echo world
 fi

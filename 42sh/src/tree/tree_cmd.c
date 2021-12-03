@@ -1,3 +1,4 @@
+#include "../tools/tools.h"
 #include "tree.h"
 
 struct node *tree_cmd_create(void)
@@ -19,8 +20,8 @@ void tree_cmd_pref(struct node *node, char *word)
         while (node->data.cmdnode.pref[size])
             ++size;
     safe_realloc(node->data.cmdnode.pref, node->data.cmdnode.pref,
-               (++size + 1) * sizeof(char *));
-    node->data.cmdnode.pref[size - 1] = word;
+                 (++size + 1) * sizeof(char *));
+    node->data.cmdnode.pref[size - 1] = mystrdup(word);
     node->data.cmdnode.pref[size] = NULL;
 }
 
@@ -33,8 +34,8 @@ void tree_cmd_argv(struct node *node, char *argv)
         while (node->data.cmdnode.argv[size])
             ++size;
     safe_realloc(node->data.cmdnode.argv, node->data.cmdnode.argv,
-               (++size + 1) * sizeof(char *));
-    node->data.cmdnode.argv[size - 1] = argv;
+                 (++size + 1) * sizeof(char *));
+    node->data.cmdnode.argv[size - 1] = mystrdup(argv);
     node->data.cmdnode.argv[size] = NULL;
 }
 
@@ -54,7 +55,8 @@ void tree_cmd_print(struct node *node, FILE *stream)
                 if (prefix[i][p] == '"')
                     fprintf(stream, "%.*s ", (int)(p - last), prefix[i] + last),
                         last = p;
-            fprintf(stream, "%*s ", (int)(p - last), prefix[i] + last), last = p;
+            fprintf(stream, "%*s ", (int)(p - last), prefix[i] + last),
+                last = p;
         }
     }
 

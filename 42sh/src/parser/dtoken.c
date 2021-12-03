@@ -10,6 +10,7 @@ struct dtoken *dtoken_init(void)
     if (l)
     {
         l->size = 0;
+        l->i = 0;
         l->head = NULL;
         l->tail = NULL;
     }
@@ -79,6 +80,84 @@ struct token dtoken_remove_at(struct dtoken *list, size_t index)
         list->size--;
     }
     return tok;
+}
+
+struct token get_token(struct dtoken *list)
+{
+    size_t i = 0;
+    struct dtoken_item *h = list->head;
+    while (h && i < list->i)
+    {
+        h = h->next;
+        i++;
+    }
+    list->i++;
+    if (h)
+        return h->data;
+    struct token t;
+    t.op = LEOF;
+    t.val = NULL;
+    return t;
+}
+
+void eat_newlines(struct dtoken *list)
+{
+    struct dtoken_item *h = list->head;
+    size_t i = 0;
+    while (h && i < list->i)
+    {
+        h = h->next;
+        i++;
+    }
+    while (h && h->data.op == LNEWL)
+    {
+        h = h->next;
+        list->i++;
+    }
+}
+
+struct token peak_token_2(struct dtoken *list)
+{
+    size_t i = 0;
+    struct dtoken_item *h = list->head;
+    while (h && i < list->i)
+    {
+        h = h->next;
+        i++;
+    }
+    if (h && h->next)
+    {
+        return h->next->data;
+    }
+    struct token t;
+    t.op = LEOF;
+    t.val = NULL;
+    return t;
+}
+
+struct token peak_token(struct dtoken *list)
+{
+    size_t i = 0;
+    struct dtoken_item *h = list->head;
+    while (h && i < list->i)
+    {
+        h = h->next;
+        i++;
+    }
+    if (h)
+        return h->data;
+    struct token t;
+    t.op = LEOF;
+    t.val = NULL;
+    return t;
+}
+
+int is_end(struct dtoken *list)
+{
+    struct token t = peak_token(list);
+    if (t.op == LEOF)
+        return 1;
+    return t.op == LNEWL;
 }
 
 enum type char_to_type3(char *t)
@@ -171,7 +250,7 @@ void print_tok2(struct token t)
     else if (e == LDSEMI)
         printf(".;;");
     else if (e == LNEWL)
-        printf("\n");
+        printf("NEWL ");
     else if (e == LPIPE)
         printf(".|");
     else if (e == LSEPAND)
@@ -223,16 +302,13 @@ void destroy_dtoken_item(struct dtoken_item *l)
     if (l)
     {
         destroy_dtoken_item(l->next);
-        if (l->data.val)
-            free(l->data.val);
+        free(l->data.val);
         free(l);
     }
 }
 
 void destroy_dtoken(struct dtoken *l)
 {
-    if (!l)
-        return;
     destroy_dtoken_item(l->head);
     free(l);
 }

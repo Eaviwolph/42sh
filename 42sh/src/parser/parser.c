@@ -15,41 +15,6 @@
 #include "../tree/tree.h"
 #include "dtoken.h"
 
-struct token get_token(struct dtoken *list)
-{
-    struct token t = dtoken_remove_at(list, 0);
-    if (t.op != LWORD)
-    {
-        free(t.val);
-        t.val = NULL;
-    }
-    return t;
-}
-
-struct token peak_token(struct dtoken *list) // list musn't be empty!
-{
-    return list->head->data;
-}
-
-struct token peak_token_2(struct dtoken *list) // list musn't be empty!
-{
-    return list->head->next->data;
-}
-
-void eat_newlines(struct dtoken *list)
-{
-    while (list->head && list->head->data.op == LNEWL)
-        dtoken_remove_at(list, 0);
-}
-
-int is_end(struct dtoken *list)
-{
-    if (!list->head)
-        return 1;
-    struct token t = peak_token(list);
-    return t.op == LNEWL;
-}
-
 int is_shellcmd(struct token token)
 {
     return token.op == LPAO
@@ -156,14 +121,12 @@ static struct node *parse_do_group(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "do"))
         errx(1, "Parse Error 9");
-    free(tok.val);
     // exec part
     exec = parse_compound_list(parser);
     // done
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "done"))
         errx(1, "Parse Error 10");
-    free(tok.val);
     return exec;
 }
 
@@ -174,21 +137,18 @@ static struct node *parse_else_clause(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op == LWORD && !strcmp(tok.val, "else"))
     {
-        free(tok.val);
         return parse_compound_list(parser);
     }
     else if (tok.op == LWORD && !strcmp(tok.val, "elif"))
     {
         struct node *cond, *cond_true, *cond_false;
 
-        free(tok.val);
         // if
         cond = parse_compound_list(parser);
         // then
         tok = get_token(parser);
         if (tok.op != LWORD || strcmp(tok.val, "then"))
             errx(1, "Parse Error 11");
-        free(tok.val);
         cond_true = parse_compound_list(parser);
         // elses
         tok = peak_token(parser);
@@ -216,13 +176,11 @@ static struct node *parse_rule_if(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "if"))
         errx(1, "Parse Error 1");
-    free(tok.val);
     cond = parse_compound_list(parser);
     // then
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "then"))
         errx(1, "Parse Error 2");
-    free(tok.val);
     cond_true = parse_compound_list(parser);
     // elses
     tok = peak_token(parser);
@@ -235,7 +193,6 @@ static struct node *parse_rule_if(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "fi"))
         errx(1, "Parse Error 3");
-    free(tok.val);
     // create if node
     return tree_if_create(cond, cond_true, cond_false);
 }
@@ -249,7 +206,6 @@ static struct node *parse_rule_case(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "case"))
         errx(1, "Parse Error 13");
-    free(tok.val);
     // get varname
     if ((tok = get_token(parser)).op != LWORD)
         errx(1, "Parse Error 14");
@@ -260,7 +216,6 @@ static struct node *parse_rule_case(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "in"))
         errx(1, "Parse Error 15");
-    free(tok.val);
     // eat newline
     eat_newlines(parser);
     // parse case body
@@ -274,7 +229,6 @@ static struct node *parse_rule_case(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "esac"))
         errx(1, "Parse Error 16");
-    free(tok.val);
     return casenode;
 }
 
@@ -286,7 +240,6 @@ static struct node *parse_rule_until(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "until")) // until
         errx(1, "Error Parsing 17");
-    free(tok.val);
     cond = tree_bang_create(parse_compound_list(parser)); // inverse
     return tree_while_create(cond, parse_do_group(parser)); // while
 }
@@ -299,7 +252,6 @@ static struct node *parse_rule_while(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "while")) // while
         errx(1, "Parse Error 18");
-    free(tok.val);
     cond = parse_compound_list(parser); // condition
     return tree_while_create(cond, parse_do_group(parser)); // do_group
 }
@@ -314,7 +266,6 @@ static struct node *parse_rule_for(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op != LWORD || strcmp(tok.val, "for"))
         errx(1, "Parsing Error 19");
-    free(tok.val);
     // varname
     tok = get_token(parser);
     if (tok.op != LWORD)
@@ -326,7 +277,6 @@ static struct node *parse_rule_for(struct dtoken *parser)
     if ((tok = peak_token(parser)).op == LWORD && !strcmp(tok.val, "in"))
     {
         tok = get_token(parser);
-        free(tok.val);
         do
         { // add each word into "values"
             if ((tok = get_token(parser)).op != LWORD)
@@ -359,8 +309,8 @@ static struct node *parse_compound_list(struct dtoken *parser)
         get_token(parser);
         if (tok.op == LNEWL)
         {
-            printf("MAKE PROMPT.C>");
-            fflush(stdout); // show_prompt(parser);
+            //printf("MAKE PROMPT.C>");
+            //fflush(stdout); // show_prompt(parser);
         }
         // eat infinite newlines
         eat_newlines(parser);
@@ -470,7 +420,6 @@ static struct node *parse_funcdec(struct dtoken *parser)
     tok = get_token(parser);
     if (tok.op == LWORD && !strcmp(tok.val, "function")) // WORD
     {
-        free(tok.val);
         tok = get_token(parser);
     }
     if (tok.op != LWORD)
@@ -712,7 +661,6 @@ struct node *parse_input(struct dtoken *tokens)
 {
     if (!tokens)
         return NULL;
-    print_dtoken(tokens);
     if (peak_token(tokens).op == LEOF
         || peak_token(tokens).op == LNEWL) // \n EOF sole
     {
