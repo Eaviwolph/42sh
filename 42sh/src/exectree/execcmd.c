@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <assert.h>
 #include <err.h>
 #include <errno.h>
 #include <stdio.h>
@@ -21,7 +22,23 @@ int decode_status(int status)
     return sig;
 }
 
-void execcmd(struct node_cmd n, struct shell *s)
+static void execprefix(char **prefix,/* int glob,*/ struct shell *s)
+{
+    char *value;
+    for (int i = 0; prefix[i]; ++i)
+    {
+        if (!(value = strchr(prefix[i], '=')))
+            assert(0);
+        *value = 0;
+        /*if (glob || getenv(prefix[i]) != NULL)
+            senv2(prefix[i], value + 1, !0);*/
+        // else
+        dvar_add_var(s->var, prefix[i], value + 1);
+        *value = '=';
+    }
+}
+
+void execargv(struct node_cmd n, struct shell *s)
 {
     int pid = fork();
     if (pid == -1)
@@ -64,4 +81,12 @@ void execcmd(struct node_cmd n, struct shell *s)
     char *temp = calloc(12, sizeof(char));
     temp = myitoa(decode_status(status), temp);
     dvar_add_var(s->var, mystrdup("?"), temp);
+}
+
+void execcmd(struct node_cmd n, struct shell *s)
+{
+    if (n.pref)
+        execprefix(n.pref, /*1,*/ s);
+    if (n.argv)
+        execargv(n, s);
 }
