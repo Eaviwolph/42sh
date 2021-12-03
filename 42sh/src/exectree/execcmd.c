@@ -22,19 +22,23 @@ int decode_status(int status)
     return sig;
 }
 
-static void execprefix(char **prefix,/* int glob,*/ struct shell *s)
+static int index_of(char *s, char c)
 {
-    char *value;
+    for (int i = 0; s[i]; i++)
+    {
+        if(s[i] == c)
+            return i;
+    }
+    return -1;
+}
+
+static void execprefix(char **prefix, struct shell *s)
+{
     for (int i = 0; prefix[i]; ++i)
     {
-        if (!(value = strchr(prefix[i], '=')))
-            assert(0);
-        *value = 0;
-        /*if (glob || getenv(prefix[i]) != NULL)
-            senv2(prefix[i], value + 1, !0);*/
-        // else
-        dvar_add_var(s->var, prefix[i], value + 1);
-        *value = '=';
+        int index = index_of(prefix[i], '=');
+        prefix[i][index] = '\0';
+        dvar_add_var(s->var, prefix[i], prefix[i] + index + 1);
     }
 }
 
