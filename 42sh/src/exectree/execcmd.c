@@ -30,12 +30,30 @@ void execcmd(struct node_cmd n, struct shell *s)
     }
     else if (pid == 0)
     {
-        dvar_print(s->var);
-        execvp(n.argv[0], n.argv);
+        int size = 0;
+        if (n.argv)
+        {
+            while (n.argv[size])
+                ++size;
+        }
+        char **ar = malloc(sizeof(char *) * (size + 1));
+        for (int i = 0; i < size; i++)
+        {
+            ar[i] = varstrrep(strdup(n.argv[i]), s->var);
+            if (!ar[i])
+                errx(1, "Parsing Error");
+        }
+        ar[size] = NULL;
+
+        execvp(ar[0], ar);
         if (errno == ENOENT)
             fprintf(stderr, "%s: %s: command not found.\n", s->name, n.argv[0]);
         else
             perror(s->name);
+        for (int i = 0; i < size; i++)
+        {
+            free(ar[i]);
+        }
         exit(EXIT_FAILURE);
     }
     int status;
