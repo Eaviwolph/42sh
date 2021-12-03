@@ -26,4 +26,12 @@ void exectree(struct node *n, struct shell *s)
     {
         execif(n->data.ifnode, s);
     }
+    else if (n->type == FOR)
+    {
+        execfor(n->data.fornode, s);
+    }
+    else if (n->type == WHILE)
+    {
+        execwhile(n->data.whilenode, s);
+    }
 }
