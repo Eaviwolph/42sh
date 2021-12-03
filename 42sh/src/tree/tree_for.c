@@ -1,13 +1,25 @@
+#include "../tools/tools.h"
 #include "tree.h"
 
 struct node *tree_for_create(char *var, char **vals, struct node *command)
 {
+    size_t len = 0;
+    while (vals[len])
+    {
+        len++;
+    }
+    char **valstmp = calloc(len + 1, sizeof(char *));
+    for (size_t i = 0; i < len; i++)
+    {
+        valstmp[i] = mystrdup(vals[i]);
+    }
     struct node *new;
     safe_malloc(new, sizeof(struct node));
     new->type = FOR;
-    new->data.fornode.var = var;
-    new->data.fornode.vals = vals;
+    new->data.fornode.var = mystrdup(var);
+    new->data.fornode.vals = valstmp;
     new->data.fornode.command = command;
+    free(vals);
     return new;
 }
 
