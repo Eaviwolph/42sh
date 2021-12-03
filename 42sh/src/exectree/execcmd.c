@@ -30,6 +30,7 @@ void execcmd(struct node_cmd n, struct shell *s)
     }
     else if (pid == 0)
     {
+        dvar_print(s->var);
         execvp(n.argv[0], n.argv);
         if (errno == ENOENT)
             fprintf(stderr, "%s: %s: command not found.\n", s->name, n.argv[0]);
