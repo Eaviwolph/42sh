@@ -687,5 +687,6 @@ struct node *parse(struct dtoken *tokens)
         l = l->next;
     }
     eat_newlines(tokens);
-    return parse_input(tokens);
+    struct node *r = parse_input(tokens);
+    return r;
 }
