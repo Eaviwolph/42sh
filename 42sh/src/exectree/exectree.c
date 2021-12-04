@@ -22,7 +22,7 @@ void exectree(struct node *n, struct shell *s)
         }
         else if (n->type == PIPE)
         {
-            exec_pipe(n->data.pipenode, s);
+            execpipe(n->data.pipenode, s);
         }
         else if (n->type == IF)
         {

@@ -309,8 +309,8 @@ static struct node *parse_compound_list(struct dtoken *parser)
         get_token(parser);
         if (tok.op == LNEWL)
         {
-            //printf("MAKE PROMPT.C>");
-            //fflush(stdout); // show_prompt(parser);
+            // printf("MAKE PROMPT.C>");
+            // fflush(stdout); // show_prompt(parser);
         }
         // eat infinite newlines
         eat_newlines(parser);
@@ -686,5 +686,6 @@ struct node *parse(struct dtoken *tokens)
             l->next->data.op = LIONUMBER;
         l = l->next;
     }
+    eat_newlines(tokens);
     return parse_input(tokens);
 }
