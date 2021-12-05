@@ -2,7 +2,7 @@
 
 #include "builtin.h"
 
-void my_export(char *arg[], size_t len)
+int my_export(char *arg[], size_t len)
 {
     size_t i = 0;
     while (i < len)
@@ -12,4 +12,5 @@ void my_export(char *arg[], size_t len)
         setenv(token, tmp, !0);
         i++;
     }
+    return 0;
 }

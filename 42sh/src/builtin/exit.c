@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-void my_exit(char *arg[], size_t len)
+int my_exit(char *arg[], size_t len)
 {
     (void)len;
     char *end;
@@ -8,4 +8,5 @@ void my_exit(char *arg[], size_t len)
     if (*end)
         fprintf(stderr, "42sh: exit(%s): only numeric argument !\n", arg[0]);
     _exit((!*end) ? status : 255);
+    return 1;
 }

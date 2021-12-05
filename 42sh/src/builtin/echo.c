@@ -5,9 +5,14 @@ void get_opt(size_t *n, size_t *e, char *arg[], size_t len)
     size_t i = 0;
     while (i < len
            && (!strcmp(arg[i], "-n") || !strcmp(arg[i], "-e")
-               || !strcmp(arg[i], "-E")))
+               || !strcmp(arg[i], "-E") || !strcmp(arg[i], "-ne") || !strcmp(arg[i], "-en")))
     {
-        if (!strcmp(arg[i], "-n") && *n)
+        if ((!strcmp(arg[i], "-ne") || !strcmp(arg[i], "-en")) && *n && *e == 0)
+        {
+            *n = 0;
+            *e = 1;
+        }
+        else if (!strcmp(arg[i], "-n") && *n)
             *n = 0;
         else if ((!strcmp(arg[i], "-e") || !strcmp(arg[i], "-E")) && *e == 0)
             *e = 1;
@@ -102,7 +107,7 @@ void e_treat(char *s)
     }
 }
 
-void my_echo(char *arg[], size_t len)
+int my_echo(char *arg[], size_t len)
 {
     size_t n = 1;
     size_t e = 0;
@@ -113,4 +118,5 @@ void my_echo(char *arg[], size_t len)
         e_treat(arg[len - 1]);
     if (n)
         putchar('\n');
+    return 0;
 }

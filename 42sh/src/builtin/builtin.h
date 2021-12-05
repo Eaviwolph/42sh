@@ -11,9 +11,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-void my_echo(char *arg[], size_t len);
-void my_exit(char *arg[], size_t len);
-void my_cd(char *arg[], size_t len);
-void my_export(char *arg[], size_t len);
+int my_echo(char *arg[], size_t len);
+int my_exit(char *arg[], size_t len);
+int my_cd(char *arg[], size_t len);
+int my_export(char *arg[], size_t len);
+int my_exec(char *argv[], size_t len);
 
 #endif

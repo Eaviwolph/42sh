@@ -10,7 +10,7 @@ int exists(char *name)
     return 1;
 }
 
-void my_cd(char *arg[], size_t len)
+int my_cd(char *arg[], size_t len)
 {
     if (len == 0)
         chdir("/home");
@@ -27,4 +27,5 @@ void my_cd(char *arg[], size_t len)
     }
     else
         errx(1, "cd: %s: No such file or directory", arg[0]);
+    return 0;
 }
