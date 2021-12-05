@@ -13,6 +13,7 @@ struct shell
     struct dalias *alias;
     struct dtoken *token;
     struct node *tree;
+    int pretty_print;
 };
 
 #endif

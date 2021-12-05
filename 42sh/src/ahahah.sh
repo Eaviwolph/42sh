@@ -1,7 +1,2 @@
-if true
-then
-    echo hello
-else
-    echo yolo
-fi
-echo adadadaa
+echo tofile >file.txt
+echo tostdout

@@ -1,3 +1,5 @@
+#define _DEFAULT_SOURCE
+
 #include "builtin.h"
 
 int exists(char *name)

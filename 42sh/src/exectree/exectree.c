@@ -36,5 +36,9 @@ void exectree(struct node *n, struct shell *s)
         {
             execwhile(n->data.whilenode, s);
         }
+        else if (n->type == SEP)
+        {
+            execsep(n->data.sepnode, s);
+        }
     }
 }

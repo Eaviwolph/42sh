@@ -1,6 +1,7 @@
 #include "parser.h"
 
 #include <assert.h>
+#include <ctype.h>
 #include <err.h>
 #include <errno.h>
 #include <setjmp.h>
@@ -405,6 +406,7 @@ static void parse_redirection(struct dtoken *parser, struct node **reds)
     }
     // word
     token = get_token(parser);
+
     if (token.op == LWORD)
         tree_red_add(*reds, redtype, fd, token.val);
     else
@@ -682,7 +684,7 @@ struct node *parse(struct dtoken *tokens)
     while (l)
     {
         if (l->data.op != LIONUMBER && is_prefix(l->data) && l->next
-            && l->next->data.op == LWORD)
+            && l->next->data.op == LWORD && isdigit(l->next->data.val[0]))
             l->next->data.op = LIONUMBER;
         l = l->next;
     }

@@ -1,3 +1,5 @@
+#define _DEFAULT_SOURCE
+
 #include "builtin.h"
 
 void my_export(char *arg[], size_t len)

@@ -1,4 +1,4 @@
-CFILES=common/*.c parser/*.c tree/*.c shell/*.c tools/*.c variables/*.c alias/*.c exectree/*.c
+CFILES=common/*.c parser/*.c tree/*.c shell/*.c tools/*.c variables/*.c alias/*.c exectree/*.c builtin/*.c
 prompt: build
 	gcc -Werror -Wextra -Wall -g -std=c99 -pedantic -fsanitize=address $(CFILES) -o exec
 	./exec

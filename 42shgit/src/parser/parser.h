@@ -40,7 +40,7 @@ typedef enum		tokenid
     TOK_SEP,		// ;
     TOK_LPAREN,		// (
     TOK_RPAREN,		// )
-    TOK_DLESSDASH,	// <<-
+    TOK_DLESSDASH,	// <<- HAHAH
     TOK_DLESS,		// <<
     TOK_LESSGREAT,	// <>
     TOK_LESSAND,	// <&
@@ -50,7 +50,7 @@ typedef enum		tokenid
     TOK_CLOBBER,	// >|
     TOK_GREAT,		// >
     TOK_IONUMBER,	// number juste before '>' or '<'
-    TOK_WORD		// all others
+    TOK_WORD		// all others HIHI
   } e_tokenid;
 
 typedef struct		token

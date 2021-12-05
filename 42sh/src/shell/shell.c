@@ -51,6 +51,7 @@ struct dvar *getvars(int len, char *args[])
 int main(int argc, char *argv[])
 {
     int fd = 0;
+    int j = 0;
     struct shell *sh;
     safe_calloc(sh, 1, sizeof(struct shell));
     if (argc >= 1)
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
     }
     if (argc >= 2)
     {
+        j = (strcmp(argv[1], "--pretty-print") == 0);
         if (argc > 2 && strcmp(argv[1], "-c") == 0)
         {
             char quoted = '\0';
@@ -71,8 +73,12 @@ int main(int argc, char *argv[])
         }
         else
         {
+            if (j)
+            {
+                sh->pretty_print = 1;
+            }
             sh->var = getvars(argc - 1, argv + 1);
-            fd = open(argv[1], O_RDONLY);
+            fd = open(argv[j ? 2 : 1], O_RDONLY);
             if (fd == -1)
                 errx(1, "%s: can't be open or doesn't exist", argv[1]);
             sh->token = readlines(fd);
@@ -83,14 +89,18 @@ int main(int argc, char *argv[])
         sh->var = getvars(argc, argv);
         sh->token = readlines(fd);
     }
-    // dvar_print(sh->var);
-    // print_dtoken(sh->token);
-    // faketree(sh);
     do
     {
         sh->tree = parse(sh->token);
         if (sh->tree)
+        {
             exectree(sh->tree, sh);
+            if (sh->pretty_print)
+            {
+                tree_print_node(sh->tree, stdout);
+                printf("\n");
+            }
+        }
         tree_destroy(sh->tree);
     } while (peak_token(sh->token).op != LEOF);
     freeshell(sh);

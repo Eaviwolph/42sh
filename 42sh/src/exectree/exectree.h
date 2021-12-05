@@ -13,5 +13,6 @@ void execif(struct node_if n, struct shell *s);
 void execfor(struct node_for n, struct shell *s);
 void execwhile(struct node_while n, struct shell *s);
 void execpipe(struct node_pipe node, struct shell *s);
+void execsep(struct node_sep n, struct shell *s);
 
 #endif

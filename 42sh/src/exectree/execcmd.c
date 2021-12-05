@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "../builtin/builtin.h"
 #include "../tools/tools.h"
 #include "exectree.h"
 
@@ -26,7 +27,7 @@ static int index_of(char *s, char c)
 {
     for (int i = 0; s[i]; i++)
     {
-        if(s[i] == c)
+        if (s[i] == c)
             return i;
     }
     return -1;
@@ -42,8 +43,9 @@ static void execprefix(char **prefix, struct shell *s)
     }
 }
 
-void execargv(struct node_cmd n, struct shell *s)
+void execfork(struct node_cmd n, struct shell *s, int size, char **ar)
 {
+    // forking
     int pid = fork();
     if (pid == -1)
     {
@@ -51,21 +53,6 @@ void execargv(struct node_cmd n, struct shell *s)
     }
     else if (pid == 0)
     {
-        int size = 0;
-        if (n.argv)
-        {
-            while (n.argv[size])
-                ++size;
-        }
-        char **ar = malloc(sizeof(char *) * (size + 1));
-        for (int i = 0; i < size; i++)
-        {
-            ar[i] = varstrrep(strdup(n.argv[i]), s->var);
-            if (!ar[i])
-                errx(1, "Parsing Error");
-        }
-        ar[size] = NULL;
-
         execvp(ar[0], ar);
         if (errno == ENOENT)
             fprintf(stderr, "%s: %s: command not found.\n", s->name, n.argv[0]);
@@ -75,6 +62,7 @@ void execargv(struct node_cmd n, struct shell *s)
         {
             free(ar[i]);
         }
+        free(ar);
         exit(EXIT_FAILURE);
     }
     int status;
@@ -85,6 +73,40 @@ void execargv(struct node_cmd n, struct shell *s)
     char *temp = calloc(12, sizeof(char));
     temp = myitoa(decode_status(status), temp);
     dvar_add_var(s->var, mystrdup("?"), temp);
+}
+
+void execargv(struct node_cmd n, struct shell *s)
+{
+    int size = 0;
+    if (n.argv)
+    {
+        while (n.argv[size])
+            ++size;
+    }
+    char **ar = malloc(sizeof(char *) * (size + 1));
+    for (int i = 0; i < size; i++)
+    {
+        ar[i] = varstrrep(strdup(n.argv[i]), s->var);
+        if (!ar[i])
+            errx(1, "Parsing Error");
+    }
+    ar[size] = NULL;
+
+    if (!strcmp(ar[0], "echo"))
+    {
+        my_echo(ar, size);
+        fflush(stdout);
+    }
+    else
+    {
+        execfork(n, s, size, ar);
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        free(ar[i]);
+    }
+    free(ar);
 }
 
 void execcmd(struct node_cmd n, struct shell *s)

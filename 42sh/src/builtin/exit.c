@@ -2,6 +2,7 @@
 
 void my_exit(char *arg[], size_t len)
 {
+    (void)len;
     char *end;
     long status = strtol(arg[0], &end, 10);
     if (*end)
