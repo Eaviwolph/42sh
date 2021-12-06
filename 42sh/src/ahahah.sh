@@ -1,2 +1,1 @@
-echo tofile >file.txt
-echo tostdout
+echo hello | uniq -c | uniq -c | uniq -c | uniq -c

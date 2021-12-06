@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+#define _POSIX_SOURCE
 #include <assert.h>
 #include <err.h>
 #include <errno.h>

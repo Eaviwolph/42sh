@@ -10,19 +10,19 @@ void exectree(struct node *n, struct shell *s)
         }
         else if (n->type == AND)
         {
-            execand(n->data.andnode, s);
+            execand(n->data.binnode, s);
         }
         else if (n->type == OR)
         {
-            execor(n->data.ornode, s);
+            execor(n->data.binnode, s);
         }
         else if (n->type == BANG)
         {
-            execbang(n->data.bangnode, s);
+            execbang(n->data.binnode, s);
         }
         else if (n->type == PIPE)
         {
-            execpipe(n->data.pipenode, s);
+            execpipe(n->data.binnode, s);
         }
         else if (n->type == IF)
         {
@@ -38,7 +38,7 @@ void exectree(struct node *n, struct shell *s)
         }
         else if (n->type == SEP)
         {
-            execsep(n->data.sepnode, s);
+            execsep(n->data.binnode, s);
         }
     }
 }

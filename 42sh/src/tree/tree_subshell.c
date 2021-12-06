@@ -7,8 +7,8 @@ struct node *tree_subshell_create(struct node *child)
 
     safe_malloc(node, sizeof(struct node));
     node->type = SUBSHELL;
-    node->data.subshnode.left = child;
-    node->data.subshnode.right = NULL;
+    node->data.binnode.left = child;
+    node->data.binnode.right = NULL;
     return node;
 }
 
@@ -18,7 +18,7 @@ void tree_subshell_print(struct node *node, FILE *fs)
         return;
 
     fprintf(fs, "( ");
-    tree_print_node(node->data.subshnode.left, fs);
+    tree_print_node(node->data.binnode.left, fs);
 }
 
 void tree_subshell_destroy_node(struct node *node)
@@ -32,6 +32,6 @@ void tree_subshell_destroy(struct node *node)
 {
     if (node->type != SUBSHELL)
         return;
-    tree_destroy(node->data.subshnode.left);
+    tree_destroy(node->data.binnode.left);
     free(node);
 }

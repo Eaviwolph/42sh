@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+#define _POSIX_SOURCE
 
 #include <errno.h>
 #include <signal.h>
@@ -39,7 +39,7 @@ static pid_t exec_side(struct node *right, struct pipeline *pipeline, int side,
     return pid;
 }
 
-void execpipe(struct node_pipe node, struct shell *s)
+void execpipe(struct node_bin node, struct shell *s)
 {
     struct pipeline *pipeline = calloc(1, sizeof(struct pipeline));
     if (pipe(pipeline->p) || exec_side(node.right, pipeline, 0, s) < 0

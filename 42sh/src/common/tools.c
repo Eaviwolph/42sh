@@ -3,8 +3,6 @@
 
 #include <assert.h>
 #include <errno.h>
-#include <limits.h>
-#include <linux/limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -108,8 +106,8 @@ char **string_array_append(char **arr, char *toappend)
 char *cwd_string(void)
 {
     char *temp;
-    safe_malloc(temp, PATH_MAX); // sizeofchar * PATHMAX but it's 1 on most os
-    return getcwd(temp, PATH_MAX);
+    safe_malloc(temp, 4096); // sizeofchar * PATHMAX but it's 1 on most os
+    return getcwd(temp, 4096);
 }
 
 int add_env_var(char *varname, char *varvalue, int overwrite)

@@ -60,24 +60,6 @@ struct node_cmd
     char **argv;
 };
 
-struct node_and
-{
-    struct node *left;
-    struct node *right;
-};
-
-struct node_or
-{
-    struct node *left;
-    struct node *right;
-};
-
-struct node_subsh
-{
-    struct node *left;
-    struct node *right;
-};
-
 struct node_funcdec
 {
     char *name;
@@ -97,25 +79,7 @@ struct node_case
     struct node_case_item *items;
 };
 
-struct node_bang
-{
-    struct node *left;
-    struct node *right;
-};
-
-struct node_pipe
-{
-    struct node *left;
-    struct node *right;
-};
-
-struct node_sepand
-{
-    struct node *left;
-    struct node *right;
-};
-
-struct node_sep
+struct node_bin
 {
     struct node *left;
     struct node *right;
@@ -169,15 +133,9 @@ union node_data
     struct node_case casenode;
     struct node_while whilenode;
     struct node_cmd cmdnode;
-    struct node_and andnode;
-    struct node_or ornode;
-    struct node_subsh subshnode;
     struct node_funcdec funcdecnode;
-    struct node_bang bangnode;
-    struct node_pipe pipenode;
-    struct node_sepand sepandnode;
-    struct node_sep sepnode;
     struct node_red rednode;
+    struct node_bin binnode; // pipe, and, or, bang, sep, sepand, subshell
 };
 
 struct node

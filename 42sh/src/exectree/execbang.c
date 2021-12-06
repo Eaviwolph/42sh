@@ -3,7 +3,7 @@
 #include "../tools/tools.h"
 #include "exectree.h"
 
-void execbang(struct node_bang n, struct shell *s)
+void execbang(struct node_bin n, struct shell *s)
 {
     exectree(n.left, s);
     int r = atoi(dvar_find(s->var, "?"));

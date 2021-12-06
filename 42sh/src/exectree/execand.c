@@ -1,6 +1,6 @@
 #include "exectree.h"
 
-void execand(struct node_and n, struct shell *s)
+void execand(struct node_bin n, struct shell *s)
 {
     exectree(n.left, s);
     int r = atoi(dvar_find(s->var, "?"));
@@ -10,7 +10,7 @@ void execand(struct node_and n, struct shell *s)
         return;
     }
     while (n.right->type == AND)
-        n = n.right->data.andnode;
+        n = n.right->data.binnode;
     if (n.right->type == OR)
-        exectree(n.right->data.andnode.right, s);
+        exectree(n.right->data.binnode.right, s);
 }
