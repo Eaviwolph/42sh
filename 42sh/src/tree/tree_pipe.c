@@ -20,13 +20,6 @@ void tree_pipe_print(struct node *node, FILE *fs)
     tree_print_node(node->data.binnode.right, fs);
 }
 
-void tree_pipe_destroy_node(struct node *node)
-{
-    if (node->type != PIPE)
-        return;
-    free(node);
-}
-
 void tree_pipe_destroy(struct node *node)
 {
     if (node->type != PIPE)

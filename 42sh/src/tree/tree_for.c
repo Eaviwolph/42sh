@@ -13,49 +13,35 @@ struct node *tree_for_create(char *var, char **vals, struct node *command)
     {
         valstmp[i] = mystrdup(vals[i]);
     }
+    free(vals);
     struct node *new;
     safe_malloc(new, sizeof(struct node));
     new->type = FOR;
     new->data.fornode.var = mystrdup(var);
     new->data.fornode.vals = valstmp;
     new->data.fornode.command = command;
-    free(vals);
     return new;
 }
 
 void tree_for_print(struct node *n, FILE *stream)
 {
-    if (n->type != FOR)
-        return;
-    // if values exist
-    if (n->data.fornode.vals)
-    {
-        fprintf(stream, "for { ");
-        for (size_t i = 0; n->data.fornode.vals[i]; ++i)
-            fprintf(stream, "value:%s\n", n->data.fornode.vals[i]);
-    }
-    // execution
+    fprintf(stream, "for %s in", n->data.fornode.var);
+    for (size_t i = 0; n->data.fornode.vals[i]; ++i)
+        fprintf(stream, " %s", n->data.fornode.vals[i]);
+    fprintf(stream, "\ndo\n");
     if (n->data.fornode.command)
     {
         tree_print_node(n->data.fornode.command, stream);
     }
+    fprintf(stream, "\ndone\n");
 }
 
-void tree_for_destroy_node(struct node *n)
+void tree_for_destroy(struct node *n)
 {
-    if (n->type != FOR)
-        return;
+    tree_destroy(n->data.fornode.command);
     free(n->data.fornode.var);
     for (int i = 0; n->data.fornode.vals[i]; i++)
         free(n->data.fornode.vals[i]);
     free(n->data.fornode.vals);
     free(n);
-}
-
-void tree_for_destroy(struct node *n)
-{
-    if (n->type != FOR)
-        return;
-    tree_destroy(n->data.fornode.command);
-    tree_for_destroy_node(n);
 }

@@ -8,33 +8,37 @@
 
 #include "tree.h"
 
-struct tree_print_table_elem
+void tree_print_node(struct node *node, FILE *stream)
 {
-    enum node_type type;
-    void (*function)(struct node *, FILE *);
-};
-
-struct tree_print_table_elem dictionary[NODE_TYPE_COUNT] = {
-    { IF, tree_if_print },
-    { FOR, tree_for_print },
-    { WHILE, tree_while_print },
-     { CMD, tree_cmd_print },
-     { AND, tree_and_print },
-     { OR, tree_or_print },
-     { SUBSHELL, tree_subshell_print },
-     { FUNCDEC, tree_funcdec_print },
-     { BANG, tree_bang_print },
-     { PIPE, tree_pipe_print },
-     { SEPAND, tree_sepand_print },
-     { SEP, tree_sep_print },
-     { CASE, tree_case_print },
-     { RED, tree_red_print }
-};
-
-void tree_print_node(struct node *tree_ref, FILE *stream)
-{
-    assert(tree_ref);
-    for (int i = 0; i < NODE_TYPE_COUNT; i++)
-        if (dictionary[i].type == tree_ref->type)
-            (dictionary[i].function)(tree_ref, stream);
+    if (node)
+    {
+        if (node->type == IF)
+            tree_if_print(node, stream);
+        else if (node->type == FOR)
+            tree_for_print(node, stream);
+        else if (node->type == WHILE)
+            tree_while_print(node, stream);
+        else if (node->type == CMD)
+            tree_cmd_print(node, stream);
+        else if (node->type == AND)
+            tree_and_print(node, stream);
+        else if (node->type == OR)
+            tree_or_print(node, stream);
+        else if (node->type == SUBSHELL)
+            tree_subshell_print(node, stream);
+        else if (node->type == FUNCDEC)
+            tree_funcdec_print(node, stream);
+        else if (node->type == BANG)
+            tree_bang_print(node, stream);
+        else if (node->type == PIPE)
+            tree_pipe_print(node, stream);
+        else if (node->type == SEPAND)
+            tree_sepand_print(node, stream);
+        else if (node->type == SEP)
+            tree_sep_print(node, stream);
+        else if (node->type == CASE)
+            tree_case_print(node, stream);
+        else if (node->type == RED)
+            tree_red_print(node, stream);
+    }
 }

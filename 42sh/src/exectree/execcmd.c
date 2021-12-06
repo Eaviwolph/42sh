@@ -39,7 +39,8 @@ static void execprefix(char **prefix, struct shell *s)
     {
         int index = index_of(prefix[i], '=');
         prefix[i][index] = '\0';
-        dvar_add_var(s->var, prefix[i], prefix[i] + index + 1);
+        dvar_add_var(s->var, mystrdup(prefix[i]),
+                     mystrdup(prefix[i] + index + 1));
     }
 }
 
@@ -77,16 +78,11 @@ void execfork(struct node_cmd n, struct shell *s, int size, char **ar)
 
 void execargv(struct node_cmd n, struct shell *s)
 {
-    int size = 0;
-    if (n.argv)
-    {
-        while (n.argv[size])
-            ++size;
-    }
+    int size = n.sizea;
     char **ar = malloc(sizeof(char *) * (size + 1));
     for (int i = 0; i < size; i++)
     {
-        ar[i] = varstrrep(strdup(n.argv[i]), s->var);
+        ar[i] = varstrrep(mystrdup(n.argv[i]), s->var);
         if (!ar[i])
             errx(1, "Parsing Error");
     }
@@ -111,8 +107,8 @@ void execargv(struct node_cmd n, struct shell *s)
 
 void execcmd(struct node_cmd n, struct shell *s)
 {
-    if (n.pref)
+    if (n.sizep)
         execprefix(n.pref, /*1,*/ s);
-    if (n.argv)
+    if (n.sizea)
         execargv(n, s);
 }

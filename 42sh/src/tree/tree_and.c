@@ -19,11 +19,6 @@ void tree_and_print(struct node *node, FILE *fs)
     fflush(fs);
 }
 
-void tree_and_destroy_node(struct node *node)
-{
-    free(node);
-}
-
 void tree_and_destroy(struct node *node)
 {
     tree_destroy(node->data.binnode.left);

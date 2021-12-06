@@ -12,11 +12,11 @@ struct node *tree_while_create(struct node *condition, struct node *command)
 
 void tree_while_print(struct node *n, FILE *stream)
 {
-    if (n->type != WHILE)
-        return;
+    fprintf(stream, "while cond:");
     tree_print_node(n->data.whilenode.command, stream);
+    fprintf(stream, "\ndo\n");
     tree_print_node(n->data.whilenode.condition, stream);
-    fprintf(stream, "while { ");
+    fprintf(stream, "\ndone\n");
 }
 
 void tree_while_destroy_node(struct node *n)
