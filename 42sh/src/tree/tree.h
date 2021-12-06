@@ -1,35 +1,6 @@
 #ifndef TREE_H
 #define TREE_H
 
-// typedef c'est un alias
-
-// node_type (type)
-//   the enum for all types
-// node_item (body)
-//      contains the data for each type, but only one is used
-//      data types are:
-//          if_node (cond, cond_true, cond_false) these are all nodes
-//          for_node (varname*, values**, *exec) exec is a node pointer
-//          NOT AN AST NODE
-//          case_item (**pattern, *exec, *next) exec and next are node pointers
-//          case_node (*word, *items) items is a case_item (upper)
-//          while_node (*cond, *next) are nodes
-//          red_node (size, RED_TYPE type, *fd, **word, *mhs)
-//              red_type is an enum  of diff reds "< <& >.."
-//          cmd_node (**argv, **prefix) list of strings
-//          bin_node (*lhs, *rhs) node used for a tree of operators (BANG, PIPE,
-//          SEP..) funcdec_node (*name, *body) body is a ast node
-
-// NODE_TYPE_COUNT = 14
-
-// ast_node est le type des noeuds (type, body)
-
-// each node_item have a
-//  -create node
-//  -print tree
-//  -destruct node
-//  -destruct tree
-
 #include <stdio.h>
 
 #include "../common/macro.h"
@@ -57,7 +28,9 @@ struct node_while
 struct node_cmd
 {
     char **pref;
+    size_t sizep;
     char **argv;
+    size_t sizea;
 };
 
 struct node_funcdec
