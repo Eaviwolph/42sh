@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         sh->tree = parse(sh->token);
         if (sh->tree)
         {
-            if (sh->pretty_print || 1)
+            if (sh->pretty_print)
             {
                 tree_print_node(sh->tree, stdout);
                 printf("\n");
