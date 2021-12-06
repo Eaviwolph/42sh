@@ -1,6 +1,7 @@
-for i in 1 2 3 4 5 6
-do
-    echo $i
-    continue
-done
-echo FINISHED
+f()
+{
+    echo $0
+}
+x=4
+f
+echo hello

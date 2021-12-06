@@ -40,5 +40,9 @@ void exectree(struct node *n, struct shell *s)
         {
             execsep(n->data.binnode, s);
         }
+        else if (n->type == FUNCDEC)
+        {
+            exefuncdec(n->data.funcdecnode, s);
+        }
     }
 }

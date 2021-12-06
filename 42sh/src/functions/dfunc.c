@@ -1,35 +1,32 @@
-#include "dvar.h"
+#include "dfunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int dvar_replace_var(struct dvar *list, char *name, char *element)
+int dfunc_replace_fun(struct dfunc *list, struct node_funcdec fun)
 {
     size_t i = 0;
-    struct dvar_item *h = list->head;
-    while (h && strcmp(h->name, name) != 0)
+    struct dfunc_item *h = list->head;
+    while (h && strcmp(h->fun.name, fun.name) != 0)
     {
         h = h->next;
         i++;
     }
     if (h)
     {
-        free(name);
-        free(h->data);
-        h->data = element;
+        h->fun = fun;
         return 1;
     }
     return 0;
 }
 
-int dvar_push_front(struct dvar *list, char *name, char *element)
+int dfunc_push_front(struct dfunc *list, struct node_funcdec fun)
 {
-    struct dvar_item *i = malloc(sizeof(struct dvar_item));
+    struct dfunc_item *i = malloc(sizeof(struct dfunc_item));
     if (i)
     {
-        i->data = element;
-        i->name = name;
+        i->fun = fun;
         i->next = list->head;
         if (list->head)
             list->head->prev = i;
@@ -43,13 +40,12 @@ int dvar_push_front(struct dvar *list, char *name, char *element)
     return 0;
 }
 
-int dvar_push_back(struct dvar *list, char *name, char *element)
+int dfunc_push_back(struct dfunc *list, struct node_funcdec fun)
 {
-    struct dvar_item *i = malloc(sizeof(struct dvar_item));
+    struct dfunc_item *i = malloc(sizeof(struct dfunc_item));
     if (i)
     {
-        i->data = element;
-        i->name = name;
+        i->fun = fun;
         i->prev = list->tail;
         if (list->tail)
             list->tail->next = i;
@@ -63,33 +59,36 @@ int dvar_push_back(struct dvar *list, char *name, char *element)
     return 0;
 }
 
-char *dvar_get(struct dvar *list, size_t index)
+struct node_funcdec fundfunc_get(struct dfunc *list, size_t index)
 {
     size_t i = 0;
-    struct dvar_item *h = list->head;
+    struct dfunc_item *h = list->head;
     while (h && i < index)
     {
         h = h->next;
         i++;
     }
     if (h && i == index)
-        return h->data;
-    return NULL;
+        return h->fun;
+    struct node_funcdec fun;
+    fun.name = NULL;
+    fun.body = NULL;
+    return fun;
 }
 
-int dvar_insert_at(struct dvar *list, char *name, char *element, size_t index)
+int dfunc_insert_at(struct dfunc *list, struct node_funcdec fun, size_t index)
 {
     if (index == 0)
-        return dvar_push_front(list, name, element);
+        return dfunc_push_front(list, fun);
     else if (index == list->size)
-        return dvar_push_back(list, name, element);
+        return dfunc_push_back(list, fun);
     else if (index < list->size)
     {
-        struct dvar_item *e = malloc(sizeof(struct dvar_item));
+        struct dfunc_item *e = malloc(sizeof(struct dfunc_item));
         if (e)
         {
             size_t i = 0;
-            struct dvar_item *h = list->head;
+            struct dfunc_item *h = list->head;
             while (h && i < index)
             {
                 h = h->next;
@@ -97,8 +96,7 @@ int dvar_insert_at(struct dvar *list, char *name, char *element, size_t index)
             }
             if (h && i == index)
             {
-                e->data = element;
-                e->name = name;
+                e->fun = fun;
                 h->prev->next = e;
                 e->next = h;
                 e->prev = h->prev;
@@ -111,10 +109,10 @@ int dvar_insert_at(struct dvar *list, char *name, char *element, size_t index)
     return 0;
 }
 
-void dvar_remove_at(struct dvar *list, size_t index)
+void dfunc_remove_at(struct dfunc *list, size_t index)
 {
     size_t i = 0;
-    struct dvar_item *h = list->head;
+    struct dfunc_item *h = list->head;
     while (h && i < index)
     {
         h = h->next;
@@ -130,16 +128,14 @@ void dvar_remove_at(struct dvar *list, size_t index)
             h->next->prev = h->prev;
         else
             list->tail = h->prev;
-        free(h->data);
-        free(h->name);
         free(h);
         list->size--;
     }
 }
 
-void dvar_concat(struct dvar *list1, struct dvar *list2)
+void dfunc_concat(struct dfunc *list1, struct dfunc *list2)
 {
-    struct dvar_item *end_1 = list1->tail;
+    struct dfunc_item *end_1 = list1->tail;
 
     list1->tail = list2->tail;
     if (end_1)

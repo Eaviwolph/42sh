@@ -14,13 +14,12 @@ struct node *tree_funcdec_create(char *name, struct node *body)
 
 void tree_funcdec_print(struct node *node, FILE *fs)
 {
-    fprintf(fs, "func ");
+    fprintf(fs, "%s (){ ", node->data.funcdecnode.name);
     tree_print_node(node->data.funcdecnode.body, fs);
+    fprintf(fs, "}");
 }
 
 void tree_funcdec_destroy(struct node *node)
 {
-    free(node->data.funcdecnode.name);
-    tree_destroy(node->data.funcdecnode.body);
     free(node);
 }

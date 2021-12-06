@@ -13,8 +13,6 @@
 #include "../parser/parser.h"
 #include "../parser/token.h"
 
-// void faketree(struct shell *s);
-
 void freeshell(struct shell *sh)
 {
     if (sh->token)
@@ -23,6 +21,8 @@ void freeshell(struct shell *sh)
         dvar_destroy(sh->var);
     if (sh->alias)
         dalias_destroy(sh->alias);
+    if (sh->fun)
+        dfunc_destroy(sh->fun);
     free(sh);
 }
 
@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
         sh->var = getvars(argc + (j ? 1 : 0), argv);
         sh->token = readlines(fd);
     }
+    sh->fun = dfunc_init();
     do
     {
         sh->tree = parse(sh->token);

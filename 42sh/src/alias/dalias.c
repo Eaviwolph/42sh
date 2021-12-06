@@ -153,14 +153,3 @@ void dalias_concat(struct dalias *list1, struct dalias *list2)
     list2->tail = NULL;
     list2->size = 0;
 }
-
-void dalias_item_destroy(struct dalias_item *h)
-{
-    if (h)
-    {
-        dalias_item_destroy(h->next);
-        free(h->data);
-        free(h->name);
-        free(h);
-    }
-}

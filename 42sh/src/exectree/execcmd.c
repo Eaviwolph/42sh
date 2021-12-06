@@ -117,6 +117,8 @@ void execcmd(struct node_cmd n, struct shell *s)
 {
     if (n.sizep)
         execprefix(n.pref, /*1,*/ s);
-    if (n.sizea)
+    if (n.sizea && !execfunc(n, s))
+    {
         execargv(n, s);
+    }
 }
