@@ -1,1 +1,1 @@
-echo hello && echo yolo
+! echo hello && echo yolo

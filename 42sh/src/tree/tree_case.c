@@ -4,7 +4,7 @@ struct node *tree_case_create(char *word)
 {
     struct node *node;
 
-    safe_malloc(node, sizeof(struct node));
+    safe_calloc(node, 1, sizeof(struct node));
     node->type = CASE;
     node->data.casenode.word = word;
     node->data.casenode.items = NULL;

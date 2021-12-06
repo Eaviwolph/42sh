@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         if (sh->tree)
         {
             exectree(sh->tree, sh);
-            if (sh->pretty_print)
+            if (sh->pretty_print || 2)
             {
                 tree_print_node(sh->tree, stdout);
                 printf("\n");

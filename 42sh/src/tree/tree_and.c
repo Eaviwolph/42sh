@@ -13,8 +13,6 @@ struct node *tree_and_create(struct node *left_node, struct node *right_node)
 
 void tree_and_print(struct node *node, FILE *fs)
 {
-    if (node->type != AND)
-        return;
     tree_print_node(node->data.binnode.left, fs);
     fprintf(fs, "&& ");
     tree_print_node(node->data.binnode.right, fs);
@@ -23,15 +21,11 @@ void tree_and_print(struct node *node, FILE *fs)
 
 void tree_and_destroy_node(struct node *node)
 {
-    if (node->type != AND)
-        return;
     free(node);
 }
 
 void tree_and_destroy(struct node *node)
 {
-    if (node->type != AND)
-        return;
     tree_destroy(node->data.binnode.left);
     tree_destroy(node->data.binnode.right);
     free(node);

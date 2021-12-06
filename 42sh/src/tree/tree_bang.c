@@ -12,8 +12,6 @@ struct node *tree_bang_create(struct node *child)
 
 void tree_bang_print(struct node *node, FILE *fs)
 {
-    if (node->type != BANG)
-        return;
     fprintf(fs, "! ");
     tree_print_node(node->data.binnode.left, fs);
 }
