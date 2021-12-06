@@ -129,7 +129,6 @@ void tree_for_destroy(struct node *n);
 
 struct node *tree_while_create(struct node *condition, struct node *command);
 void tree_while_print(struct node *n, FILE *stream);
-void tree_while_destroy_node(struct node *n);
 void tree_while_destroy(struct node *n);
 
 struct node *tree_cmd_create(void);

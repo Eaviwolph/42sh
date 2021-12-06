@@ -1,5 +1,4 @@
-while 1
+while true
 do
     echo yes
-    break
 done

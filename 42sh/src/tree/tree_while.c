@@ -19,17 +19,8 @@ void tree_while_print(struct node *n, FILE *stream)
     fprintf(stream, "\ndone\n");
 }
 
-void tree_while_destroy_node(struct node *n)
-{
-    if (n->type != WHILE)
-        return;
-    free(n);
-}
-
 void tree_while_destroy(struct node *n)
 {
-    if (n->type != WHILE)
-        return;
     tree_destroy(n->data.whilenode.command);
     tree_destroy(n->data.whilenode.condition);
     free(n);
