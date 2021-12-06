@@ -13,7 +13,7 @@
 #define PATH_MAX 4096
 
 int my_echo(char *arg[], size_t len);
-int my_exit(char *arg[], size_t len);
+int my_exit(char *arg[], size_t len, struct shell *s);
 int my_cd(char *arg[], size_t len);
 int my_export(char *arg[], size_t len);
 int my_exec(char *argv[], size_t len);
