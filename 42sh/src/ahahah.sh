@@ -1,1 +1,5 @@
-! echo hello && echo yolo
+while true
+do
+    echo yes
+    break
+done

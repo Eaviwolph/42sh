@@ -82,19 +82,19 @@ struct node_red
 
 enum node_type
 {
-    IF,
-    FOR,
+    IF, // exec
+    FOR, // exec
     CASE,
-    WHILE,
-    CMD,
-    AND,
-    OR,
+    WHILE, // exec
+    CMD, // exec
+    AND, // exec
+    OR, // exec
     SUBSHELL,
     FUNCDEC,
-    BANG,
-    PIPE,
+    BANG, // exec
+    PIPE, // exec
     SEPAND,
-    SEP,
+    SEP, // exec
     RED
 };
 #define NODE_TYPE_COUNT 14
