@@ -94,12 +94,12 @@ int main(int argc, char *argv[])
         sh->tree = parse(sh->token);
         if (sh->tree)
         {
-            exectree(sh->tree, sh);
-            if (sh->pretty_print || 2)
+            if (sh->pretty_print || 1)
             {
                 tree_print_node(sh->tree, stdout);
                 printf("\n");
             }
+            exectree(sh->tree, sh);
         }
         tree_destroy(sh->tree);
     } while (peak_token(sh->token).op != LEOF);

@@ -16,17 +16,8 @@ void tree_bang_print(struct node *node, FILE *fs)
     tree_print_node(node->data.binnode.left, fs);
 }
 
-void tree_bang_destroy_node(struct node *node)
-{
-    if (node->type != BANG)
-        return;
-    free(node);
-}
-
 void tree_bang_destroy(struct node *node)
 {
-    if (node->type != BANG)
-        return;
     tree_destroy(node->data.binnode.left);
     free(node);
 }

@@ -35,32 +35,35 @@ void tree_cmd_argv(struct node *node, char *argv)
 
 void tree_cmd_print(struct node *node, FILE *stream)
 {
-    fprintf(stream, "{pref:(");
-    for (size_t i = 0; i < node->data.cmdnode.sizep; i++)
+    fprintf(stream, "{");
+    if (node->data.cmdnode.sizep)
     {
-        fprintf(stream, "%s", node->data.cmdnode.pref[i]);
-        if (i + 1 < node->data.cmdnode.sizep)
+        fprintf(stream, "pref:(");
+        for (size_t i = 0; i < node->data.cmdnode.sizep; i++)
         {
-            fprintf(stream, " ");
+            fprintf(stream, "%s", node->data.cmdnode.pref[i]);
+            if (i + 1 < node->data.cmdnode.sizep)
+            {
+                fprintf(stream, " ");
+            }
         }
+        fprintf(stream, ")");
     }
-    fprintf(stream, ") args:(");
-
-    for (size_t i = 0; i < node->data.cmdnode.sizea; i++)
+    if (node->data.cmdnode.sizea)
     {
-        fprintf(stream, "%s", node->data.cmdnode.argv[i]);
-        if (i + 1 < node->data.cmdnode.sizea)
+        fprintf(stream, "args:(");
+        for (size_t i = 0; i < node->data.cmdnode.sizea; i++)
         {
-            fprintf(stream, " ");
+            fprintf(stream, "%s", node->data.cmdnode.argv[i]);
+            if (i + 1 < node->data.cmdnode.sizea)
+            {
+                fprintf(stream, " ");
+            }
         }
+        fprintf(stream, ")");
     }
-    fprintf(stream, ")} ");
+    fprintf(stream, "} ");
     fflush(stream);
-}
-
-void tree_cmd_destroy_node(struct node *node)
-{
-    tree_cmd_destroy(node);
 }
 
 void tree_cmd_destroy(struct node *node)
