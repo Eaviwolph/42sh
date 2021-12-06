@@ -93,6 +93,14 @@ void execargv(struct node_cmd n, struct shell *s)
         my_echo(ar, size);
         fflush(stdout);
     }
+    else if (!strcmp(ar[0], "break"))
+    {
+        dvar_add_var(s->var, mystrdup("loop_status"), mystrdup("break"));
+    }
+    else if (!strcmp(ar[0], "continue"))
+    {
+        dvar_add_var(s->var, mystrdup("loop_status"), mystrdup("continue"));
+    }
     else
     {
         execfork(n, s, size, ar);

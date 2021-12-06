@@ -58,35 +58,34 @@ int main(int argc, char *argv[])
     {
         sh->name = argv[0];
     }
+    j = (argc >= 2 && (strcmp(argv[1], "--pretty-print") == 0));
+    sh->pretty_print = j;
+    argc -= (j ? 1 : 0);
+
     if (argc >= 2)
     {
-        j = (strcmp(argv[1], "--pretty-print") == 0);
-        if (argc > 2 && strcmp(argv[1], "-c") == 0)
+        if (argc > 2 && strcmp(argv[j ? 2 : 1], "-c") == 0)
         {
             char quoted = '\0';
             sh->token = dtoken_init();
-            sh->token = str_to_dtoken(sh->token, argv[2], &quoted);
+            sh->token = str_to_dtoken(sh->token, argv[j ? 3 : 2], &quoted);
             sh->token = dtoken_add(sh->token, calloc(1, sizeof(char)));
             sh->token->tail->data.op = LEOF;
 
-            sh->var = getvars(argc - 3, argv + 3);
+            sh->var = getvars(argc - 3 + (j ? 1 : 0), argv + 3);
         }
         else
         {
-            if (j)
-            {
-                sh->pretty_print = 1;
-            }
             sh->var = getvars(argc - 1, argv + 1);
             fd = open(argv[j ? 2 : 1], O_RDONLY);
             if (fd == -1)
-                errx(1, "%s: can't be open or doesn't exist", argv[1]);
+                errx(1, "%s: can't be open or doesn't exist", argv[j ? 2 : 1]);
             sh->token = readlines(fd);
         }
     }
     else
     {
-        sh->var = getvars(argc, argv);
+        sh->var = getvars(argc + (j ? 1 : 0), argv);
         sh->token = readlines(fd);
     }
     do
