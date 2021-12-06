@@ -87,13 +87,14 @@ struct dtoken *dtokenaddquote(struct dtoken *d, char *s, size_t *i,
 struct dtoken *str_to_dtoken(struct dtoken *d, char *s, char *quoted)
 {
     size_t i = 0;
-    while (s[i])
+    size_t len = strlen(s);
+    while (i < len)
     {
-        while (*quoted == '\0' && s[i] && isblank(s[i]))
+        while (*quoted == '\0' && (i < len && isblank(s[i])))
             i++;
-        if (s[i] == '"' || s[i] == '\'' || *quoted)
+        if (*quoted || s[i] == '\'' || s[i] == '"')
         {
-            if (*quoted == '\0')
+            if (!*quoted)
             {
                 d = dtoken_add(d, calloc(1, sizeof(char)));
                 *quoted = s[i];
@@ -101,7 +102,7 @@ struct dtoken *str_to_dtoken(struct dtoken *d, char *s, char *quoted)
             }
             d = dtokenaddquote(d, s, &i, quoted);
         }
-        else if (s[i])
+        else if (i < len)
         {
             size_t j = nextchar(s, i);
             j = eatmore(s, i, j);
@@ -112,6 +113,12 @@ struct dtoken *str_to_dtoken(struct dtoken *d, char *s, char *quoted)
                 c[k] = s[i + k];
             i = j;
             d = dtoken_add(d, c);
+            if (s[i] == '\'' || s[i] == '"')
+            {
+                *quoted = s[i];
+                i++;
+                d = dtokenaddquote(d, s, &i, quoted);
+            }
         }
     }
     return d;
@@ -128,6 +135,7 @@ struct dtoken *readlines(int fd)
         d = str_to_dtoken(d, line, &quote);
         free(line);
     }
+    // if quote != '\0' => error
     exgetline_end(buffer, fd);
     d = dtoken_add(d, calloc(1, sizeof(char)));
     d->tail->data.op = LEOF;
