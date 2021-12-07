@@ -1,23 +1,29 @@
 #include "builtin.h"
 
-void get_opt(size_t *n, size_t *e, char *arg[], size_t len)
+size_t get_opt(size_t *n, size_t *e, char *arg[], size_t len)
 {
-    size_t i = 0;
-    while (i < len
-           && (!strcmp(arg[i], "-n") || !strcmp(arg[i], "-e")
-               || !strcmp(arg[i], "-E") || !strcmp(arg[i], "-ne") || !strcmp(arg[i], "-en")))
+    size_t i = 1;
+    while (i < len && arg[i][0] == '-')
     {
-        if ((!strcmp(arg[i], "-ne") || !strcmp(arg[i], "-en")) && *n && *e == 0)
+        if (strcmp(arg[i], "-e") == 0)
+            *e = 1;
+        else if (strcmp(arg[i], "-n") == 0)
+            *n = 0;
+        else if (strcmp(arg[i], "-E") == 0)
+            *e = 0;
+        else if (strcmp(arg[i], "-ne") == 0 || strcmp(arg[i], "-en") == 0)
         {
             *n = 0;
             *e = 1;
         }
-        else if (!strcmp(arg[i], "-n") && *n)
+        else if (strcmp(arg[i], "-nE") == 0 || strcmp(arg[i], "-En") == 0)
+        {
             *n = 0;
-        else if ((!strcmp(arg[i], "-e") || !strcmp(arg[i], "-E")) && *e == 0)
-            *e = 1;
+            *e = 0;
+        }
         i++;
     }
+    return i;
 }
 
 int is_octale(char c)
@@ -111,11 +117,18 @@ int my_echo(char *arg[], size_t len)
 {
     size_t n = 1;
     size_t e = 0;
-    get_opt(&n, &e, arg, len);
-    if (!e)
-        printf("%s", arg[len - 1]);
-    else
-        e_treat(arg[len - 1]);
+    size_t first = get_opt(&n, &e, arg, len);
+    for (size_t i = first; i < len; i++)
+    {
+        if (!e)
+            printf("%s", arg[i]);
+        else
+            e_treat(arg[i]);
+        if (i + 1 < len)
+        {
+            printf(" ");
+        }
+    }
     if (n)
         putchar('\n');
     return 0;
