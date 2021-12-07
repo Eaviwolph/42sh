@@ -3,15 +3,19 @@
 
 struct node *tree_for_create(char *var, char **vals, struct node *command)
 {
-    size_t len = 0;
-    while (vals[len])
+    char **valstmp = NULL;
+    if (vals)
     {
-        len++;
-    }
-    char **valstmp = calloc(len + 1, sizeof(char *));
-    for (size_t i = 0; i < len; i++)
-    {
-        valstmp[i] = mystrdup(vals[i]);
+        size_t len = 0;
+        while (vals[len])
+        {
+            len++;
+        }
+        valstmp = calloc(len + 1, sizeof(char *));
+        for (size_t i = 0; i < len; i++)
+        {
+            valstmp[i] = mystrdup(vals[i]);
+        }
     }
     free(vals);
     struct node *new;
@@ -40,8 +44,11 @@ void tree_for_destroy(struct node *n)
 {
     tree_destroy(n->data.fornode.command);
     free(n->data.fornode.var);
-    for (int i = 0; n->data.fornode.vals[i]; i++)
-        free(n->data.fornode.vals[i]);
-    free(n->data.fornode.vals);
+    if (n->data.fornode.vals)
+    {
+        for (int i = 0; n->data.fornode.vals[i]; i++)
+            free(n->data.fornode.vals[i]);
+        free(n->data.fornode.vals);
+    }
     free(n);
 }

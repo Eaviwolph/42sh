@@ -44,5 +44,9 @@ void exectree(struct node *n, struct shell *s)
         {
             exefuncdec(n->data.funcdecnode, s);
         }
+        else if (n->type == SUBSHELL)
+        {
+            execsubshell(n->data.binnode, s);
+        }
     }
 }

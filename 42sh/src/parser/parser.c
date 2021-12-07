@@ -280,6 +280,9 @@ static struct node *parse_rule_for(struct dtoken *parser)
         tok = get_token(parser);
         do
         { // add each word into "values"
+            ;
+            if (peak_token(parser).op == LNEWL)
+                break;
             if ((tok = get_token(parser)).op != LWORD)
                 errx(1, "Parsing Error 21");
             values = string_array_append(values, tok.val);

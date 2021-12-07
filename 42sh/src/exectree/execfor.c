@@ -6,6 +6,8 @@
 
 void execfor(struct node_for n, struct shell *s)
 {
+    if (!n.vals)
+        return;
     for (int i = 0; n.vals[i]; i++)
     {
         char *name = mystrdup(n.var);
