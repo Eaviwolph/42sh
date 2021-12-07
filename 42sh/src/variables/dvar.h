@@ -37,5 +37,6 @@ void dvar_concat(struct dvar *list1, struct dvar *list2);
 int dvar_add_var(struct dvar *list, char *name, char *element);
 int dvar_replace_var(struct dvar *list, char *name, char *element);
 void dvar_destroy(struct dvar *list);
+struct dvar *dvar_split_at(struct dvar *list, size_t index);
 
 #endif // dvar_H

@@ -153,3 +153,33 @@ void dvar_concat(struct dvar *list1, struct dvar *list2)
     list2->tail = NULL;
     list2->size = 0;
 }
+
+struct dvar *dvar_split_at(struct dvar *list, size_t index)
+{
+    size_t i = 0;
+    struct dvar_item *h = list->head;
+    if (index > list->size)
+    {
+        return NULL;
+    }
+    while (h && i < index)
+    {
+        h = h->next;
+        i++;
+    }
+    struct dvar *l2 = dvar_init();
+    if (h)
+    {
+        l2->head = h;
+        l2->tail = list->tail;
+        list->tail = h->prev;
+        l2->size = list->size - index;
+        list->size = index;
+        if (!h->prev)
+            list->head = NULL;
+        else
+            h->prev->next = NULL;
+        h->prev = NULL;
+    }
+    return l2;
+}

@@ -161,5 +161,10 @@ struct dvar *initvars(char **names, char **vars, int size)
         dvar_add_var(d, mystrdup("*"), list);
         dvar_add_var(d, mystrdup("@"), mystrdup(list));
     }
+    else
+    {
+        dvar_add_var(d, mystrdup("*"), mystrdup(""));
+        dvar_add_var(d, mystrdup("@"), mystrdup(""));
+    }
     return d;
 }
