@@ -12,6 +12,7 @@
 #include "../exectree/exectree.h"
 #include "../parser/parser.h"
 #include "../parser/token.h"
+#include "../tools/tools.h"
 
 void freeshell(struct shell *sh)
 {
@@ -26,10 +27,15 @@ void freeshell(struct shell *sh)
     free(sh);
 }
 
-struct dvar *getvars(int len, char *args[])
+struct dvar *getvars(int len, char *args[], char *n)
 {
-    char **names = calloc(len, sizeof(char *));
-    char **vars = calloc(len, sizeof(char *));
+    char **names = NULL;
+    char **vars = NULL;
+    if (len > 0)
+    {
+        names = calloc(len, sizeof(char *));
+        vars = calloc(len, sizeof(char *));
+    }
     for (int i = 0; i < len; i++)
     {
         names[i] = calloc(11, sizeof(char));
@@ -41,6 +47,14 @@ struct dvar *getvars(int len, char *args[])
             j++;
         }
         snprintf(names[i], 10, "%d", i);
+    }
+    if (len <= 0)
+    {
+        len++;
+        names = calloc(len, sizeof(char *));
+        vars = calloc(len, sizeof(char *));
+        names[0] = mystrdup("0");
+        vars[0] = mystrdup(n);
     }
     struct dvar *d = initvars(names, vars, len);
     free(names);
@@ -72,11 +86,11 @@ int main(int argc, char *argv[])
             sh->token = dtoken_add(sh->token, calloc(1, sizeof(char)));
             sh->token->tail->data.op = LEOF;
 
-            sh->var = getvars(argc - 3 + (j ? 1 : 0), argv + 3);
+            sh->var = getvars(argc - 3 + (j ? 1 : 0), argv + 3, argv[0]);
         }
         else
         {
-            sh->var = getvars(argc - 1, argv + 1);
+            sh->var = getvars(argc - 1, argv + 1, argv[0]);
             fd = open(argv[j ? 2 : 1], O_RDONLY);
             if (fd == -1)
                 errx(1, "%s: can't be open or doesn't exist", argv[j ? 2 : 1]);
@@ -85,7 +99,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        sh->var = getvars(argc + (j ? 1 : 0), argv);
+        sh->var = getvars(argc + (j ? 1 : 0), argv, argv[0]);
         sh->token = readlines(fd);
     }
     sh->fun = dfunc_init();
