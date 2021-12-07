@@ -8,10 +8,14 @@ void execfor(struct node_for n, struct shell *s)
 {
     if (!n.vals)
         return;
+    
     for (int i = 0; n.vals[i]; i++)
     {
         char *name = mystrdup(n.var);
-        dvar_add_var(s->var, name, mystrdup(n.vals[i]));
+        dvar_add_var(s->var, name, varstrrep(mystrdup(n.vals[i]), s->var));
+
+        if (dvar_find(s->var, n.var)[0] == '\0')
+            continue;
 
         dvar_add_var(s->var, mystrdup("loop_status"), mystrdup("run"));
         char *v = dvar_find(s->var, "loop_status");
