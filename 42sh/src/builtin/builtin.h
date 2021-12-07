@@ -3,13 +3,15 @@
 
 #include <ctype.h>
 #include <err.h>
+#include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <errno.h>
+
+#include "../shell/shell.h"
 #define PATH_MAX 4096
 
 int my_echo(char *arg[], size_t len);

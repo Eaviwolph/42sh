@@ -11,8 +11,3 @@ int my_exit(char *arg[], size_t len, struct shell *s)
     _exit((!*end) ? status : 255);
     return 1;
 }
-
-int main()
-{
-    return 0;
-}
