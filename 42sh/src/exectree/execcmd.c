@@ -57,8 +57,6 @@ void execfork(struct node_cmd n, struct shell *s, int size, char **ar)
         execvp(ar[0], ar);
         if (errno == ENOENT)
             fprintf(stderr, "%s: %s: command not found.\n", s->name, n.argv[0]);
-        else
-            perror(s->name);
         for (int i = 0; i < size; i++)
         {
             free(ar[i]);
