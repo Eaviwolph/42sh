@@ -15,6 +15,8 @@ int dfunc_replace_fun(struct dfunc *list, struct node_funcdec fun)
     }
     if (h)
     {
+        tree_destroy(h->fun.body);
+        free(h->fun.name);
         h->fun = fun;
         return 1;
     }
