@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "../functions/dfunc.h"
+#include "../tools/tools.h"
 #include "../variables/var.h"
 #include "exectree.h"
 
@@ -7,23 +10,66 @@ void exefuncdec(struct node_funcdec n, struct shell *s)
     dfunc_add_fun(s->fun, n);
 }
 
-void functmpvars(char **argv, size_t len, struct shell *s)
+static struct dvar *getvars(int len, char *args[])
 {
-    (void)argv;
-    (void)len;
-    (void)s;
+    char **names = NULL;
+    char **vars = NULL;
+    if (len > 0)
+    {
+        names = calloc(len, sizeof(char *));
+        vars = calloc(len, sizeof(char *));
+    }
+    for (int i = 0; i < len; i++)
+    {
+        names[i] = calloc(11, sizeof(char));
+        vars[i] = calloc(strlen(args[i]) + 1, sizeof(char));
+        int j = 0;
+        while (args[i][j])
+        {
+            vars[i][j] = args[i][j];
+            j++;
+        }
+        snprintf(names[i], 10, "%d", i);
+    }
+    struct dvar *d = initvars(names, vars, len);
+    free(names);
+    free(vars);
+    return d;
+}
+
+void functmpvars(struct node_funcdec fun, char **argv, size_t len,
+                 struct shell *s)
+{
     struct dvar_item *v = s->var->head;
     size_t i = 0;
-    while (v && v->data[0] != '@')
+    while (v && v->name[0] != '@')
     {
         v = v->next;
         i++;
     }
-    struct dvar *l2 = dvar_split_at(s->var, i);
-    printf("\nl2 = \n");
-    dvar_print(l2);
-    printf("\ns->var = \n");
-    dvar_print(s->var);
+    struct dvar *l2 = dvar_split_at(s->var, i + 1);
+    struct dvar *fsh = getvars(len, argv);
+
+    dvar_add_var(fsh, mystrdup("0"), mystrdup(dvar_find(s->var, "0")));
+    dvar_concat(fsh, l2);
+    dvar_destroy(l2);
+
+    struct dvar *save = s->var;
+    s->var = fsh;
+
+    exectree(fun.body, s);
+    v = s->var->head;
+    i = 0;
+    while (v && v->name[0] != '@')
+    {
+        v = v->next;
+        i++;
+    }
+    l2 = dvar_split_at(s->var, i + 1);
+    dvar_concat(save, l2);
+    s->var = save;
+    dvar_destroy(fsh);
+    dvar_destroy(l2);
 }
 
 int execfunc(struct node_cmd n, struct shell *s)
@@ -33,9 +79,6 @@ int execfunc(struct node_cmd n, struct shell *s)
     {
         return 0;
     }
-    dvar_print(s->var);
-    functmpvars(NULL, 2, s);
-
-    exectree(fun.body, s);
+    functmpvars(fun, n.argv, n.sizea, s);
     return 1;
 }

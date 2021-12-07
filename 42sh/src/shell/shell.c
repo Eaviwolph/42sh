@@ -27,7 +27,7 @@ void freeshell(struct shell *sh)
     free(sh);
 }
 
-struct dvar *getvars(int len, char *args[], char *n)
+static struct dvar *getvars(int len, char *args[], char *n)
 {
     char **names = NULL;
     char **vars = NULL;
