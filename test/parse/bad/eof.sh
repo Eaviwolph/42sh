@@ -1,3 +1,0 @@
-echo "toto
-titi
-tata
